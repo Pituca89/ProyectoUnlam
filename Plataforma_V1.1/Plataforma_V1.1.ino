@@ -9,6 +9,7 @@
 #include <ArduinoJson.h>
 #include <WiFiClient.h> 
 #include <ESP8266WebServer.h>  
+#include <WiFiManager.h>
 
 //-------------------VARIABLES GLOBALES--------------------------
 int contconexion = 0;
@@ -18,8 +19,8 @@ const char *password = "0043442422";//"SOA.2019";//"0043442422";
 
 unsigned long previousMillis = 0;
 
-char* host = "www.gestiondenegocio.esy.es";
-String strhost = "www.gestiondenegocio.esy.es";
+char* host = "192.168.0.210";//"www.gestiondenegocio.esy.es";
+String strhost = "192.168.0.210";//"www.gestiondenegocio.esy.es";
 String strurl = "/index.php";
 String chipid = "";
 boolean con = false;
@@ -27,6 +28,7 @@ int cantUser = 0;
 String mensaje = "";
 String opcion = "";
 ESP8266WebServer server(80);   
+WiFiManager wifimanager;
 //-------Funciones--------
 
 /**Falta funcion de seleccion de ruta utilizando el vector de rutas recibido del servidor**/
@@ -93,8 +95,10 @@ void setup() {
   
   chipid = String(ESP.getChipId());
 
-  WiFi.begin (ssid, password); 
- 
+  //WiFi.begin (ssid, password); 
+  //wifimanager.resetSettings();
+  wifimanager.autoConnect("BePIM");
+   
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.println("Conectando...");
