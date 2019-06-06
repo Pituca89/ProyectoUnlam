@@ -27,6 +27,10 @@ boolean con = false;
 int cantUser = 0;
 String mensaje = "";
 String opcion = "";
+int PinARD = D1; 
+int PinARDIn = D2; 
+long pulses = 0;
+int flag = 0;
 ESP8266WebServer server(80);   
 WiFiManager wifimanager;
 //-------Funciones--------
@@ -79,12 +83,21 @@ void formulario(){                                             //Va a ser un for
          form += "<title>BePIM</title>";                       //Título del documento                                           
          form += "</head>";                                    //Fin de la cabecera   
          form += "<body>";                                     //Inicio del cuerpo -contenido visible del doc.-
-         form += "<form action='' method='get'>";
-         form += "</form>";
+         //form += "<form action='' method='get'>";
+         form += "<p><a href=\"?motor=1\"><button class=\"button\">ON</button></a></p>";  
+         form += "<p><a href=\"?motor=0\"><button class=\"button\">OFF</button></a></p>"; 
+         //form += "</form>";
+         form += "<div>Cantidad de vueltas: " + String(pulses) + "</div>";
          form += "</body>";                                    //Fin del cuerpo
          form += "</html>";                                    //Fin del documento HTML
   server.send(200, "text/html", form);                         //Envío del formulario como respuesta al cliente                                               
 }
+ void contador(){
+  if(  digitalRead (PinARDIn)) {
+    pulses++;
+  }  // Suma el pulso bueno que entra.
+  else ; 
+ } 
 //-------------------------------------------------------------------------
 
 void setup() {
@@ -92,7 +105,7 @@ void setup() {
   // Inicia Serial
   Serial.begin(115200);
   Serial.println("");
-  
+  pinMode(PinARD,OUTPUT);
   chipid = String(ESP.getChipId());
 
   //WiFi.begin (ssid, password); 
@@ -120,8 +133,8 @@ void setup() {
   }
   
   server.on("/", [](){                                 //RUTA "/led" DE SOLICITUD HTTP
-    mensaje = server.arg(0);                           //Obtiene el valor enviado de "OPCION" como STRING    
-    opcion = server.arg(1);   
+    mensaje = server.arg("motor");                           //Obtiene el valor enviado de "OPCION" como STRING    
+    //opcion = server.arg(1);   
     formulario();                                              //Llamada a la función para enviar el formulario al cliente
   });  
   server.begin();                                              //Inicializa el servidor (una vez configuradas las rutas)
@@ -132,9 +145,26 @@ void setup() {
 void loop() {
 
   server.handleClient(); //espero a que algun cliente se conecte y realice una peticion
+  /*
   if(mensaje.equals("PETICION")){//espero el mensaje de la aplicación
     Serial.println("Mensaje recibido");
     mensaje = "";
+  }
+  */
+  if(mensaje.equals("1")){
+    //Serial.println("Motor Encendido");  
+    contador();
+    digitalWrite(PinARD,HIGH);   
+    flag = 0;  
+  }
+  if(mensaje.equals("0")){
+    //Serial.println("Motor Apagado");
+    if(flag == 0){
+      Serial.print("Cantidad de Vueltas: ");Serial.println(pulses,DEC);
+      pulses = 0;
+    }
+    digitalWrite(PinARD,LOW);
+    flag = 1;
   }
 }
 
