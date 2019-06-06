@@ -3,7 +3,7 @@ int PinIN2 = 6;
 int PinIN3 = 4;
 int PinIN4 = 3;
 int PinESP = 8;
-int PinESPOut= 9;
+int PinESPOut= 12;
 int encoder_pin = 2;             //Pin 2, donde se conecta el encoder       
 unsigned int rpm = 0;           // Revoluciones por minuto calculadas.
 float velocity = 0;                 //Velocidad en [Km/h]
@@ -63,7 +63,7 @@ void setup() {
   pinMode(PinESP, INPUT);
   pinMode(PinESPOut, OUTPUT);
   pinMode(encoder_pin, INPUT); // Configuración del pin nº2
-  //attachInterrupt(0, counter, RISING); // Configuración de la interrupción 0, donde esta conectado. 
+  attachInterrupt(0, counter, RISING); // Configuración de la interrupción 0, donde esta conectado. 
   pulses = 0;
   //rpm = 0;
   timeold = 0;

@@ -19,8 +19,8 @@ const char *password = "0043442422";//"SOA.2019";//"0043442422";
 
 unsigned long previousMillis = 0;
 
-char* host = "192.168.0.210";//"www.gestiondenegocio.esy.es";
-String strhost = "192.168.0.210";//"www.gestiondenegocio.esy.es";
+char* host = "192.168.0.8";//"www.gestiondenegocio.esy.es";
+String strhost = "192.168.0.8";//"www.gestiondenegocio.esy.es";
 String strurl = "/index.php";
 String chipid = "";
 boolean con = false;
@@ -29,8 +29,10 @@ String mensaje = "";
 String opcion = "";
 int PinARD = D1; 
 int PinARDIn = D2; 
-long pulses = 0;
+volatile long pulses = 0;
 int flag = 0;
+static volatile unsigned long debounce = 0; // Tiempo del rebote.
+const int interruptPin = 0;
 ESP8266WebServer server(80);   
 WiFiManager wifimanager;
 //-------Funciones--------
@@ -87,13 +89,21 @@ void formulario(){                                             //Va a ser un for
          form += "<p><a href=\"?motor=1\"><button class=\"button\">ON</button></a></p>";  
          form += "<p><a href=\"?motor=0\"><button class=\"button\">OFF</button></a></p>"; 
          //form += "</form>";
-         form += "<div>Cantidad de vueltas: " + String(pulses) + "</div>";
+         form += "<div>Cantidad de vueltas: " + String(pulses/20) + " En " + String((millis()/1000)) + " Segundos </div>";
          form += "</body>";                                    //Fin del cuerpo
          form += "</html>";                                    //Fin del documento HTML
   server.send(200, "text/html", form);                         //Envío del formulario como respuesta al cliente                                               
 }
  void contador(){
   if(  digitalRead (PinARDIn)) {
+    pulses++;
+  }  // Suma el pulso bueno que entra.
+  else ; 
+ } 
+ void counter(){
+  if(  digitalRead (PinARDIn) && (micros()-debounce > 500) && digitalRead (PinARDIn) ) { 
+    // Vuelve a comprobar que el encoder envia una señal buena y luego comprueba que el tiempo es superior a 1000 microsegundos y vuelve a comprobar que la señal es correcta.
+    debounce = micros(); // Almacena el tiempo para comprobar que no contamos el rebote que hay en la señal.
     pulses++;
   }  // Suma el pulso bueno que entra.
   else ; 
@@ -106,8 +116,10 @@ void setup() {
   Serial.begin(115200);
   Serial.println("");
   pinMode(PinARD,OUTPUT);
+  pinMode(PinARDIn,INPUT);
   chipid = String(ESP.getChipId());
-
+  //pinMode(interruptPin, INPUT_PULLUP);
+  //attachInterrupt(interruptPin, counter, RISING); // Configuración de la interrupción 0, donde esta conectado. 
   //WiFi.begin (ssid, password); 
   //wifimanager.resetSettings();
   wifimanager.autoConnect("BePIM");
@@ -139,6 +151,8 @@ void setup() {
   });  
   server.begin();                                              //Inicializa el servidor (una vez configuradas las rutas)
   Serial.println("Servidor HTTP inicializado");  
+
+  pulses = 0;
 }
 
 //--------------------------LOOP--------------------------------
@@ -151,22 +165,24 @@ void loop() {
     mensaje = "";
   }
   */
-  if(mensaje.equals("1")){
-    //Serial.println("Motor Encendido");  
-    contador();
-    digitalWrite(PinARD,HIGH);   
-    flag = 0;  
-  }
-  if(mensaje.equals("0")){
-    //Serial.println("Motor Apagado");
-    if(flag == 0){
-      Serial.print("Cantidad de Vueltas: ");Serial.println(pulses,DEC);
-      pulses = 0;
+   //Serial.println(millis()/1000);
+    if(mensaje.equals("1")){
+      //Serial.println("Motor Encendido");  
+      contador();
+      digitalWrite(PinARD,HIGH);   
+      flag = 0;  
     }
-    digitalWrite(PinARD,LOW);
-    flag = 1;
+    if(mensaje.equals("0")){
+      //Serial.println("Motor Apagado");
+      if(flag == 0){
+        //Serial.print("Cantidad de Vueltas: ");Serial.println(pulses,DEC);
+        pulses = 0;
+      }
+      digitalWrite(PinARD,LOW);
+      flag = 1;
+    }
   }
-}
+
 
 
 /*
