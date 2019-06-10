@@ -1,9 +1,3 @@
-/*********
-  Rui Santos
-  Complete project details at https://randomnerdtutorials.com  
-*********/
-
-// Load Wi-Fi library
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
@@ -38,6 +32,8 @@ WiFiManager wifimanager;
 //-------Funciones--------
 
 /**Falta funcion de seleccion de ruta utilizando el vector de rutas recibido del servidor**/
+
+/**Inicio funcion para verificar conexion contra un servidor web**/
 String peticionPOST(String datos) {
   String linea = "error";
   WiFiClient client;
@@ -75,8 +71,42 @@ String peticionPOST(String datos) {
   }
   return linea;
 }
-
-
+/**Fin Funcion**/
+/**Inicio funcion para obtener peticones POST**/
+void post_method()
+{
+    //StaticJsonBuffer<500> jsonBuffer;
+    String post_body = server.arg("plain");
+    Serial.println(post_body);
+    const size_t capacity = JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(5) + JSON_OBJECT_SIZE(8) + 370;
+    DynamicJsonDocument root(capacity);
+      
+    DeserializationError err = deserializeJson(root,post_body);
+    
+    if (!err) 
+    {   
+        if (server.method() == HTTP_POST)
+        {
+            String id = root["estado"]; // 1
+            Serial.println("Valor: " + id);
+            //server.sendHeader("Location", "/leds/");
+            server.send(200, "text/plain", "Conexión OK"); 
+            //digitalWrite(PIN_LED, led_resource.status);           
+        }
+    }
+    else
+    {
+        Serial.println("error in parsin json body");
+        server.send(400);
+    }
+    
+}
+/**Fin Funcion**/
+void get_method(){
+    mensaje = server.arg("motor");                           //Obtiene el valor enviado de "OPCION" como STRING    
+    //opcion = server.arg(1);   
+    formulario();  
+}
 void formulario(){                                             //Va a ser un formulario dinámico (se establecen condiciones que varían el resultado final)                                                       
   String form =  "<!DOCTYPE html>";                            //Declaración del tipo de documento: HTML5
          form += "<html>";                                     //Inicio del documento HTML 
@@ -95,7 +125,7 @@ void formulario(){                                             //Va a ser un for
   server.send(200, "text/html", form);                         //Envío del formulario como respuesta al cliente                                               
 }
  void contador(){
-  if(  digitalRead (PinARDIn)) {
+  if(  !digitalRead (PinARDIn)) {
     pulses++;
   }  // Suma el pulso bueno que entra.
   else ; 
@@ -108,6 +138,12 @@ void formulario(){                                             //Va a ser un for
   }  // Suma el pulso bueno que entra.
   else ; 
  } 
+
+ void config_rest_server_routing() {
+    server.on("/", HTTP_GET,get_method);  
+    //server.on("/connect", HTTP_GET, get_method);
+    server.on("/connect", HTTP_POST, post_method);
+}
 //-------------------------------------------------------------------------
 
 void setup() {
@@ -121,7 +157,7 @@ void setup() {
   //pinMode(interruptPin, INPUT_PULLUP);
   //attachInterrupt(interruptPin, counter, RISING); // Configuración de la interrupción 0, donde esta conectado. 
   //WiFi.begin (ssid, password); 
-  //wifimanager.resetSettings();
+  wifimanager.resetSettings();
   wifimanager.autoConnect("BePIM");
    
   while (WiFi.status() != WL_CONNECTED) {
@@ -144,11 +180,7 @@ void setup() {
     }
   }
   
-  server.on("/", [](){                                 //RUTA "/led" DE SOLICITUD HTTP
-    mensaje = server.arg("motor");                           //Obtiene el valor enviado de "OPCION" como STRING    
-    //opcion = server.arg(1);   
-    formulario();                                              //Llamada a la función para enviar el formulario al cliente
-  });  
+  config_rest_server_routing();
   server.begin();                                              //Inicializa el servidor (una vez configuradas las rutas)
   Serial.println("Servidor HTTP inicializado");  
 
@@ -165,15 +197,16 @@ void loop() {
     mensaje = "";
   }
   */
+    
    //Serial.println(millis()/1000);
     if(mensaje.equals("1")){
-      //Serial.println("Motor Encendido");  
+      Serial.println("Motor Encendido");  
       contador();
       digitalWrite(PinARD,HIGH);   
       flag = 0;  
     }
     if(mensaje.equals("0")){
-      //Serial.println("Motor Apagado");
+      Serial.println("Motor Apagado");
       if(flag == 0){
         //Serial.print("Cantidad de Vueltas: ");Serial.println(pulses,DEC);
         pulses = 0;
