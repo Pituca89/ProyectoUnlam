@@ -1,0 +1,191 @@
+int PinDerIN1 = 30;
+int PinDerIN2 = 31;
+int PinIzqIN1 = 33;
+int PinIzqIN2 = 32;
+
+int pulsador = 22;
+
+int i;                    //  Auxiliar para limitar los while de avance y giro
+int contDer=0;
+int contIzq=0;
+const int intPinDer = 2;   // pin de interrupcion Encoder DERECHO
+const int intPinIzq = 3;   // pin de interrupcion Encoder IZQUIERDO
+
+// UNIFICAR LAS MASAS DE ARDUINO CON FUENTE DE PUENTE H
+
+#define delai 500       // Delay entre los avances y giros
+#define avance 80       // Cantidad de ranuras por avance, una vuelta completa son 20 ranuras
+#define giro 10       // Cantidad de ranuras por giro, empirico 10 ranuras 90 grados
+
+
+void setup() 
+  {
+  // inicializar la comunicación serial a 9600 bits por segundo:
+  Serial.begin(9600);
+  // configuramos los pines como salida
+  pinMode(PinDerIN1, OUTPUT);
+  pinMode(PinDerIN2, OUTPUT);
+  pinMode(PinIzqIN1, OUTPUT);
+  pinMode(PinIzqIN2, OUTPUT);
+  pinMode(pulsador, INPUT);
+
+  attachInterrupt(digitalPinToInterrupt(intPinDer), interrupcionEncoderDer, RISING); //interrupcion del encoder
+  attachInterrupt(digitalPinToInterrupt(intPinIzq), interrupcionEncoderIzq, RISING); //interrupcion del encoder
+  }
+
+
+
+
+void loop() {
+
+MotorStop();
+if (digitalRead(pulsador) == HIGH)
+  {
+     
+  i=contDer+avance;
+    Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  delay(delai);
+  while (contDer <= i)
+    {
+    MotorHorario();                     // Avance
+    }
+  MotorStop();
+
+  
+  i=contDer+giro;
+  delay(delai);
+    Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  while (contDer <= i)
+    {
+    GirarDerecha();                 // Giro
+    }
+  MotorStop();
+
+  
+  i=contDer+avance;
+  delay(delai);
+  Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  while (contDer <= i)
+    {
+    MotorHorario();                 // Avance
+    }
+  MotorStop();
+
+  
+  i=contDer+giro;
+  delay(delai);
+    Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  while (contDer <= i)
+    {
+    GirarDerecha();                  // Giro
+    }
+
+
+  MotorStop();
+  i=contDer+avance;
+  delay(delai);
+    Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  while (contDer <= i)
+    {
+    MotorHorario();                  // Avance
+    }
+  MotorStop();
+
+  
+  i=contDer+giro;
+  delay(delai);
+    Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  while (contDer <= i)
+    {
+    GirarDerecha();                       // Giro
+    }
+   MotorStop();
+
+   
+  i=contDer+avance;
+  delay(delai);
+    Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  while (contDer <= i)
+    {
+    MotorHorario();                     // Avance
+    }
+  MotorStop();
+
+  
+  i=contDer+giro;
+  delay(delai);
+    Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  while (contDer <= i)
+    {
+    GirarDerecha();                  // Giro
+    }
+  MotorStop();
+  
+  }else{}
+  
+}
+
+void MotorHorario()
+{
+  digitalWrite (PinDerIN1, HIGH);
+  digitalWrite (PinDerIN2, LOW);
+  digitalWrite (PinIzqIN1, HIGH);
+  digitalWrite (PinIzqIN2, LOW);
+}
+void MotorAntihorario()
+{
+  digitalWrite (PinDerIN1, LOW);
+  digitalWrite (PinDerIN2, HIGH);
+  digitalWrite (PinIzqIN1, LOW);
+  digitalWrite (PinIzqIN2, HIGH);
+}
+
+void MotorStop()
+{
+  digitalWrite (PinDerIN1, LOW);
+  digitalWrite (PinDerIN2, LOW);
+  digitalWrite (PinIzqIN1, LOW);
+  digitalWrite (PinIzqIN2, LOW);
+}
+
+void GirarDerecha()
+{
+    digitalWrite (PinDerIN1, HIGH);
+    digitalWrite (PinDerIN2, LOW);
+    digitalWrite (PinIzqIN1, LOW);
+    digitalWrite (PinIzqIN2, HIGH);
+}
+
+void interrupcionEncoderDer()
+  {
+  contDer++;  
+  }
+
+void interrupcionEncoderIzq()
+  {
+  contIzq++;  
+  }
