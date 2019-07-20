@@ -1,0 +1,242 @@
+int PinDerIN1 = 30;
+int PinDerIN2 = 31;
+int PinIzqIN1 = 33;
+int PinIzqIN2 = 32;
+
+const int TRIG_PIN = 24;      // genera pulsos para sensor de proximidad frontal
+const int ECHO_PIN = 13;      // lectura sensor proximidad frontal
+
+int pulsador = 22;      // pin reservado para un pulso de wifi
+
+int i;                    //  Auxiliar para limitar los while de avance y giro
+int contDer=0;
+int contIzq=0;
+const int intPinDer = 2;   // pin de interrupcion Encoder DERECHO
+const int intPinIzq = 3;   // pin de interrupcion Encoder IZQUIERDO
+
+// UNIFICAR LAS MASAS DE ARDUINO CON FUENTE DE PUENTE H
+
+#define delai 500       // Delay entre los avances y giros
+#define avance 80       // Cantidad de ranuras por avance, una vuelta completa son 20 ranuras
+#define giro 10       // Cantidad de ranuras por giro, empirico 10 ranuras 90 grados
+#define frenofrontal 15   // distancia de freno para el sensor frontal
+
+
+void setup() 
+  {
+  // inicializar la comunicación serial a 9600 bits por segundo:
+  Serial.begin(9600);
+  // configuramos los pines como salida
+  pinMode(PinDerIN1, OUTPUT);
+  pinMode(PinDerIN2, OUTPUT);
+  pinMode(PinIzqIN1, OUTPUT);
+  pinMode(PinIzqIN2, OUTPUT);
+  pinMode(pulsador, INPUT);
+
+   pinMode(TRIG_PIN,OUTPUT);
+ pinMode(ECHO_PIN,INPUT);
+
+  attachInterrupt(digitalPinToInterrupt(intPinDer), interrupcionEncoderDer, RISING); //interrupcion del encoder
+  attachInterrupt(digitalPinToInterrupt(intPinIzq), interrupcionEncoderIzq, RISING); //interrupcion del encoder
+  }
+
+
+
+
+void loop() {
+long distanciaFrontal;
+MotorStop();
+//if (digitalRead(pulsador) == HIGH)
+ if (i == 0) {
+     
+  i=contDer+avance;
+    Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  delay(5000);
+  while (contDer <= i)
+    {
+    distanciaFrontal=LeerProximidadFrontal();
+    if (distanciaFrontal>=frenofrontal)
+      {
+      MotorHorario();                     // Avance
+      }
+     else{MotorStop();}
+     }
+  MotorStop();
+
+  
+  i=contDer+giro;
+  delay(delai);
+    Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  while (contDer <= i)
+    {
+    GirarDerecha();                 // Giro
+    }
+  MotorStop();
+
+  
+  i=contDer+avance;
+  delay(delai);
+  Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  while (contDer <= i)
+    {
+    distanciaFrontal=LeerProximidadFrontal();
+    if (distanciaFrontal>=frenofrontal)
+      {
+      MotorHorario();                     // Avance
+      }
+     else{MotorStop();}                 
+    }
+  MotorStop();
+
+  
+  i=contDer+giro;
+  delay(delai);
+    Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  while (contDer <= i)
+    {
+    GirarDerecha();                  // Giro
+    }
+
+
+  MotorStop();
+  i=contDer+avance;
+  delay(delai);
+    Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  while (contDer <= i)
+    {
+    distanciaFrontal=LeerProximidadFrontal();
+    if (distanciaFrontal>=frenofrontal)
+      {
+      MotorHorario();                     // Avance
+      }
+     else{MotorStop();}
+    }
+  MotorStop();
+
+  
+  i=contDer+giro;
+  delay(delai);
+    Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  while (contDer <= i)
+    {
+    GirarDerecha();                       // Giro
+    }
+   MotorStop();
+
+   
+  i=contDer+avance;
+  delay(delai);
+    Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  while (contDer <= i)
+    {
+    distanciaFrontal=LeerProximidadFrontal();
+    if (distanciaFrontal>=frenofrontal)
+      {
+      MotorHorario();                     // Avance
+      }
+     else{MotorStop();}
+    }
+  MotorStop();
+
+  
+  i=contDer+giro;
+  delay(delai);
+    Serial.print("Contador Derecho: ");
+    Serial.println(contDer);
+    Serial.print("Contador i: ");
+    Serial.println(i);
+  while (contDer <= i)
+    {
+    GirarDerecha();                  // Giro
+    }
+  MotorStop();
+  
+  }else{}
+  
+}
+
+void MotorHorario()
+{
+  digitalWrite (PinDerIN1, HIGH);
+  digitalWrite (PinDerIN2, LOW);
+  digitalWrite (PinIzqIN1, HIGH);
+  digitalWrite (PinIzqIN2, LOW);
+}
+void MotorAntihorario()
+{
+  digitalWrite (PinDerIN1, LOW);
+  digitalWrite (PinDerIN2, HIGH);
+  digitalWrite (PinIzqIN1, LOW);
+  digitalWrite (PinIzqIN2, HIGH);
+}
+
+void MotorStop()
+{
+  digitalWrite (PinDerIN1, LOW);
+  digitalWrite (PinDerIN2, LOW);
+  digitalWrite (PinIzqIN1, LOW);
+  digitalWrite (PinIzqIN2, LOW);
+}
+
+void GirarDerecha()
+{
+    digitalWrite (PinDerIN1, HIGH);
+    digitalWrite (PinDerIN2, LOW);
+    digitalWrite (PinIzqIN1, LOW);
+    digitalWrite (PinIzqIN2, HIGH);
+}
+
+long LeerProximidadFrontal()
+{
+    long duration, distanceCmFrontal;
+ // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
+ digitalWrite(TRIG_PIN, LOW);
+ delayMicroseconds(2);           //original 2
+ digitalWrite(TRIG_PIN, HIGH);
+ delayMicroseconds(10);          //original 10
+ digitalWrite(TRIG_PIN, LOW);
+ duration = pulseIn(ECHO_PIN,HIGH);
+ // convert the time into a distance
+ distanceCmFrontal = duration / 29.1 / 2 ;
+ if (distanceCmFrontal <= 0){
+// Serial.println("Out of range");
+return 100;
+ }
+ else {
+ return distanceCmFrontal;
+ //Serial.print(distanceCm);
+ //Serial.print("cm");
+ //Serial.println();
+ }
+}
+
+void interrupcionEncoderDer()
+  {
+  contDer++;  
+  }
+
+void interrupcionEncoderIzq()
+  {
+  contIzq++;  
+  }
