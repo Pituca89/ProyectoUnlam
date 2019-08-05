@@ -1,9 +1,12 @@
 package com.example.adagiom.bepim;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -14,7 +17,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class ClienteHTTP_POST extends AsyncTask<String , String ,String>
+public class ClienteHTTP_POST extends AsyncTask<JSONObject , JSONObject ,JSONObject>
 {
     static int CONECTAR = 0;
     static int ENVIAR_RUTA = 1;
@@ -23,23 +26,30 @@ public class ClienteHTTP_POST extends AsyncTask<String , String ,String>
     static int REG_USUARIO = 4;
     static int PLATAFORMA_DISPONIBLE = 5;
     static int OCUPAR_PLATAFORMA = 6;
-    static int LOGIN_USUARIO = 7;
+    static int VERIFICAR_CONEXION = 7;
+    static int RUTA_PRUEBA = 8;
+    static int SECTORES = 9;
+    static int PLATAFORMA = 10;
     private InterfazAsyntask caller;
     private Exception mException=null;
+    private JSONObject resp;
 
     public ClienteHTTP_POST(Activity a)
     {
         this.caller=(InterfazAsyntask)a;
     }
+    public ClienteHTTP_POST(android.support.v4.app.Fragment a)
+    {
+        this.caller=(InterfazAsyntask)a;
+    }
 
-    private String POST (String uri, String mensaje)
+    private JSONObject POST (JSONObject jsonData)
     {
         HttpURLConnection urlConnection = null;
-
+        resp = new JSONObject();
         try
         {
-
-            URL mUrl = new URL(uri);
+            URL mUrl = new URL(jsonData.getString("url"));
 
             urlConnection = (HttpURLConnection) mUrl.openConnection();
             urlConnection.setDoOutput(true);
@@ -48,11 +58,8 @@ public class ClienteHTTP_POST extends AsyncTask<String , String ,String>
 
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream ());
 
-            JSONObject obj = new JSONObject();
-            obj.put("OPCION" , mensaje);
-
-            wr.writeBytes(obj.toString());
-            Log.i("JSON Input", obj.toString());
+            wr.writeBytes(jsonData.toString());
+            Log.i("JSON Input", jsonData.toString());
 
             wr.flush();
             wr.close();
@@ -67,56 +74,62 @@ public class ClienteHTTP_POST extends AsyncTask<String , String ,String>
             while((line = reader.readLine()) != null) {
                 result.append(line);
             }
-
             urlConnection.disconnect();
 
             if(responseCode != HttpURLConnection.HTTP_OK)
             {
-                return "NO_OK";
+                resp.put("respuesta","NO_OK");
+                return resp;
             }else{
-                return result.toString();
+                resp.put("respuesta",result);
+                return resp;
             }
-
-
-
         } catch (Exception e)
         {
             mException=e;
         }
-        return "NO_OK";
+        try {
+            resp.put("respuesta","NO_OK");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return resp;
     }
 
     @Override
-    protected void onProgressUpdate(String... strings) {
+    protected void onProgressUpdate(JSONObject... strings) {
         super.onProgressUpdate(strings);
-        //MainActivity.VerificarMensaje(strings[0]);
+        try {
+            caller.VerificarMensaje(strings[0]);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
 
-    protected String doInBackground(String... params)
+    protected JSONObject doInBackground(JSONObject... params)
     {
-
-        publishProgress(POST(params[0],params[1]));
-        return POST(params[0],params[1]);
+        publishProgress(POST(params[0]));
+        return resp;
     }
 
     @Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(JSONObject result) {
 
         super.onPostExecute(result);
         if (mException != null) {
-            caller.mostrarToastMake("Error en POST:\n" + mException.toString());
+            //caller.mostrarToastMake("Error en POST:\n" + mException.toString());
+            caller.mostrarToastMake("ERROR EN EL SERVIDOR");
             return;
         }
-        if (result == "NO_OK") {
-            caller.mostrarToastMake("Error en POST, se recibio response NO_OK");
-            return;
+        try {
+            if (result.get("respuesta") == "NO_OK") {
+                caller.mostrarToastMake("Error en POST, se recibio response NO_OK");
+                return;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-        if(result != "NO_OK" && mException == null){
-            caller.mostrarToastMake(result);
-        }
-
     }
 }
