@@ -10,5 +10,5 @@ define("VERIFICAR_CONEXION",7);
 define("RUTA_PRUEBA",8);
 define("SECTORES",9);
 define("OBTENER_PLATAFORMA",10);
-
+define("VERIFICAR_MENSAJE",11);
 ?>
