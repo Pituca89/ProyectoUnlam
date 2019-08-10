@@ -11,4 +11,5 @@ define("RUTA_PRUEBA",8);
 define("SECTORES",9);
 define("OBTENER_PLATAFORMA",10);
 define("VERIFICAR_MENSAJE",11);
+define("OBTENER_PETICION",12);
 ?>

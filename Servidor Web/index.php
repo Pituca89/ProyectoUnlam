@@ -40,6 +40,9 @@ if(file_get_contents("php://input")){
 		case VERIFICAR_MENSAJE://11 {"OPCION":11, "ID":11569620}
 			echo $db->obtener_peticion($data->ID); 
 		break;
+		case OBTENER_PETICION:
+			echo $db->getPeticion($data->ID);
+		break;
 		default: "CODIGO ERRONEO"; break;
 	}
 }

@@ -4,9 +4,9 @@ class BaseDatos
 {
     protected $conexion;
     private $_host = "localhost";
-    private $_user = "root";
-    private $_pass = "";
-    private $_db   = "u511241329_proy";
+    private $_user = "u511241329_bepim";
+    private $_pass = "proyectounlam2019";
+    private $_db   = "u511241329_bepim";
     private $query = "";
     // Almacenar una unica instancia
     private static $_instancia;
@@ -52,6 +52,18 @@ class BaseDatos
             $i++;
         }
         $response['sectores'] = $miarray;
+        return json_encode($response);
+    }
+
+    public function getPeticion($id){
+        $query = "call getPeticion(".$id.");";
+        if(!$result = mysqli_query($this->conexion,$query)) die();
+    
+        $response = array();
+        if($row = $result->fetch_object()){
+            $response['codigo'] = $row->cod;
+            $response['dato'] = $row->dato;
+        }
         return json_encode($response);
     }
     
