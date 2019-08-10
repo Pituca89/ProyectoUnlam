@@ -1,0 +1,10 @@
+https://randomnerdtutorials.com/esp32-bluetooth-classic-arduino-ide/
+https://randomnerdtutorials.com/esp32-bluetooth-low-energy-ble-arduino-ide/
+https://www.youtube.com/watch?v=LaMaLE0rtGQ
+https://www.youtube.com/watch?v=iLcZ31FZLe8
+https://www.prometec.net/instalando-esp32/
+https://www.instructables.com/id/Nano-ESP32-BLE-Scanner/
+https://www.instructables.com/id/ESP32-BLE-Android-App-Arduino-IDE-AWESOME/
+https://www.youtube.com/watch?v=6E4eW-lNKBE
+https://www.youtube.com/watch?v=audY9Hd_9yc
+https://github.com/Robocraze/BLE-Scanner (IMPORTANTE)
