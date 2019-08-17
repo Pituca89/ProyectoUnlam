@@ -17,7 +17,7 @@ import org.json.JSONObject;
 
 public class TrainingFragment extends Fragment implements InterfazAsyntask{
     private String ruta;
-    private int chipid;
+    private String chipid;
     SharedPreferences sharedPreferences;
     public TrainingFragment() {
         // Required empty public constructor
@@ -34,7 +34,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         super.onCreate(savedInstanceState);
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
-        chipid = sharedPreferences.getInt(getString(R.string.key_plataforma),0);
+        chipid = sharedPreferences.getString(getString(R.string.key_plataforma),"");
     }
 
     @Override
@@ -42,7 +42,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                              Bundle savedInstanceState) {
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
-        chipid = sharedPreferences.getInt(getString(R.string.key_plataforma),0);
+        chipid = sharedPreferences.getString(getString(R.string.key_plataforma),"");
         View v = inflater.inflate(R.layout.fragment_training, container, false);
         return v;
     }

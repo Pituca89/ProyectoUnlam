@@ -57,7 +57,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
             Plataforma s = (Plataforma) plataformaAdapter.getItem(position);
             Intent intent = new Intent(ListPlataforma.this,TabsActivity.class);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt(getString(R.string.key_plataforma),s.getChipid());
+            editor.putString(getString(R.string.key_plataforma),s.getChipid());
             editor.putInt(getString(R.string.sector_actual),s.getSectoract());
             editor.commit();
             startActivity(intent);

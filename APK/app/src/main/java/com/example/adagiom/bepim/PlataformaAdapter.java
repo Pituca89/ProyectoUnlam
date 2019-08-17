@@ -57,7 +57,7 @@ public class PlataformaAdapter extends BaseAdapter{
         }
 
         Plataforma plataforma = mData.get(position);
-        viewPlataforma.plataforma_name.setText(Integer.toString(plataforma.getChipid()));
+        viewPlataforma.plataforma_name.setText(plataforma.getChipid());
         if(plataforma.getDisponible() == 1) {
             viewPlataforma.plataforma_select.setEnabled(true);
             viewPlataforma.plataforma_select.setText("DISPONIBLE");

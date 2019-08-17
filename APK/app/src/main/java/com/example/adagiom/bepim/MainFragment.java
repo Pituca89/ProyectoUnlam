@@ -37,7 +37,7 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
     private SectorAdapter sectorAdapter;
     private ArrayList<Sector> sectorArrayList;
     JSONObject json;
-    private int chipid;
+    private String chipid;
     private String sectact;
     SharedPreferences sharedPreferences;
     public MainFragment() {
@@ -57,7 +57,7 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
 
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
-        chipid = sharedPreferences.getInt(getString(R.string.key_plataforma),0);
+        chipid = sharedPreferences.getString(getString(R.string.key_plataforma),"");
         idactual = sharedPreferences.getInt(getString(R.string.sector_actual), 0);
         json = new JSONObject();
         /**Envio de mensaje a servidor**/

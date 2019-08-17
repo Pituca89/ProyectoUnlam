@@ -1,15 +1,15 @@
 package com.example.adagiom.bepim;
 
 public class Plataforma {
-    private int chipid;
+    private String chipid;
     private int disponible;
     private int sectoract;
 
-    public void setChipid(int chipid) {
+    public void setChipid(String chipid) {
         this.chipid = chipid;
     }
 
-    public int getChipid() {
+    public String getChipid() {
         return chipid;
     }
 

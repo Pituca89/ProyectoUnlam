@@ -62,7 +62,11 @@ String peticionPOSTJSON(int op,int codigo,String dato){
           if(JSONencoder["codigo"] == "REGISTRO"){
             response = JSONencoder["dato"];
             Serial.println(response); 
-          }          
+          }     
+          if(JSONencoder["codigo"] == "MENSAJE"){
+            response = JSONencoder["dato"];
+            Serial.println(response); 
+          }       
     }
     else
     {
@@ -126,7 +130,7 @@ void loop() {
   /**Metodo que se ejecuta para el entrenamiento, en donde el modulo queda a la espera de la proxima instruccion**/
   //server.handleClient(); //espero a que algun cliente se conecte y realice una peticion
   /**Metodo que se ejecuta durante la operativa**/
-  //peticionPOSTJSON(12,ESP.getChipId());
+  peticionPOSTJSON(12,0,"");
   //peticionPOSTJSON(13,1,"OBSTACULO");
   delay(2000);
 
