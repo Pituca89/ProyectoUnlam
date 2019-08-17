@@ -39,6 +39,7 @@ class BaseDatos
         }
     }
 
+    /**APK */
     public function getSector($id){
         $query = "call getSector(".$id.");";
         if(!$result = mysqli_query($this->conexion,$query)) die();
@@ -66,7 +67,7 @@ class BaseDatos
         }
         return json_encode($response);
     }
-    
+    /**APK */
     public function verificar_conexion(){
         /**Podria agregar una prueba de conexion a la base de datos */
         $json = array(
@@ -75,7 +76,7 @@ class BaseDatos
         $jsonEncode = json_encode($json);
         return $jsonEncode;
     }
-    
+    /**APK */
     public function login(){
         /**Validar usuario y contraseña */
         $json = array(
@@ -84,7 +85,7 @@ class BaseDatos
         $jsonEncode = json_encode($json);
         return $jsonEncode; 
     }
-    
+    /**APK */
     public function registrar_usuario(){
         /**Registrar usuario y contraseña */
         $json = array(
@@ -95,39 +96,18 @@ class BaseDatos
         return $jsonEncode; 
     }
     
-    public function obtener_ruta_prueba(){
-        $query = "call getRutaPrueba;";
-        if(!$result = mysqli_query($this->conexion,$query)) die();
-    
-        $response = array();
-        $response['opcion'] = 'RUTA';
-        if($row = $result->fetch_object()){
-            $response['ruta'] = $row->ruta;
-        }
-        return json_encode($response);
-    }
-    
-    public function ruta_prueba(){
-        $json = array(
-            'opcion' => 'PRUEBA',//Enviar la ruta de prueba almacenada en la base de datos
-            'codigo' => RUTA_PRUEBA
-        );
-        $jsonEncode = json_encode($json);
-        curl_setopt($ch,CURLOPT_POSTFIELDS,$jsonEncode);
-        $result = curl_exec($ch);
-        echo $jsonEncode;
-    }
-    
     public function registrar_plataforma($id,$ip){
         $query = "call registrarPlataforma('".$id."','".$ip."');";
         if(!$result = mysqli_query($this->conexion,$query)) die();
         else {
-            return "ok";
+            $response['codigo'] = 'REGISTRO';
+            $response['dato'] = 'OK';
+            return json_encode($response);
         }
     }
-    
-    public function obtener_plataforma(){
-        $query = "call obtenerPlataforma();";
+    /**APK */
+    public function obtener_plataforma($user){
+        $query = "call obtenerPlataforma(".$user.");";
         if(!$result = mysqli_query($this->conexion,$query)) die();
     
         $response = array();
@@ -141,7 +121,7 @@ class BaseDatos
         $response['plataforma'] = $miarray;
         return json_encode($response);
     }
-
+    /**APK */
     public function obtener_ruta($iddesde,$idhasta){
         $query = "call obtenerRutas(".$iddesde.",".$idhasta.");";
 
@@ -183,24 +163,7 @@ class BaseDatos
         }
         return substr($rutaFin,0,strlen($rutaFin)-1).'#';      
     }
-
-    public function obtener_peticion($idPlataforma){
-        $query = "call obtenerPeticion(".$idPlataforma.");";
-        if(!$result = mysqli_query($this->conexion,$query)) die();
-    
-        $response = array();
-        $response['opcion'] = 'PETICION';
-        $miarray = array();
-        $i = 0;
-        while($row = $result->fetch_object()){
-            $miarray[$i] = $row;
-            $i++;
-        }
-        
-        $response['peticion'] = $miarray;
-        return json_encode($response);
-    }
-
+    /**APK */
     public function registrar_peticion($iduser,$idpl,$codigo,$dato,$destino){
         $query = "CALL registrarPeticion(".$iduser.",".$idpl.",'".$codigo."','".$dato."');";
         if (!$this->conexion->multi_query($query)) {
@@ -222,38 +185,5 @@ class BaseDatos
         $response['actual'] = $destino;
         return json_encode($response);
     }
-    /*
-    public function obtener_ip_plataforma($id){
-        $query = "call obtenerIP('".$id."');";
-        $salida = 0;
-        if(!$result = mysqli_query($this->conexion,$query)) die();
-        else{
-            if($row = $result->fetch_object()){
-                $salida = $row->ip;
-            }
-        }
-        return $salida;
-    }
-    public function enviar_ruta_prueba($id){
-        $ip = $this->obtener_ip_plataforma($id);
-        $ruta = "error";
-        mysqli_free_result($result);
-        if($ip != 0){
-            $json = array(
-                'opcion' => 'PRUEBA',//Enviar la ruta de prueba almacenada en la base de datos
-                'codigo' => RUTA_PRUEBA
-            );
-            $url = 'http://152.170.54.152/connect';
-            $ch = curl_init($url);
-            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($ch,CURLOPT_HTTPHEADER,array('Content-Type:application/json'));
-            $jsonEncode = json_encode($json);
-            curl_setopt($ch,CURLOPT_POSTFIELDS,$jsonEncode);
-            $result = curl_exec($ch);
-            echo $jsonEncode;
-        }
-        return $ruta;
-    }
-    */
 }
 ?>

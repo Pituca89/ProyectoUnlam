@@ -8,3 +8,5 @@ https://www.instructables.com/id/ESP32-BLE-Android-App-Arduino-IDE-AWESOME/
 https://www.youtube.com/watch?v=6E4eW-lNKBE
 https://www.youtube.com/watch?v=audY9Hd_9yc
 https://github.com/Robocraze/BLE-Scanner (IMPORTANTE)
+
+https://github.com/espressif/arduino-esp32/blob/master/docs/arduino-ide/windows.md (Instalacion placa ESP)

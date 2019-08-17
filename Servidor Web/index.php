@@ -19,8 +19,8 @@ if(file_get_contents("php://input")){
 		case REG_USUARIO://4 {"OPCION":4}
 			echo $db->registrar_usuario(); //codigo para registrar usuario y contraseña
 		break;
-		case OBTENER_PLATAFORMA://10 {"OPCION":10}
-			echo $db->obtener_plataforma();//obtengo el listado de plataformas a seleccionar por el usuario		
+		case OBTENER_PLATAFORMA://10 {"OPCION":10,"USER":0}
+			echo $db->obtener_plataforma($data->USER);//obtengo el listado de plataformas a seleccionar por el usuario		
 		break;
 		case REG_PLATAFORMA://2 {"OPCION":2, "ID":123}
 		    $ipaddress = "";
@@ -37,10 +37,7 @@ if(file_get_contents("php://input")){
 			//obtengo la ruta existente entre dos puntos
 			echo $db->registrar_peticion($data->USER,$data->ID,"ENVIO",$ruta,$data->HASTA);
 		break;
-		case VERIFICAR_MENSAJE://11 {"OPCION":11, "ID":11569620}
-			echo $db->obtener_peticion($data->ID); 
-		break;
-		case OBTENER_PETICION:
+		case OBTENER_PETICION://12 {"OPCION":12, "ID":11569620}
 			echo $db->getPeticion($data->ID);
 		break;
 		default: "CODIGO ERRONEO"; break;
