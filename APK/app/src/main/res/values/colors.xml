@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#5aafae</color>
+    <color name="colorPrimaryDark">#1ac2c7</color>
+    <color name="colorAccent">#6acccf</color>
+    <color name="colorDisponible">#3db30b</color>
+    <color name="colorCargar">#fdca2e</color>
+    <color name="colorCargarFin">#fce7a9</color>
+    <color name="ColorRed">#fc0e29</color>
+    <color name="ColorRedFin">#ff8391</color>
+    <color name="ColorOcupado">#dae1e4</color>
+
+</resources>
