@@ -35,6 +35,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
         try {
             json.put("url",ruta);
             json.put("OPCION",mensaje);
+            json.put("USER",0);
         } catch (JSONException e) {
             e.printStackTrace();
         }
