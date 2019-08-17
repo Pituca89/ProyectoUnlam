@@ -1,16 +1,15 @@
 #include <ArduinoJson.h>
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 #include <WiFiClient.h>
-#include <ESP8266WebServer.h>
+#include <WebServer.h>
 
 //-------------------VARIABLES GLOBALES--------------------------
 
 const char *ssid = "Fibertel WiFi159 2.4GHz";//"Javo wifi";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
 const char *password = "0043442422";//"44540006";//"matiasmanda";//"6761727565";//"SOA.2019";
-ESP8266WebServer server(80);   
+WebServer server(80);   
 //WiFiManager wifimanager;
-String chipID = "";
-String peticionPOSTJSON(int op,int dato){
+String peticionPOSTJSON(int op,int codigo,String dato){
   
     const size_t capacity = JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(5) + JSON_OBJECT_SIZE(8) + 370;
     char* host = "www.gestiondenegocio.esy.es";//"192.168.1.34";//"www.gestiondenegocio.esy.es";
@@ -19,8 +18,9 @@ String peticionPOSTJSON(int op,int dato){
     DynamicJsonDocument JSONencoder(capacity);
     DeserializationError err;
     JSONencoder["OPCION"] = op;//12;
-    JSONencoder["ID"] = dato;//ESP.getChipId();
-
+    JSONencoder["ID"] = ESP.getEfuseMac();
+    JSONencoder["COD"] = codigo;
+    JSONencoder["MSJ"] = dato;
     WiFiClient http;    //Declare object of class HTTPClient
     if (!http.connect(host, 80)) {
       Serial.println("Fallo de conexion");
@@ -116,7 +116,7 @@ void setup() {
 
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-  peticionPOSTJSON(2,ESP.getChipId());
+  peticionPOSTJSON(2,0,"");
   config_rest_server_routing();
   server.begin();                                              //Inicializa el servidor (una vez configuradas las rutas)
   Serial.println("Servidor HTTP inicializado"); 
@@ -124,9 +124,10 @@ void setup() {
 
 void loop() {
   /**Metodo que se ejecuta para el entrenamiento, en donde el modulo queda a la espera de la proxima instruccion**/
-  server.handleClient(); //espero a que algun cliente se conecte y realice una peticion
+  //server.handleClient(); //espero a que algun cliente se conecte y realice una peticion
   /**Metodo que se ejecuta durante la operativa**/
   //peticionPOSTJSON(12,ESP.getChipId());
+  //peticionPOSTJSON(13,1,"OBSTACULO");
   delay(2000);
 
 }
