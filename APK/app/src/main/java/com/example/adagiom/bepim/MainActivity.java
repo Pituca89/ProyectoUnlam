@@ -51,7 +51,12 @@ public class MainActivity extends AppCompatActivity implements InterfazAsyntask{
         connect.setOnClickListener(onClickListener);
         sharedPreferences = getSharedPreferences(getString(R.string.key_preference), MODE_PRIVATE);
         ip.setText(sharedPreferences.getString(getString(R.string.path_plataforma),""));
-        new Firebase_ID_Service().onTokenRefresh();
+        try{
+            new Firebase_ID_Service().onTokenRefresh();
+        }catch (Exception e){
+            Log.i("Firebase","Problemas con el servicio");
+        }
+
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {

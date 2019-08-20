@@ -1,14 +1,22 @@
 package com.example.adagiom.bepim;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,10 +26,12 @@ import java.util.ArrayList;
 public class ListPlataforma extends AppCompatActivity implements InterfazAsyntask{
     private ClienteHTTP_POST threadCliente_Post;
     private String ruta;
-    private ListView listPlataforma;
+    ListView listPlataforma;
     private PlataformaAdapter plataformaAdapter;
     private ArrayList<Plataforma> plataformaArrayList;
+    FloatingActionButton addPlataforma;
     SharedPreferences sharedPreferences;
+    static int RESPONSE_QR = 2;
     JSONObject json;
 
     @Override
@@ -43,6 +53,8 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
         threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
 
         listPlataforma = (ListView) findViewById(R.id.listPlataforma);
+        addPlataforma = (FloatingActionButton) findViewById(R.id.addPlataforma);
+        addPlataforma.setOnClickListener(agregarPlataforma);
         plataformaAdapter = new PlataformaAdapter(this);
     }
 
@@ -62,6 +74,46 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
             finish();
         }
     };
+
+    View.OnClickListener agregarPlataforma = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.addPlataforma:
+                    //startActivityForResult(new Intent(ListPlataforma.this,LecturaQR.class),RESPONSE_QR);
+                    new IntentIntegrator(ListPlataforma.this).initiateScan();
+                    break;
+            }
+
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        if(intentResult.getContents() != null){
+            LayoutInflater inflater = getLayoutInflater();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setView(inflater.inflate(R.layout.dialog_plataforma, null))
+                    // Add action buttons
+                    .setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            // sign in the user ...
+                        }
+                    })
+                    .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }else{
+            Log.i("QR","Error al obtener QR");
+        }
+    }
 
     @Override
     public void VerificarMensaje(JSONObject msg) throws JSONException {

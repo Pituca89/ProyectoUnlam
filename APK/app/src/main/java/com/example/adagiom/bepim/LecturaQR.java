@@ -26,8 +26,8 @@ public class LecturaQR extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_qr_captura);
-        //cameraView = (SurfaceView) findViewById(R.id.activity_qr_captura_camara_view);
+        setContentView(R.layout.activity_qr_captura);
+        cameraView = (SurfaceView) findViewById(R.id.activity_qr_captura_camara_view);
         initQR();
     }
 

@@ -3,7 +3,7 @@ package com.example.adagiom.bepim;
 public class Sector {
     String nombre;
     int id;
-
+    String idPlataforma;
 
     public Sector(String name,int id){
         this.nombre = name;
@@ -11,6 +11,13 @@ public class Sector {
     }
 
 
+    public void setIdPlataforma(String idPlataforma) {
+        this.idPlataforma = idPlataforma;
+    }
+
+    public String getIdPlataforma() {
+        return idPlataforma;
+    }
 
     public int getId() {
         return id;

@@ -44,28 +44,25 @@ public class FirebaseNotification extends FirebaseMessagingService {
     @SuppressLint("ResourceAsColor")
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     public void createNotification(Map<String, String> notificacion, Plataforma s) {
+        NotificationCompat.Builder notificationBuilder;
+        NotificationManager notificationManager =(NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
 
         Intent notificacionIntent = new Intent(getApplicationContext(), TabsActivity.class);
-        notificacionIntent.putExtra("chipid",s.getChipid());
-        notificacionIntent.putExtra("sector_actual",s.getSectoract());
-        notificacionIntent.putExtra("disponible",s.getDisponible());
-        notificacionIntent.putExtra("ip_training",s.getIp());
-        notificacionIntent.putExtra("nombre_plataforma",s.getNombre());
+        notificacionIntent.putExtra("plataforma",s);
 
         PendingIntent notificacionPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificacionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        @SuppressLint("ResourceAsColor")
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_bepim)
-                .setContentTitle(notificacion.get("titulo"))
-                .setTicker(notificacion.get("titulo"))
-                .setSmallIcon(R.mipmap.ic_bepim)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_bepim))
-                .setContentText(s.getNombre())
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE))
-                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
-                .setAutoCancel(true)
-                .setContentIntent(notificacionPendingIntent);
+        notificationBuilder = new NotificationCompat.Builder(getBaseContext())
+        .setSmallIcon(R.mipmap.ic_bepim)
+        .setContentTitle(notificacion.get("titulo"))
+        .setContentText(notificacion.get("mensaje"))
+        .setTicker(notificacion.get("titulo"))
+        .setSmallIcon(R.mipmap.ic_bepim)
+        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_bepim))
+        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE))
+        .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
+        .setAutoCancel(true)
+        .setContentIntent(notificacionPendingIntent);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             notificationBuilder.setColor(Color.WHITE);
@@ -81,7 +78,6 @@ public class FirebaseNotification extends FirebaseMessagingService {
         notification.defaults |= Notification.DEFAULT_VIBRATE;
         notification.defaults |= Notification.DEFAULT_LIGHTS;
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
         notificationManager.notify(001, notificationBuilder.build());
     }
 }
