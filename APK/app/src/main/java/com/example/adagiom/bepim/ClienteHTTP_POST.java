@@ -30,6 +30,8 @@ public class ClienteHTTP_POST extends AsyncTask<JSONObject , JSONObject ,JSONObj
     static int RUTA_PRUEBA = 8;
     static int SECTORES = 9;
     static int PLATAFORMA = 10;
+    static int ENVIAR_TOKEN = 14;
+
     private InterfazAsyntask caller;
     private Exception mException=null;
     private JSONObject resp;

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.adagiom.bepim">
 
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -38,6 +39,20 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegistroActivity" />
         <activity android:name=".ListPlataforma"></activity>
+        <activity
+            android:name=".LecturaQR"
+            android:screenOrientation="portrait">
+        </activity>
+        <service android:name=".FirebaseNotification">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".Firebase_ID_Service">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

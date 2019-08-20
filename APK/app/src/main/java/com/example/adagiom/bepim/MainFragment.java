@@ -57,8 +57,10 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
 
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
-        chipid = sharedPreferences.getString(getString(R.string.key_plataforma),"");
-        idactual = sharedPreferences.getInt(getString(R.string.sector_actual), 0);
+        Plataforma plataforma = (Plataforma) getArguments().getSerializable("plataforma");
+        chipid = plataforma.getChipid();
+        idactual = plataforma.getSectoract();
+
         json = new JSONObject();
         /**Envio de mensaje a servidor**/
         String mensaje =Integer.toString(ClienteHTTP_POST.SECTORES);
@@ -116,9 +118,9 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
                 sectorArrayList = mensaje.getSectores();
             }else if(mensaje.getOpcion().equals("OK")) {
                 idactual = mensaje.getActual();
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt(getString(R.string.sector_actual),idactual);
-                editor.commit();
+                /**Obtener el sector actual desde el servidor**/
+
+                /**Falta actualizar en el servidor, la posicion actual de la plataforma**/
             }else{
                 mostrarToastMake("ERROR DE CONEXIÓN");
             }

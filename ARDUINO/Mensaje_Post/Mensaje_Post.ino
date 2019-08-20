@@ -8,6 +8,7 @@
 const char *ssid = "Fibertel WiFi159 2.4GHz";//"Javo wifi";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
 const char *password = "0043442422";//"44540006";//"matiasmanda";//"6761727565";//"SOA.2019";
 WebServer server(80);   
+int flag = 0;
 //WiFiManager wifimanager;
 String peticionPOSTJSON(int op,int codigo,String dato){
   
@@ -120,7 +121,7 @@ void setup() {
 
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-  peticionPOSTJSON(2,0,"");
+  peticionPOSTJSON(2,0,WiFi.localIP().toString().c_str());
   config_rest_server_routing();
   server.begin();                                              //Inicializa el servidor (una vez configuradas las rutas)
   Serial.println("Servidor HTTP inicializado"); 
@@ -131,7 +132,11 @@ void loop() {
   //server.handleClient(); //espero a que algun cliente se conecte y realice una peticion
   /**Metodo que se ejecuta durante la operativa**/
   peticionPOSTJSON(12,0,"");
-  //peticionPOSTJSON(13,1,"OBSTACULO");
+  if(flag == 0){
+    peticionPOSTJSON(13,1,"OBSTACULO");
+    flag = 1;
+  }
+  
   delay(2000);
 
 }

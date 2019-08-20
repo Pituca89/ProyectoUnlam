@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -109,10 +110,23 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
     public void VerificarMensaje(JSONObject msg) throws JSONException {
         Gson gson = new Gson();
         try{
-            Response_Conexion mensaje = gson.fromJson(msg.getString("respuesta"),Response_Conexion.class);
-            Log.i("JSON", mensaje.getOpcion().toString());
-            if(mensaje.getOpcion().equals("USUARIO CONECTADO")) {
+            Response_Conexion msj = gson.fromJson(msg.getString("respuesta"),Response_Conexion.class);
+            Log.i("JSON", msj.getOpcion().toString());
+            if(msj.getOpcion().equals("USUARIO CONECTADO")) {
                 try {
+                    json = new JSONObject();
+                    String mensaje =Integer.toString(ClienteHTTP_POST.ENVIAR_TOKEN);
+                    String token = FirebaseInstanceId.getInstance().getToken();
+                    try {
+                        json.put("url",ruta);
+                        json.put("OPCION",mensaje);
+                        json.put("TOKEN",token);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    threadCliente_Post =  new ClienteHTTP_POST(LoginActivity.this);
+                    threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+
                     Thread.sleep(1000);
                     Intent intent = new Intent(this, ListPlataforma.class);
                     startActivity(intent);

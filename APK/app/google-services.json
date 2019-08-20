@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "238919833004",
+    "firebase_url": "https://bepim-54fc0.firebaseio.com",
+    "project_id": "bepim-54fc0",
+    "storage_bucket": "bepim-54fc0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238919833004:android:842b963b724ca86d",
+        "android_client_info": {
+          "package_name": "com.example.adagiom.bepim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "238919833004-mfsckvlpmg6j6vpakv663qnaalcgu43i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbjlc1ZKRtpzL4GMbf7hIaWpRaKdodzhc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "238919833004-mfsckvlpmg6j6vpakv663qnaalcgu43i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

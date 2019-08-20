@@ -79,9 +79,12 @@ public class TabsActivity extends AppCompatActivity {
         navigationView.getHeaderView(0).findViewById(R.id.btn_entrenar).setOnClickListener(onClickListener);
         navigationView.getHeaderView(0).findViewById(R.id.btn_sectores).setOnClickListener(onClickListener);
         navigationView.getHeaderView(0).findViewById(R.id.btn_configuracion).setOnClickListener(onClickListener);
-
+        Plataforma plataforma = (Plataforma) getIntent().getSerializableExtra("plataforma");
+        bundle = new Bundle();
+        bundle.putSerializable("plataforma",plataforma);
         fm = getSupportFragmentManager();
         //fm.beginTransaction().add(R.id.container_ly,trainingFragment).hide(trainingFragment).commit();
+        mainFragment.setArguments(bundle);
         fm.beginTransaction().add(R.id.container_ly, mainFragment).commit();
         active = mainFragment;
     }

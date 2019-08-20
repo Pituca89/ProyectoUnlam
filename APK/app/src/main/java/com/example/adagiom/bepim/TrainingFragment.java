@@ -32,17 +32,15 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = getActivity().getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
-        ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
-        chipid = sharedPreferences.getString(getString(R.string.key_plataforma),"");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
+        Plataforma plataforma = (Plataforma) getArguments().getSerializable("plataforma");
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
-        chipid = sharedPreferences.getString(getString(R.string.key_plataforma),"");
+        chipid = plataforma.getChipid();
         View v = inflater.inflate(R.layout.fragment_training, container, false);
         return v;
     }

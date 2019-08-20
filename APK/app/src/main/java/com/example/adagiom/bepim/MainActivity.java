@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements InterfazAsyntask{
         connect.setOnClickListener(onClickListener);
         sharedPreferences = getSharedPreferences(getString(R.string.key_preference), MODE_PRIVATE);
         ip.setText(sharedPreferences.getString(getString(R.string.path_plataforma),""));
+        new Firebase_ID_Service().onTokenRefresh();
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
