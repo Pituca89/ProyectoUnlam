@@ -28,7 +28,7 @@ public class FirebaseNotification extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         Map<String,String> notificacion=new HashMap<String,String>();
-
+        Log.i("Notificacion",remoteMessage.getData().get("msj"));
         notificacion.put("titulo",remoteMessage.getData().get("titulo"));
         notificacion.put("mensaje",remoteMessage.getData().get("msj"));
         Plataforma plataforma = new Plataforma();

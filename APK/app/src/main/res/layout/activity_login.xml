@@ -19,9 +19,9 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="Usuario"
+            android:hint="Email"
             android:inputType="text"
-            android:textSize="30sp" />
+            android:textSize="24sp" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -37,9 +37,8 @@
             android:layout_gravity="center"
             android:hint="Contraseña"
             android:inputType="textPassword"
-
             android:text=""
-            android:textSize="30sp" />
+            android:textSize="24sp" />
 
     </android.support.design.widget.TextInputLayout>
 

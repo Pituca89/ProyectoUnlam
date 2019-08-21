@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -33,6 +35,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
     SharedPreferences sharedPreferences;
     static int RESPONSE_QR = 2;
     JSONObject json;
+    String iduser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,20 +43,11 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
         setContentView(R.layout.activity_list_plataforma);
         sharedPreferences = getSharedPreferences(getString(R.string.key_preference),MODE_PRIVATE);
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
-        json = new JSONObject();
-        String mensaje =Integer.toString(ClienteHTTP_POST.PLATAFORMA);
-        try {
-            json.put("url",ruta);
-            json.put("OPCION",mensaje);
-            json.put("USER",0);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        threadCliente_Post =  new ClienteHTTP_POST(this);
-        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
-
+        iduser = sharedPreferences.getString(getString(R.string.token_user),"");
+        refreshPlataforma();
         listPlataforma = (ListView) findViewById(R.id.listPlataforma);
         addPlataforma = (FloatingActionButton) findViewById(R.id.addPlataforma);
+
         addPlataforma.setOnClickListener(agregarPlataforma);
         plataformaAdapter = new PlataformaAdapter(this);
     }
@@ -91,16 +85,36 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        final IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
         if(intentResult.getContents() != null){
             LayoutInflater inflater = getLayoutInflater();
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setView(inflater.inflate(R.layout.dialog_plataforma, null))
+            View view = inflater.inflate(R.layout.dialog_plataforma,null);
+            final EditText nombreplataforma = (EditText) view.findViewById(R.id.nameplataforma);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setView(view)
                     // Add action buttons
                     .setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            // sign in the user ...
+                            json = new JSONObject();
+                            String mensaje =Integer.toString(ClienteHTTP_POST.ASOCIAR_PLATAFORMA);
+
+                            try {
+                                json.put("url",ruta);
+                                json.put("OPCION",mensaje);
+                                json.put("USER",iduser);
+                                json.put("ID",intentResult.getContents());
+                                if(nombreplataforma.getText().toString() != ""){
+                                    json.put("NOMBRE",nombreplataforma.getText().toString());
+                                }else{
+                                    json.put("NOMBRE",intentResult.getContents());
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            threadCliente_Post =  new ClienteHTTP_POST(ListPlataforma.this);
+                            threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
                         }
                     })
                     .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
@@ -109,6 +123,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
                         }
                     });
             AlertDialog alertDialog = builder.create();
+
             alertDialog.show();
         }else{
             Log.i("QR","Error al obtener QR");
@@ -118,13 +133,20 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
     @Override
     public void VerificarMensaje(JSONObject msg) throws JSONException {
         Gson gson = new Gson();
-        try{
-            Response_Plataforma mensaje = gson.fromJson(msg.getString("respuesta"),Response_Plataforma.class);
-            if(mensaje.getOpcion().equals("PLATAFORMA")) {
+        try {
+            Response_Plataforma mensaje = gson.fromJson(msg.getString("respuesta"), Response_Plataforma.class);
+            if (mensaje.getOpcion().equals("PLATAFORMA")) {
                 plataformaArrayList = mensaje.getPlataforma();
                 plataformaAdapter.setData(plataformaArrayList);
                 plataformaAdapter.setListener(onEnviarPlataforma);
                 listPlataforma.setAdapter(plataformaAdapter);
+            }else if(mensaje.getOpcion().contains("EXISTS")){
+                mostrarToastMake("Plataforma no registrada");
+            }else if(mensaje.getOpcion().contains("DUPLICADO")){
+                mostrarToastMake("Plataforma duplicada");
+            }else if(mensaje.getOpcion().contains("OK")){
+                refreshPlataforma();
+                mostrarToastMake("Plataforma registrada correctamente");
             }else{
                 //ip.setEnabled(true);
                 mostrarToastMake("ERROR DE CONEXIÓN");
@@ -133,5 +155,18 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
             mostrarToastMake("ERROR EN SERVIDOR");
         }
 
+    }
+    public void refreshPlataforma(){
+        json = new JSONObject();
+        String mensaje =Integer.toString(ClienteHTTP_POST.PLATAFORMA);
+        try {
+            json.put("url",ruta);
+            json.put("OPCION",mensaje);
+            json.put("USER",iduser);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        threadCliente_Post =  new ClienteHTTP_POST(this);
+        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
     }
 }

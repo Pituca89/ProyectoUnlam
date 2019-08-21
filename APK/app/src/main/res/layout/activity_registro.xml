@@ -11,7 +11,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="163dp">
 
@@ -20,7 +20,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="Usuario"
+            android:hint="Email"
             android:inputType="text"
             android:textSize="24sp" />
 
@@ -71,7 +71,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="107dp"
         android:background="@drawable/sombra"
-        android:text="INGRESAR"
+        android:text="REGISTRAR"
         android:textColor="@android:color/white"
         android:textSize="24sp" />
 
