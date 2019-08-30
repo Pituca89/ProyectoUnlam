@@ -177,6 +177,7 @@ void loop() {
   server.handleClient(); //espero a que algun cliente se conecte y realice una peticion
   Serial.println(modo);
   if(String(modo) == "MOD_E"){
+
     
     Serial.println(sentido);
     Serial.println(macBeacon);
