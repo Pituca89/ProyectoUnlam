@@ -22,12 +22,8 @@ if(file_get_contents("php://input")){
 		case OBTENER_PLATAFORMA://10 {"OPCION":10,"USER":0}
 			echo $db->obtener_plataforma($data->USER);//obtengo el listado de plataformas a seleccionar por el usuario		
 		break;
-		case REG_PLATAFORMA://2 {"OPCION":2, "ID":123}
-		    $ipaddress = "";
-            if ($_SERVER['REMOTE_ADDR'])
-                $ipaddress = $_SERVER['REMOTE_ADDR'];
-			$chipID = $data->ID;
-			echo $db->registrar_plataforma($chipID,$ipaddress);//registro o actualizo la plataforma en el servidor	
+		case REG_PLATAFORMA://2 {"OPCION":2, "ID":123, "MSJ":"192.168.0.128"}
+			echo $db->registrar_plataforma($data->ID,$data->MSJ);//registro o actualizo la plataforma en el servidor	
 		break;
 		case REG_RUTA://3 {"OPCION":3}
 			echo "RUTA REGISTRADA"; 
@@ -39,6 +35,18 @@ if(file_get_contents("php://input")){
 		break;
 		case OBTENER_PETICION://12 {"OPCION":12, "ID":11569620}
 			echo $db->getPeticion($data->ID);
+		break;
+		case REGISTRAR_TOKEN://14 {"OPCION":14, "TOKEN":"AAAxx"}
+			echo $db->registrarToken($data->TOKEN,$data->USER);
+		break;
+		case ENVIAR_NOTIFICACION://13
+			echo $db->enviar_notificacion($data->ID,$data->MSJ);
+		break;
+		case ASOCIAR_PLATAFORMA://15
+		    echo $db->ascociarPlataforma($data->USER,$data->ID,$data->NOMBRE);
+		break;  
+		case ASOCIAR_SECTOR:
+		    echo $db->asociarSector($data->ID,$data->NOMBRE,$data->MAC);
 		break;
 		default: "CODIGO ERRONEO"; break;
 	}

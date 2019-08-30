@@ -23,41 +23,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="162dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:background="@drawable/borde"
                 android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="20dp"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="5dp"
-                        android:text="ESTADO"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/estado"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="20dp"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="20dp"
-                        android:text="A CONFIRMAR"
-                        android:textColor="@color/colorDisponible"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -74,34 +43,23 @@
                         android:paddingTop="5dp">
 
                         <TextView
-                            android:id="@+id/porcent"
-                            android:layout_width="match_parent"
+                            android:id="@+id/namePlataforma"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:paddingTop="20dp"
-                            android:text="100%"
-                            android:textSize="18sp" />
-
-                        <ImageView
-                            android:id="@+id/imageView"
-                            android:layout_width="match_parent"
-                            android:layout_height="61dp"
-                            android:layout_weight="1"
-                            android:adjustViewBounds="true"
-                            android:cropToPadding="true"
-                            android:paddingRight="5dp"
-                            android:src="@drawable/battery" />
+                            android:text="Nombre de la Plataforma"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="24sp" />
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/btn_cargar"
+                    <TextView
+                        android:id="@+id/estado"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:background="@drawable/sombra1"
-                        android:text="CARGAR"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp" />
+                        android:text="ESPERANDO INSTRUCCIÓN"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -111,10 +69,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="Ubicación Actual de la Plataforma"
+                android:text="Ubicación Actual"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
-                android:textSize="24sp" />
+                android:textSize="22sp" />
 
             <TextView
                 android:id="@+id/sectoract"
@@ -125,7 +83,7 @@
                 android:text="Sector 1"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:textSize="24sp" />
+                android:textSize="22sp" />
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
@@ -144,10 +102,10 @@
                 android:id="@+id/textView10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="DESTINO"
+                android:text="Destino"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
-                android:textSize="28sp" />
+                android:textSize="22sp" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

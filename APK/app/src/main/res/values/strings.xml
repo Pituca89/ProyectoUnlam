@@ -19,7 +19,7 @@
     <string name="url">http://gestiondenegocio.esy.es</string>
     <string name="token">token</string>
     <string name="token_user">token_user</string>
-
+    <string name="sesion">sesion</string>
     <string name="title_activity_drawer">DrawerActivity</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>

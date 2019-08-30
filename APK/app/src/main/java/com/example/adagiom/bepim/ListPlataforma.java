@@ -74,11 +74,9 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
         public void onClick(View view) {
             switch (view.getId()){
                 case R.id.addPlataforma:
-                    //startActivityForResult(new Intent(ListPlataforma.this,LecturaQR.class),RESPONSE_QR);
                     new IntentIntegrator(ListPlataforma.this).initiateScan();
                     break;
             }
-
         }
     };
 
@@ -87,6 +85,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
         super.onActivityResult(requestCode, resultCode, data);
         final IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
         if(intentResult.getContents() != null){
+
             LayoutInflater inflater = getLayoutInflater();
             View view = inflater.inflate(R.layout.dialog_plataforma,null);
             final EditText nombreplataforma = (EditText) view.findViewById(R.id.nameplataforma);
@@ -141,12 +140,18 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
                 plataformaAdapter.setListener(onEnviarPlataforma);
                 listPlataforma.setAdapter(plataformaAdapter);
             }else if(mensaje.getOpcion().contains("EXISTS")){
+
                 mostrarToastMake("Plataforma no registrada");
+
             }else if(mensaje.getOpcion().contains("DUPLICADO")){
+
                 mostrarToastMake("Plataforma duplicada");
+
             }else if(mensaje.getOpcion().contains("OK")){
+
                 refreshPlataforma();
                 mostrarToastMake("Plataforma registrada correctamente");
+
             }else{
                 //ip.setEnabled(true);
                 mostrarToastMake("ERROR DE CONEXIÓN");

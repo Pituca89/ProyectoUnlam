@@ -7,12 +7,39 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ListView
             android:id="@+id/listPlataforma"
             android:layout_width="match_parent"
-            android:layout_height="478dp">
+            android:layout_height="381dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="64dp">
 
         </ListView>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="Plataformas disponibles"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="274dp"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="18dp"
+            android:text="Asociar nueva plataforma"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp" />
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -23,6 +50,6 @@
         android:layout_margin="16dp"
         android:layout_weight="1"
         android:clickable="true"
-        app:backgroundTint="@color/zxing_custom_possible_result_points"
+        app:backgroundTint="@color/colorPrimary"
         app:srcCompat="@android:drawable/ic_menu_add" />
 </android.support.design.widget.CoordinatorLayout>

@@ -35,52 +35,36 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements InterfazAsyntask{
 
-    private static Button connect;
-    private static EditText ip;
     private ClienteHTTP_POST threadCliente_Post;
-    private String ruta = "http://";
     JSONObject json;
     SharedPreferences sharedPreferences;
-
+    ProgressBar progressBar;
+    String uri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        connect = (Button) findViewById(R.id.btnConnect);
-        ip = (EditText) findViewById(R.id.txtIP);
-        connect.setOnClickListener(onClickListener);
+        progressBar = findViewById(R.id.progressBarInicial);
+        progressBar.setIndeterminate(true);
         sharedPreferences = getSharedPreferences(getString(R.string.key_preference), MODE_PRIVATE);
-        ip.setText(sharedPreferences.getString(getString(R.string.path_plataforma),""));
-        try{
-            new Firebase_ID_Service().onTokenRefresh();
-        }catch (Exception e){
-            Log.i("Firebase","Problemas con el servicio");
+        json = new JSONObject();
+        uri = sharedPreferences.getString(getString(R.string.path_plataforma),"");
+        String mensaje =Integer.toString(ClienteHTTP_POST.VERIFICAR_CONEXION);
+        try {
+            json.put("url",uri);
+            json.put("OPCION",mensaje);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
+        threadCliente_Post =  new ClienteHTTP_POST(MainActivity.this);
+        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-            switch (v.getId()){
-                case R.id.btnConnect:
-                    json = new JSONObject();
-                    ip.setEnabled(false);
-                    String uri = ip.getText().toString();
-                    String mensaje =Integer.toString(ClienteHTTP_POST.VERIFICAR_CONEXION);
-                    try {
-                        json.put("url",uri);
-                        json.put("OPCION",mensaje);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    threadCliente_Post =  new ClienteHTTP_POST(MainActivity.this);
-                    threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
-                    break;
-                default:
-                    Toast.makeText(getApplicationContext(),"Error en Listener de botones",Toast.LENGTH_SHORT).show();
-            }
+
         }
     };
 
@@ -96,14 +80,14 @@ public class MainActivity extends AppCompatActivity implements InterfazAsyntask{
         try{
             Response_Conexion mensaje = gson.fromJson(msj.getString("respuesta"),Response_Conexion.class);
             if(mensaje.getOpcion().equals("CONECTADO")) {
+                progressBar.setIndeterminate(false);
                 Intent intent = new Intent(this, LoginActivity.class);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(getString(R.string.path_plataforma),ip.getText().toString());
+                editor.putString(getString(R.string.path_plataforma),uri);
                 editor.commit();
                 startActivity(intent);
                 finish();
             }else{
-                ip.setEnabled(true);
                 mostrarToastMake("ERROR DE CONEXIÓN");
             }
         }catch (Exception e){

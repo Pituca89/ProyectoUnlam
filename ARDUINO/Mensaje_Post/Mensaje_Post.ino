@@ -2,26 +2,36 @@
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <WebServer.h>
-
+#include <BLEDevice.h>
+#include <BLEUtils.h>
+#include <BLEScan.h>
+#include <BLEAdvertisedDevice.h>
 //-------------------VARIABLES GLOBALES--------------------------
 
-const char *ssid = "Fibertel WiFi159 2.4GHz";//"Javo wifi";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
-const char *password = "0043442422";//"44540006";//"matiasmanda";//"6761727565";//"SOA.2019";
+const char *ssid = "Toa fibra";//"Fibertel WiFi159 2.4GHz";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
+const char *password = "liniers2019";//"0043442422";//"matiasmanda";//"6761727565";//"SOA.2019";
 WebServer server(80);   
 int flag = 0;
-//WiFiManager wifimanager;
+int best = -40;
+int scanTime = 1; //In seconds
+const char* response = "";
+const char* modo;
+const char* sentido;//Frente-Derecha-Izquierda-Reversa
+const char* macBeacon;//Se verifica al finalizar el entrenamiento una vez confirmado
+float angulo;  
+const char* confirma;//SI: Se verifica la potencia del beacon y se procesa la ruta - NO: No se realiza ninguna accion y la variable "modo" pasa a tener valor MOD_O
+const size_t capacity = JSON_OBJECT_SIZE(4) + JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(5) + JSON_OBJECT_SIZE(8) + 370;
+DynamicJsonDocument root(capacity);   
+DynamicJsonDocument root_pet(capacity);  
 String peticionPOSTJSON(int op,int codigo,String dato){
-  
-    const size_t capacity = JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(5) + JSON_OBJECT_SIZE(8) + 370;
-    char* host = "www.gestiondenegocio.esy.es";//"192.168.1.34";//"www.gestiondenegocio.esy.es";
-    const char* response = "";
+    
+    char* host = "www.gestiondenegocio.esy.es";//"192.168.1.34";//"www.gestiondenegocio.esy.es";   
     String linea = "error";
-    DynamicJsonDocument JSONencoder(capacity);
     DeserializationError err;
-    JSONencoder["OPCION"] = op;//12;
-    JSONencoder["ID"] = ESP.getEfuseMac();
-    JSONencoder["COD"] = codigo;
-    JSONencoder["MSJ"] = dato;
+    root_pet["OPCION"] = op;//12;
+    root_pet["ID"] = ESP.getEfuseMac();
+    root_pet["COD"] = codigo;
+    root_pet["MSJ"] = dato;
     WiFiClient http;    //Declare object of class HTTPClient
     if (!http.connect(host, 80)) {
       Serial.println("Fallo de conexion");
@@ -30,12 +40,12 @@ String peticionPOSTJSON(int op,int codigo,String dato){
     http.print("POST"); http.print(" "); http.print("/"); http.println(" HTTP/1.1");
     http.print("HOST: "); http.println(host);
     //http.println("User-Agent: BePIM");
-    size_t len = measureJson(JSONencoder);
+    size_t len = measureJson(root_pet);
     http.println("Content-Type: application/json");
     http.print("Content-Length: "); http.println(len);
     http.println("Connection: close");
     http.println();
-    serializeJson(JSONencoder,http);
+    serializeJson(root_pet,http);
 
     delay(100);             
      
@@ -53,21 +63,21 @@ String peticionPOSTJSON(int op,int codigo,String dato){
       linea = http.readStringUntil('\n');
     }
     
-    err = deserializeJson(JSONencoder,linea);   
+    err = deserializeJson(root_pet,linea);   
+    
     if (!err) 
-    {           
-          if(JSONencoder["codigo"] == "ENVIO"){//{"codigo":"ENVIO","dato":"-D0|F400|D90|F400|D90|F400|D90#"}
-            response = JSONencoder["dato"];
-            Serial.println(response); 
-          }
-          if(JSONencoder["codigo"] == "REGISTRO"){
-            response = JSONencoder["dato"];
-            Serial.println(response); 
-          }     
-          if(JSONencoder["codigo"] == "MENSAJE"){
-            response = JSONencoder["dato"];
-            Serial.println(response); 
-          }       
+    {       
+        if(root_pet["codigo"] == "ENVIO"){//{"codigo":"ENVIO","dato":"-D0|F400|D90|F400|D90|F400|D90#"}
+          response = root_pet["dato"];// hace copia por referencia, cuando muere la funcion la variable apunta a basura
+          Serial.println(response);
+        }
+        /**Solo sirve para saber las respuesta del registro y de las notificaciones**/
+        //if(JSONencoder["codigo"] == "REGISTRO"){
+        //  response = JSONencoder["dato"];
+        //}     
+        //if(JSONencoder["codigo"] == "MENSAJE"){
+        //  response = JSONencoder["dato"];
+        //}                     
     }
     else
     {
@@ -78,36 +88,69 @@ String peticionPOSTJSON(int op,int codigo,String dato){
 }
 
 void entrenamientoPOST()
-{
-    //StaticJsonBuffer<500> jsonBuffer;
-    const char* response = "";
-    const size_t capacity = JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(5) + JSON_OBJECT_SIZE(8) + 370;
-    String post_body = server.arg("plain");
-    Serial.println(post_body);
-    DynamicJsonDocument root(capacity);
-      
-    DeserializationError err = deserializeJson(root,post_body);
+{   
+   String post_body = server.arg("plain");        
+    DeserializationError err = deserializeJson(root_pet,post_body);
     
-    if (!err) {   
+    if (!err) {  
+         
         if (server.method() == HTTP_POST){
-            if(root["opcion"] == "PRUEBA"){
-              response = root["codigo"];
-              Serial.println(response);
-              server.send(200, "text/plain", "Respuesta ESP32");         
-              } // 1           
+            if(root_pet["opcion"] == "INST"){
+              sentido = root_pet["sentido"];
+              macBeacon = root_pet["mac"];
+              confirma = root_pet["confirma"];  
+              angulo = root_pet["angulo"];           
+              server.send(200, "text/plain", "OK");         
+            } // 1             
         }
     }
     else{
-        Serial.println("error in parsin json body");
         server.send(400);
     }
-    
 }
 
+void cambioModo()
+{   
+    String post_body = server.arg("plain");       
+    DeserializationError err = deserializeJson(root,post_body);
+    
+    if (!err) {  
+         
+        if (server.method() == HTTP_POST){
+            if(root["codigo"] == "MODO"){
+              modo = root["dato"];
+              server.send(200, "text/plain", "CAMBIO DE MODO");   
+            }             
+        }
+    }
+    else{
+        server.send(400);
+    }
+}
+int validarBeacon(String mac){
+  BLEDevice::init("");
+  BLEScan* pBLEScan = BLEDevice::getScan(); //create new scan
+  //pBLEScan->setAdvertisedDeviceCallbacks(new MyAdvertisedDeviceCallbacks());
+  pBLEScan->setActiveScan(true); //active scan uses more power, but get results faster
+  BLEScanResults foundDevices = pBLEScan->start(scanTime);
+  
+  for (int i = 0; i < foundDevices.getCount(); i++) {
+    BLEAdvertisedDevice device = foundDevices.getDevice(i);
+    int rssi = device.getRSSI();
+    BLEAddress macAdd = device.getAddress();  
+    Serial.println(macAdd.toString().c_str());
+    if (rssi > best) {
+      Serial.println("Encontrado!!");
+    }
+  }
+  //Serial.print("Devices found: ");
+  //Serial.println(foundDevices.getCount());
+  //Serial.println("Scan done!");
+}
  void config_rest_server_routing() {
     server.on("/training", HTTP_POST, entrenamientoPOST);
+    server.on("/mode", HTTP_POST, cambioModo);
 }
-
 void setup() {
 
   Serial.begin(115200);
@@ -125,18 +168,32 @@ void setup() {
   config_rest_server_routing();
   server.begin();                                              //Inicializa el servidor (una vez configuradas las rutas)
   Serial.println("Servidor HTTP inicializado"); 
+  modo = "MOD_O";
 }
 
 void loop() {
-  /**Metodo que se ejecuta para el entrenamiento, en donde el modulo queda a la espera de la proxima instruccion**/
-  //server.handleClient(); //espero a que algun cliente se conecte y realice una peticion
-  /**Metodo que se ejecuta durante la operativa**/
-  peticionPOSTJSON(12,0,"");
-  if(flag == 0){
-    peticionPOSTJSON(13,1,"OBSTACULO");
-    flag = 1;
+
+  //peticionPOSTJSON(13,1,"OBSTACULO"); //metodo de envio de notificación
+  server.handleClient(); //espero a que algun cliente se conecte y realice una peticion
+  Serial.println(modo);
+  if(String(modo) == "MOD_E"){
+    
+    Serial.println(sentido);
+    Serial.println(macBeacon);
+    Serial.println(confirma);
+    Serial.println(angulo);
   }
-  
+  if(String(modo) == "MOD_O"){
+    peticionPOSTJSON(12,0,"");
+    if(response != ""){     
+      //enviar un pulso por algun pin para avisar el envio de una ruta
+      //enviar "response" por serial
+      //aguardar algun pulso proveniente de arduino para avisar que ejecuto la ruta
+      response = "";
+    }
+  }
+    
+    
   delay(2000);
 
 }

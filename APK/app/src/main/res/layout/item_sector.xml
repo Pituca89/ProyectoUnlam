@@ -16,8 +16,7 @@
         android:background="@drawable/sombra"
         android:text="ENVIAR"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
-        />
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/sector_name"
@@ -28,7 +27,7 @@
         android:layout_marginLeft="30dp"
         android:text="Sector 1"
         android:textColor="@color/colorPrimary"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
 

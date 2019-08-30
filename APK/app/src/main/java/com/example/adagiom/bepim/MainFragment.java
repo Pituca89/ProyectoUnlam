@@ -40,6 +40,8 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
     private String chipid;
     private String sectact;
     SharedPreferences sharedPreferences;
+    ArrayList<Sector> sectors;
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -124,7 +126,7 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
             }else{
                 mostrarToastMake("ERROR DE CONEXIÓN");
             }
-            ArrayList<Sector> sectors = (ArrayList<Sector>) sectorArrayList.clone();
+            sectors = (ArrayList<Sector>) sectorArrayList.clone();
             actualizarSector(sectors);
         }catch (Exception e){
             mostrarToastMake("ERROR EN SERVIDOR");

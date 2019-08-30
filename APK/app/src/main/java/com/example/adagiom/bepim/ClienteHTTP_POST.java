@@ -32,6 +32,7 @@ public class ClienteHTTP_POST extends AsyncTask<JSONObject , JSONObject ,JSONObj
     static int PLATAFORMA = 10;
     static int ENVIAR_TOKEN = 14;
     static int ASOCIAR_PLATAFORMA = 15;
+    static int ASOCIAR_SECTOR = 16;
     private InterfazAsyntask caller;
     private Exception mException=null;
     private JSONObject resp;
@@ -51,12 +52,13 @@ public class ClienteHTTP_POST extends AsyncTask<JSONObject , JSONObject ,JSONObj
         resp = new JSONObject();
         try
         {
-            URL mUrl = new URL(jsonData.getString("url"));
+            URL mUrl = new URL(jsonData.getString("url").toString());
 
             urlConnection = (HttpURLConnection) mUrl.openConnection();
             urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
             urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
 
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream ());
 
@@ -69,7 +71,7 @@ public class ClienteHTTP_POST extends AsyncTask<JSONObject , JSONObject ,JSONObj
             urlConnection.connect();
 
             int responseCode = urlConnection.getResponseCode();
-
+            Log.i("Respuesta URL",Integer.toString(responseCode));
             BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
             StringBuilder result = new StringBuilder();
             String line;
@@ -81,6 +83,7 @@ public class ClienteHTTP_POST extends AsyncTask<JSONObject , JSONObject ,JSONObj
             if(responseCode != HttpURLConnection.HTTP_OK)
             {
                 resp.put("respuesta","NO_OK");
+
                 return resp;
             }else{
                 resp.put("respuesta",result);
