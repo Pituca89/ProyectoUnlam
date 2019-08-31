@@ -172,7 +172,13 @@ void loop() {
   //peticionPOSTJSON(13,1,"OBSTACULO"); //metodo de envio de notificación
   server.handleClient(); //espero a que algun cliente se conecte y realice una peticion
   Serial.println(modo);
+<<<<<<< HEAD
   if(String(modo) == "MOD_E"){    
+=======
+  if(String(modo) == "MOD_E"){
+
+    
+>>>>>>> 41e81de6aada4bbf139b0befcdf7333c6825bfb1
     Serial.println(sentido);
   }
   if(String(modo) == "MOD_O"){
