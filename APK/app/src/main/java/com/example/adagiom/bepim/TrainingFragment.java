@@ -41,7 +41,13 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
     Button deshacer;
     Button confirmar;
     JSONObject json;
-
+    public static int FRENTE = 0;
+    public static int STOP = 1;
+    public static int DERECHA = 2;
+    public static int IZQUIERDA = 3;
+    public static int ESTADO_INICIAL = -1;
+    int estado_anterior = ESTADO_INICIAL;
+    String ipPlataforma;
     public TrainingFragment() {
         // Required empty public constructor
     }
@@ -57,10 +63,10 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                              Bundle savedInstanceState) {
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
         Plataforma plataforma = (Plataforma) getArguments().getSerializable("plataforma");
-        ruta = "http://"+plataforma.getIp().toString()+"/mode";
-        Log.i("ruta",ruta);
+        ipPlataforma = plataforma.getIp().toString();
         chipid = plataforma.getChipid();
         json = new JSONObject();
+
         View v = inflater.inflate(R.layout.fragment_training, container, false);
         comenzar = v.findViewById(R.id.btn_comenzar);
         deshacer = v.findViewById(R.id.btn_deshacer);
@@ -72,62 +78,69 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
 
         final JoystickView joystickRight = (JoystickView) v.findViewById(R.id.joystickView_right);
         joystickRight.setOnMoveListener(new JoystickView.OnMoveListener() {
+
             @SuppressLint("DefaultLocale")
             @Override
             public void onMove(int angle, int strength) {
-                //mTextViewCoordinateRight.setText(
-                //       String.format("x%03d:y%03d",
-                //                joystickRight.getNormalizedX(),
-                //                joystickRight.getNormalizedY())
-                //);
+
+                ruta = "http://"+ipPlataforma+"/training";
                 if(strength == 0 && angle == 0){
+                    if(estado_anterior != STOP) {
+                        estado_anterior = STOP;
                         try {
-                            json.put("opcion","INST");
-                            json.put("sentido","S");
-                            //json.put("mac","00:BB");
-                            //json.put("angulo",Integer.toString(angle));
-                            //json.put("confirma","no");
+                            json.put("url",ruta);
+                            json.put("opcion", "INST");
+                            json.put("sentido", "S");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        threadCliente_Post =  new ClienteHTTP_POST(TrainingFragment.this);
+                        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+                    }
                 }
                 if(strength != 0 && angle < 135 && angle > 45){
-                    try {
-                        json.put("opcion","INST");
-                        json.put("sentido","F");
-                        //json.put("mac","00:BB");
-                        //json.put("angulo",Integer.toString(angle));
-                        //json.put("confirma","no");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    if(estado_anterior != FRENTE) {
+                        estado_anterior = FRENTE;
+                        try {
+                            json.put("url",ruta);
+                            json.put("opcion", "INST");
+                            json.put("sentido", "F");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        threadCliente_Post =  new ClienteHTTP_POST(TrainingFragment.this);
+                        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
                     }
                 }
                 if(strength != 0 && angle > 135 && angle < 225){
-                    try {
-                        json.put("opcion","INST");
-                        json.put("sentido","I");
-                        //json.put("mac","00:BB");
-                        //json.put("angulo",Integer.toString(angle));
-                        //json.put("confirma","no");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    if(estado_anterior != IZQUIERDA) {
+                        estado_anterior = IZQUIERDA;
+                        try {
+                            json.put("url",ruta);
+                            json.put("opcion", "INST");
+                            json.put("sentido", "I");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        threadCliente_Post =  new ClienteHTTP_POST(TrainingFragment.this);
+                        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
                     }
                 }
-
                 if(strength != 0 && angle < 315 && angle < 45){
-                    try {
-                        json.put("opcion","INST");
-                        json.put("sentido","I");
-                        //json.put("mac","00:BB");
-                        //json.put("angulo",Integer.toString(angle));
-                        //json.put("confirma","no");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    if(estado_anterior != DERECHA) {
+                        estado_anterior = DERECHA;
+                        try {
+                            json.put("url",ruta);
+                            json.put("opcion", "INST");
+                            json.put("sentido", "D");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        threadCliente_Post =  new ClienteHTTP_POST(TrainingFragment.this);
+                        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
                     }
-
                 }
-                threadCliente_Post =  new ClienteHTTP_POST(TrainingFragment.this);
-                threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+
             }
         });
         return v;
@@ -156,6 +169,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
     View.OnClickListener onClickTraining = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            ruta = "http://"+ipPlataforma+"/mode";
             switch (view.getId()){
                 case R.id.btn_comenzar:
                     try {
@@ -167,6 +181,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                     }
                     threadCliente_Post =  new ClienteHTTP_POST(TrainingFragment.this);
                     threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+
                     break;
                 case R.id.btn_deshacer:
 
@@ -181,6 +196,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                     }
                     threadCliente_Post =  new ClienteHTTP_POST(TrainingFragment.this);
                     threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+
                     break;
             }
         }

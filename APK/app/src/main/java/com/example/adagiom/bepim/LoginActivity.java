@@ -85,7 +85,6 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
                                             threadCliente_Post =  new ClienteHTTP_POST(LoginActivity.this);
                                             threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
                                         } else {
-                                            Log.w(TAG, "signInWithEmail:failure", task.getException());
                                             mostrarToastMake("El email o la contraseña son incorrectos");
                                             updateUI(null);
                                         }
