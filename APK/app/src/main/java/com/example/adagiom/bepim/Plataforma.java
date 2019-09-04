@@ -5,9 +5,18 @@ import java.io.Serializable;
 public class Plataforma implements Serializable {
     private String chipid;
     private int disponible;
-    private int sectoract;
+    private String sectoract;
     private String ip;
     private String nombre;
+    private int idsector;
+
+    public void setIdsector(int idsector) {
+        this.idsector = idsector;
+    }
+
+    public int getIdsector() {
+        return idsector;
+    }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -41,11 +50,11 @@ public class Plataforma implements Serializable {
         return disponible;
     }
 
-    public void setSectoract(int sectoract) {
+    public void setSectoract(String sectoract) {
         this.sectoract = sectoract;
     }
 
-    public int getSectoract() {
+    public String getSectoract() {
         return sectoract;
     }
 }

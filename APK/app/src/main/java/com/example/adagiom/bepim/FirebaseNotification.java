@@ -36,7 +36,7 @@ public class FirebaseNotification extends FirebaseMessagingService {
         plataforma.setNombre(remoteMessage.getData().get("nombre"));
         plataforma.setDisponible(Integer.parseInt(remoteMessage.getData().get("disponible")));
         plataforma.setIp(remoteMessage.getData().get("ip"));
-        plataforma.setSectoract(Integer.parseInt(remoteMessage.getData().get("sectoractual")));
+        plataforma.setSectoract(remoteMessage.getData().get("sectoractual"));
         createNotification(notificacion,plataforma);
 
     }

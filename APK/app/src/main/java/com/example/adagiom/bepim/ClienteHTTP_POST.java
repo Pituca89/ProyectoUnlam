@@ -33,6 +33,7 @@ public class ClienteHTTP_POST extends AsyncTask<JSONObject , JSONObject ,JSONObj
     static int ENVIAR_TOKEN = 14;
     static int ASOCIAR_PLATAFORMA = 15;
     static int ASOCIAR_SECTOR = 16;
+    static int ACTUALIZAR_SECTOR_ACTUAL = 17;
     private InterfazAsyntask caller;
     private Exception mException=null;
     private JSONObject resp;

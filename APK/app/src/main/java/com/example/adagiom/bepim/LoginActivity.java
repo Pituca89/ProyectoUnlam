@@ -68,7 +68,6 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
-                                            Log.d(TAG, "signInWithEmail:success");
                                             FirebaseUser user = mAuth.getCurrentUser();
                                             updateUI(user);
                                             json = new JSONObject();
@@ -110,6 +109,13 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+        String psw = sharedPreferences.getString(getString(R.string.token_pass),"");
+        pass.setText(psw);
+        if(!pass.getText().equals("")){
+            Intent intent = new Intent(LoginActivity.this, ListPlataforma.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
 
@@ -161,6 +167,9 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
             Response_Plataforma mensaje = gson.fromJson(msg.getString("respuesta"),Response_Plataforma.class);
             if(mensaje.getOpcion().equals("TOKEN")) {
                 Intent intent = new Intent(LoginActivity.this, ListPlataforma.class);
+                sharedPreferences.edit()
+                        .putString(getString(R.string.token_pass),pass.getText().toString())
+                        .commit();
                 startActivity(intent);
                 finish();
             }else{

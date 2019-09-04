@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="138dp"
         android:background="@drawable/sombra3"
         android:text="COMENZAR"
         android:textColor="@android:color/white"
@@ -65,6 +65,18 @@
         android:background="@drawable/sombra"
         android:text="CONFIRMAR"
         android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/lbl_sector_actual"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="86dp"
+        android:text="Sector Actual: NULL"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="18sp" />
 
 </RelativeLayout>

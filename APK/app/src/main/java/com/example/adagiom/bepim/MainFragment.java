@@ -33,15 +33,14 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
     private String ruta;
     private ListView listSector;
     private TextView actual;
-    private int idactual;
+    private String idactual;
     private SectorAdapter sectorAdapter;
     private ArrayList<Sector> sectorArrayList;
     JSONObject json;
     private String chipid;
-    private String sectact;
     SharedPreferences sharedPreferences;
     ArrayList<Sector> sectors;
-
+    Plataforma plataforma;
     public MainFragment() {
         // Required empty public constructor
     }
@@ -56,30 +55,18 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_main, container, false);
-
-        sharedPreferences = getActivity().getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
-        ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
-        Plataforma plataforma = (Plataforma) getArguments().getSerializable("plataforma");
-        chipid = plataforma.getChipid();
-        idactual = plataforma.getSectoract();
-
-        json = new JSONObject();
-        /**Envio de mensaje a servidor**/
-        String mensaje =Integer.toString(ClienteHTTP_POST.SECTORES);
-        try {
-            json.put("url",ruta);
-            json.put("OPCION",mensaje);
-            json.put("ID",chipid);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        threadCliente_Post =  new ClienteHTTP_POST(MainFragment.this);
-        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
-        /**FIN**/
         actual = (TextView) v.findViewById(R.id.sectoract);
         listSector = (ListView) v.findViewById(R.id.listSector);
+        sharedPreferences = getActivity().getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
+        ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
+        plataforma = (Plataforma) getArguments().getSerializable("plataforma");
+        chipid = plataforma.getChipid();
+        json = new JSONObject();
+        Log.i("ACTUAL",plataforma.getSectoract().toString());
+        /**Envio de mensaje a servidor**/
         sectorAdapter = new SectorAdapter(getActivity());
-
+        actual.setText(plataforma.getSectoract());
+        actualizarSector();
         return v;
     }
 
@@ -94,7 +81,7 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
                 json.put("OPCION",mensaje);
                 json.put("USER",1);
                 json.put("ID", chipid);
-                json.put("DESDE",idactual);
+                json.put("DESDE",plataforma.getIdsector());
                 json.put("HASTA",s.getId());
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -117,34 +104,30 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
         try{
             Response_Sectores mensaje = gson.fromJson(msg.getString("respuesta"),Response_Sectores.class);
             if(mensaje.getOpcion().equals("SECTORES")) {
-                sectorArrayList = mensaje.getSectores();
+                sectorAdapter.setData(mensaje.getSectores());
+                listSector.setAdapter(sectorAdapter);
+                sectorAdapter.setListener(onEnviarPlataforma);
             }else if(mensaje.getOpcion().equals("OK")) {
-                idactual = mensaje.getActual();
-                /**Obtener el sector actual desde el servidor**/
-
-                /**Falta actualizar en el servidor, la posicion actual de la plataforma**/
+                actualizarSector();
             }else{
                 mostrarToastMake("ERROR DE CONEXIÓN");
             }
-            sectors = (ArrayList<Sector>) sectorArrayList.clone();
-            actualizarSector(sectors);
+
         }catch (Exception e){
             mostrarToastMake("ERROR EN SERVIDOR");
         }
     }
 
-    public void actualizarSector(ArrayList<Sector> sectors){
-        Iterator<Sector> item = sectors.iterator();
-        while(item.hasNext()){
-            Sector sector = item.next();
-            if(sector.getId() == idactual){
-                sectact = sector.getNombre();
-                item.remove();
-            }
+    public void actualizarSector(){
+        String mensaje =Integer.toString(ClienteHTTP_POST.SECTORES);
+        try {
+            json.put("url",ruta);
+            json.put("OPCION",mensaje);
+            json.put("ID",chipid);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        actual.setText(sectact);
-        sectorAdapter.setData(sectors);
-        sectorAdapter.setListener(onEnviarPlataforma);
-        listSector.setAdapter(sectorAdapter);
+        threadCliente_Post =  new ClienteHTTP_POST(MainFragment.this);
+        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
     }
 }

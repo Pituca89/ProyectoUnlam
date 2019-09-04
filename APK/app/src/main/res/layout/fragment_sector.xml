@@ -21,27 +21,27 @@
 
         </ListView>
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/lblsectortitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:text="Sectores disponibles"
+            android:text="Destinos disponibles"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/lblsector"
             android:layout_width="274dp"
             android:layout_height="70dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="18dp"
-            android:text="Asociar nuevo sector"
+            android:text="Asociar nuevo destino"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
