@@ -23,6 +23,12 @@ const char* confirma;//SI: Se verifica la potencia del beacon y se procesa la ru
 const size_t capacity = JSON_OBJECT_SIZE(4) + JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(5) + JSON_OBJECT_SIZE(8) + 370;
 DynamicJsonDocument root(capacity);   
 DynamicJsonDocument root_pet(capacity);  
+
+const int PinEntrenamiento = 33;
+const int Pin2binario = 27;
+const int Pin1binario = 26;
+const int Pin0binario = 25;
+
 String peticionPOSTJSON(int op,int codigo,String dato){
     
     char* host = "www.gestiondenegocio.esy.es";//"192.168.1.34";//"www.gestiondenegocio.esy.es";   
@@ -147,7 +153,17 @@ int validarBeacon(String mac){
     server.on("/training", HTTP_POST, entrenamientoPOST);
     server.on("/mode", HTTP_POST, cambioModo);
 }
+
 void setup() {
+pinMode(PinEntrenamiento,OUTPUT); 
+pinMode(Pin2binario,OUTPUT);
+pinMode(Pin1binario,OUTPUT); 
+pinMode(Pin0binario,OUTPUT);
+
+digitalWrite(Pin2binario,LOW);
+digitalWrite(Pin1binario,LOW);
+digitalWrite(Pin0binario,LOW);
+digitalWrite(PinEntrenamiento,LOW); 
 
   Serial.begin(115200);
   
@@ -168,18 +184,50 @@ void setup() {
 }
 
 void loop() {
-
+digitalWrite(PinEntrenamiento,LOW);
   //peticionPOSTJSON(13,1,"OBSTACULO"); //metodo de envio de notificación
   server.handleClient(); //espero a que algun cliente se conecte y realice una peticion
   Serial.println(modo);
-<<<<<<< HEAD
-  if(String(modo) == "MOD_E"){    
-=======
-  if(String(modo) == "MOD_E"){
 
+  if(String(modo) == "MOD_E"){
+    digitalWrite(PinEntrenamiento,HIGH); 
+    do{
+            /*  codigo binario de entranamiento Pin2binario Pin1binario Pin0binario
+             *  0 0 0 : plataforma detenida (S)
+             *  0 0 1 : avanzar (F)
+             *  0 1 0 : girar derecha (D)
+             *  1 0 0 : girar izquierda (I)
+             */
+      if(sentido == "F")
+        {
+         digitalWrite(Pin2binario,LOW);
+         digitalWrite(Pin1binario,LOW);
+         digitalWrite(Pin0binario,HIGH); 
+         }
+      if(sentido == "D")
+        {
+         digitalWrite(Pin2binario,LOW);
+         digitalWrite(Pin1binario,HIGH);
+         digitalWrite(Pin0binario,LOW);
+         //delay(100);
+         }
+      if(sentido == "I")
+        {
+         digitalWrite(Pin2binario,HIGH);
+         digitalWrite(Pin1binario,LOW);
+         digitalWrite(Pin0binario,LOW);
+         //delay(100);
+        }
+      if(sentido == "S")
+        {
+        digitalWrite(Pin2binario,LOW);
+        digitalWrite(Pin1binario,LOW);
+        digitalWrite(Pin0binario,LOW);
+        }       
+      server.handleClient();
+      Serial.println(sentido);
+    }while(String(modo) == "MOD_E");
     
->>>>>>> 41e81de6aada4bbf139b0befcdf7333c6825bfb1
-    Serial.println(sentido);
   }
   if(String(modo) == "MOD_O"){
     peticionPOSTJSON(12,0,"");
