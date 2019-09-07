@@ -104,7 +104,13 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         lblsector.setText("Registrar destino");
         sectorAdapter = new SectorTrainingAdapter(getActivity());
         addSector.setOnClickListener(agregarSector);
-        builder.setView(viewSector);
+        builder.setView(viewSector)
+                .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                             
+                    }
+                });
 
         alertDialog = builder.create();
         refreshSector();

@@ -52,7 +52,14 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
         sharedPreferences = getSharedPreferences(getString(R.string.key_preference),MODE_PRIVATE);
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
         mAuth = FirebaseAuth.getInstance();
+        String psw = sharedPreferences.getString(getString(R.string.token_pass),"");
+        pass.setText(psw);
 
+        if(!psw.equals("")){
+            Intent intent = new Intent(LoginActivity.this, ListPlataforma.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -106,16 +113,10 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
     @Override
     protected void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+        // Check if user is signed in (non-null) and update UI accordingly.}
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-        String psw = sharedPreferences.getString(getString(R.string.token_pass),"");
-        pass.setText(psw);
-        if(!pass.getText().equals("")){
-            Intent intent = new Intent(LoginActivity.this, ListPlataforma.class);
-            startActivity(intent);
-            finish();
-        }
+
     }
 
 
