@@ -11,48 +11,65 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class FirebaseNotification extends FirebaseMessagingService {
+public class FirebaseNotification extends FirebaseMessagingService{
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Map<String,String> notificacion=new HashMap<String,String>();
-        Log.i("Notificacion",remoteMessage.getData().get("msj"));
-        notificacion.put("titulo",remoteMessage.getData().get("titulo"));
-        notificacion.put("mensaje",remoteMessage.getData().get("msj"));
+        Map<String, String> notificacion = new HashMap<String, String>();
         Plataforma plataforma = new Plataforma();
+
+        notificacion.put("titulo", remoteMessage.getNotification().getTitle());
+        notificacion.put("mensaje", remoteMessage.getNotification().getBody());
+        notificacion.put("action",remoteMessage.getNotification().getClickAction());
+
         plataforma.setChipid(remoteMessage.getData().get("chipid"));
         plataforma.setNombre(remoteMessage.getData().get("nombre"));
         plataforma.setDisponible(Integer.parseInt(remoteMessage.getData().get("disponible")));
         plataforma.setIp(remoteMessage.getData().get("ip"));
         plataforma.setSectoract(remoteMessage.getData().get("sectoractual"));
-        createNotification(notificacion,plataforma);
 
+
+        if(remoteMessage.getNotification().getBody().contains("LLEGADA")){
+                NotificationSingleton singleton = new NotificationSingleton().getInstance();
+                singleton.setNotification(true);
+        }
+
+        //createNotification(notificacion, plataforma);
     }
 
     @SuppressLint("ResourceAsColor")
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     public void createNotification(Map<String, String> notificacion, Plataforma s) {
-        NotificationCompat.Builder notificationBuilder;
-        NotificationManager notificationManager =(NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
+        Intent notificacionIntent = null;
 
-        Intent notificacionIntent = new Intent(getApplicationContext(), TabsActivity.class);
-        notificacionIntent.putExtra("plataforma",s);
+        if(notificacion.get("action").equals("TABS")) {
+            notificacionIntent = new Intent(getApplicationContext(), ListPlataforma.class);
+            notificacionIntent.putExtra("plataforma", s);
+            notificacionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        }
+        PendingIntent notificacionPendingIntent = PendingIntent.getActivity(this, 0, notificacionIntent,
+                PendingIntent.FLAG_ONE_SHOT);
 
-        PendingIntent notificacionPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificacionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        notificationBuilder = new NotificationCompat.Builder(getBaseContext())
+        @SuppressLint("ResourceAsColor")
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
         .setSmallIcon(R.mipmap.ic_bepim)
         .setContentTitle(notificacion.get("titulo"))
         .setContentText(notificacion.get("mensaje"))
@@ -67,6 +84,8 @@ public class FirebaseNotification extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             notificationBuilder.setColor(Color.WHITE);
         }
+
+        NotificationManager notificationManager =(NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Notification notification = new NotificationCompat.InboxStyle(notificationBuilder)
                 .addLine(notificacion.get("mensaje"))

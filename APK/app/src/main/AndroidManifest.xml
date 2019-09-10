@@ -14,8 +14,9 @@
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.INSTALL_PACKAGES"
-        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -31,20 +32,27 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ListPlataforma"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="PLATAFORMA"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </activity>
         <activity android:name=".LoginActivity"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".RegistroActivity"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".ActivityDriver"
             android:screenOrientation="portrait"></activity>
+
         <activity android:name=".TabsActivity">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <service
             android:name=".ServiceNotification"
@@ -54,12 +62,20 @@
             android:name=".LecturaQR"
             android:screenOrientation="portrait">
         </activity>
-        <service android:name=".FirebaseNotification">
+        <service
+            android:name=".FirebaseNotification"
+            android:enabled="true"
+            android:stopWithTask="false"
+            >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".Firebase_ID_Service">
+        <service
+            android:name=".Firebase_ID_Service"
+            android:enabled="true"
+            android:stopWithTask="false"
+            >
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>

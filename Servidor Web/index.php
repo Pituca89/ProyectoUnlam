@@ -48,6 +48,9 @@ if(file_get_contents("php://input")){
 		case ASOCIAR_SECTOR:
 		    echo $db->asociarSector($data->ID,$data->NOMBRE,$data->MAC);
 		break;
+		case ACTUALIZAR_SECTOR_ACTUAL://17
+		    echo $db->registrarSectorActual($data->ID,$data->ACTUAL);
+		break;
 		default: "CODIGO ERRONEO"; break;
 	}
 }

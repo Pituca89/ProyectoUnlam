@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,15 +35,19 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
     private ClienteHTTP_POST threadCliente_Post;
     private String ruta;
     private ListView listSector;
-    private TextView actual;
+    private static TextView actual;
     private String idactual;
     private SectorAdapter sectorAdapter;
     private ArrayList<Sector> sectorArrayList;
     JSONObject json;
+    Handler handler;
     private String chipid;
     SharedPreferences sharedPreferences;
     ArrayList<Sector> sectors;
+    private static int HANDLER_MESSAGE_ON = 1;
+    private static int HANDLER_MESSAGE_OFF = 0;
     Plataforma plataforma;
+    static Sector destino;
     public MainFragment() {
         // Required empty public constructor
     }
@@ -62,11 +69,10 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
         plataforma = (Plataforma) getArguments().getSerializable("plataforma");
         chipid = plataforma.getChipid();
         json = new JSONObject();
-        Log.i("ACTUAL",plataforma.getSectoract().toString());
         /**Envio de mensaje a servidor**/
         sectorAdapter = new SectorAdapter(getActivity());
-        actual.setText(plataforma.getSectoract());
         actualizarSector();
+        handler = handler_espera_notificacion();
         return v;
     }
 
@@ -88,6 +94,9 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
             }
             threadCliente_Post =  new ClienteHTTP_POST(MainFragment.this);
             threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+            actual.setText("EN VIAJE...");
+            destino = s;
+            new ListenerThread().start();
             Log.i("HTTPRequest",json.toString());
         }
     };
@@ -104,12 +113,25 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
         try{
             Response_Sectores mensaje = gson.fromJson(msg.getString("respuesta"),Response_Sectores.class);
             if(mensaje.getOpcion().equals("SECTORES")) {
-                sectorAdapter.setData(mensaje.getSectores());
+                sectorArrayList = mensaje.getSectores();
+                Iterator<Sector> sectorIterator = sectorArrayList.iterator();
+                while(sectorIterator.hasNext()){
+                    Sector sector = sectorIterator.next();
+                    if(sector.getActual() == 1) {
+                        actual.setText(sector.getNombre());
+                        sectorIterator.remove();
+                    }
+                }
+                sectorAdapter.setData(sectorArrayList);
                 listSector.setAdapter(sectorAdapter);
                 sectorAdapter.setListener(onEnviarPlataforma);
             }else if(mensaje.getOpcion().equals("OK")) {
+                mostrarToastMake("Atendiendo peticion...");
+            }else if(mensaje.getOpcion().equals("OCUPADO")) {
+                mostrarToastMake("Plataforma en uso, su peticion ha sido procesada");
+            }else if(mensaje.getOpcion().equals("ACTUAL")) {
                 actualizarSector();
-            }else{
+            }else {
                 mostrarToastMake("ERROR DE CONEXIÓN");
             }
 
@@ -129,5 +151,48 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
         }
         threadCliente_Post =  new ClienteHTTP_POST(MainFragment.this);
         threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+    }
+    public void actualizarSectorActual(){
+        String mensaje =Integer.toString(ClienteHTTP_POST.ACTUALIZAR_SECTOR_ACTUAL);
+        try {
+            json.put("url",ruta);
+            json.put("OPCION",mensaje);
+            json.put("ID",chipid);
+            json.put("ACTUAL",destino.getId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        threadCliente_Post =  new ClienteHTTP_POST(MainFragment.this);
+        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+    }
+
+    public Handler handler_espera_notificacion(){
+        return new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if(msg.what == HANDLER_MESSAGE_ON){
+                    actual.setText(destino.getNombre().toString());
+                    actualizarSectorActual();
+                }else{
+                    actual.setText("EN VIAJE...");
+                }
+            }
+        };
+    }
+
+    private class ListenerThread extends Thread{
+        NotificationSingleton singleton = new NotificationSingleton().getInstance();
+
+        @Override
+        public void run() {
+            super.run();
+            while(!singleton.isNotification()){
+                Log.i("handler","singleton false");
+                handler.obtainMessage(HANDLER_MESSAGE_OFF).sendToTarget();
+            }
+            handler.obtainMessage(HANDLER_MESSAGE_ON).sendToTarget();
+            singleton.setNotification(false);
+        }
     }
 }

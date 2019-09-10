@@ -204,6 +204,35 @@ class BaseDatos
         $response = array();
         $response['opcion'] = 'PETICION';  
         do {
+            if ($resultado = $this->conexion->store_result()) { 
+                if($row = $resultado->fetch_object()){   
+                    if($row->SALIDA == "OCUPADO"){
+                        $response['opcion'] = "OCUPADO";
+                    }
+                    else{
+                        $response['opcion'] = "OK";        
+                    }
+                }
+                $resultado->free();
+            } else {
+                if ($this->conexion->errno) {
+                    $response['opcion'] = "ERROR";
+                    return json_encode($response);
+                }
+            }
+        } while ($this->conexion->more_results() && $this->conexion->next_result());
+        $response['actual'] = $destino;
+        return json_encode($response);
+    }
+    
+    public function registrarSectorActual($chipid,$idsector){
+        $query = "CALL actualizarSectorTraining('".$chipid."',".$idsector.");";
+        if (!$this->conexion->multi_query($query)) {
+            echo "Falló CALL: (" . $this->conexion->errno . ") " . $this->conexion->error;
+        }  
+        $response = array();
+        $response['opcion'] = 'ACTUAL';  
+        do {
             if ($resultado = $this->conexion->store_result()) {            
                 $resultado->free();
             } else {
@@ -213,10 +242,10 @@ class BaseDatos
                 }
             }
         } while ($this->conexion->more_results() && $this->conexion->next_result());
-        $response['opcion'] = "OK";
         $response['actual'] = $destino;
         return json_encode($response);
     }
+    
     public function enviar_notificacion($id,$msj){
 
         $path_to_fcm = 'https://fcm.googleapis.com/fcm/send';

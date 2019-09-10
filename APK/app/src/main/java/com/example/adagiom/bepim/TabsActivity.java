@@ -1,8 +1,10 @@
 package com.example.adagiom.bepim;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,9 +20,12 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
-public class TabsActivity extends AppCompatActivity {
+public class TabsActivity extends AppCompatActivity implements InterfazAsyntask{
     FragmentManager fm;
     Fragment active;
     final private TrainingFragment trainingFragment = new TrainingFragment();
@@ -31,6 +36,7 @@ public class TabsActivity extends AppCompatActivity {
     Bundle bundle;
     NavigationView navigationView;
     DrawerLayout drawerLayout;
+    BroadcastReceiver broadcastReceiver;
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -59,6 +65,10 @@ public class TabsActivity extends AppCompatActivity {
                     active = sectorFragment;
                     drawerLayout.closeDrawer(Gravity.START);
                     break;
+                case R.id.btn_plataforma:
+                    startActivity(new Intent(TabsActivity.this,ListPlataforma.class));
+                    finish();
+                    break;
                 case R.id.btn_configuracion:
                     Log.i("Fragment","Configuración");
                     configFragment.setArguments(bundle);
@@ -77,18 +87,19 @@ public class TabsActivity extends AppCompatActivity {
         navigationView.getHeaderView(0).findViewById(R.id.btn_principal).setOnClickListener(onClickListener);
         navigationView.getHeaderView(0).findViewById(R.id.btn_entrenar).setOnClickListener(onClickListener);
         navigationView.getHeaderView(0).findViewById(R.id.btn_sectores).setOnClickListener(onClickListener);
+        navigationView.getHeaderView(0).findViewById(R.id.btn_plataforma).setOnClickListener(onClickListener);
         navigationView.getHeaderView(0).findViewById(R.id.btn_configuracion).setOnClickListener(onClickListener);
         Plataforma plataforma = (Plataforma) getIntent().getSerializableExtra("plataforma");
         bundle = new Bundle();
-        bundle.putSerializable("plataforma",plataforma);
-        fm = getSupportFragmentManager();
-        //fm.beginTransaction().add(R.id.container_ly,trainingFragment).hide(trainingFragment).commit();
-        mainFragment.setArguments(bundle);
-        fm.beginTransaction().add(R.id.container_ly, mainFragment).commit();
-        active = mainFragment;
+        if(plataforma != null) {
+            bundle.putSerializable("plataforma", plataforma);
+            fm = getSupportFragmentManager();
+            //fm.beginTransaction().add(R.id.container_ly,trainingFragment).hide(trainingFragment).commit();
+            mainFragment.setArguments(bundle);
+            fm.beginTransaction().add(R.id.container_ly, mainFragment).commit();
+            active = mainFragment;
+        }
     }
-
-
 
     @Override
     public void onBackPressed(){
@@ -121,75 +132,13 @@ public class TabsActivity extends AppCompatActivity {
         return ruta;
     }
 
-    public static class SectorListAdapter extends BaseAdapter {
-        private LayoutInflater layoutInflater;
-        private List<Sector> mData;
-        private OnEnviarPlataforma enviarPlataforma;
+    @Override
+    public void mostrarToastMake(String msg) {
 
-        public SectorListAdapter(Context context){
-            layoutInflater = LayoutInflater.from(context);
-        }
+    }
 
-        public void setData(List<Sector> data){
-            mData = data;
-        }
+    @Override
+    public void VerificarMensaje(JSONObject msg) throws JSONException {
 
-        public List<Sector> getData() {
-            return mData;
-        }
-
-        public void setListener(OnEnviarPlataforma listener){
-            enviarPlataforma = listener;
-        }
-
-        @Override
-        public int getCount() {
-            return (mData == null) ? 0: mData.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mData.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            ViewSector viewSector = null;
-            if(convertView == null){
-                viewSector = new ViewSector();
-                convertView = layoutInflater.inflate(R.layout.item_sector,null);
-
-                viewSector.sector_name = (TextView) convertView.findViewById(R.id.sector_name);
-                viewSector.sector_enviar = (Button) convertView.findViewById(R.id.sector_envar);
-                convertView.setTag(viewSector);
-            }else{
-                viewSector = (ViewSector) convertView.getTag();
-            }
-
-            Sector sector = mData.get(position);
-            viewSector.sector_name.setText(sector.getNombre());
-            viewSector.sector_name.setTag(sector.getId());
-            viewSector.sector_enviar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(enviarPlataforma != null){
-                        enviarPlataforma.enviarPlataformaClick(position);
-                    }
-                }
-            });
-            return convertView;
-        }
-        static class ViewSector {
-            TextView sector_name;
-            Button sector_enviar;
-        }
-        public interface OnEnviarPlataforma{
-            public abstract void enviarPlataformaClick(int position);
-        }
     }
 }

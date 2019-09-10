@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -139,7 +140,7 @@ public class SectorFragment extends Fragment implements InterfazAsyntask{
         super.onActivityResult(requestCode, resultCode, data);
         final IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
         if(intentResult.getContents() != null){
-            LayoutInflater inflater = getLayoutInflater();
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
             View view = inflater.inflate(R.layout.dialog_plataforma,null);
             final EditText nombreSector = (EditText) view.findViewById(R.id.nameplataforma);
             final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

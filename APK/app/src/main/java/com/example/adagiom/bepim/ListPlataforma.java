@@ -50,6 +50,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
 
         addPlataforma.setOnClickListener(agregarPlataforma);
         plataformaAdapter = new PlataformaAdapter(this);
+
     }
 
     @Override

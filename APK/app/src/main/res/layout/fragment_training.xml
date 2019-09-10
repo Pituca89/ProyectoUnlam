@@ -32,11 +32,11 @@
 
     <io.github.controlwear.virtual.joystick.android.JoystickView
         android:id="@+id/joystickView_right"
-        android:layout_width="235dp"
-        android:layout_height="226dp"
+        android:layout_width="297dp"
+        android:layout_height="270dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="125dp"
+        android:layout_marginBottom="81dp"
         app:JV_backgroundColor="@color/colorPrimary"
         app:JV_borderColor="@color/colorPrimaryDark"
         app:JV_borderWidth="8dp"
@@ -78,5 +78,12 @@
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp" />
+
+    <ProgressBar
+        android:id="@+id/progressBarSector"
+        android:layout_width="167dp"
+        android:layout_height="86dp"
+        android:layout_centerInParent="true"
+        android:progressTint="@color/colorPrimary" />
 
 </RelativeLayout>

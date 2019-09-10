@@ -13,7 +13,7 @@ import java.util.List;
 public class SectorTrainingAdapter extends BaseAdapter{
     private LayoutInflater layoutInflater;
     private List<Sector> mData;
-    private OnEnviarPlataforma enviarPlataforma;
+    private OnSelectFinDestino onSelectFinDestino;
 
     public SectorTrainingAdapter(Context context){
         layoutInflater = LayoutInflater.from(context);
@@ -27,8 +27,8 @@ public class SectorTrainingAdapter extends BaseAdapter{
         return mData;
     }
 
-    public void setListener(OnEnviarPlataforma listener){
-        enviarPlataforma = listener;
+    public void setListener(OnSelectFinDestino listener){
+        onSelectFinDestino = listener;
     }
 
     @Override
@@ -65,8 +65,8 @@ public class SectorTrainingAdapter extends BaseAdapter{
         viewSector.sector_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(enviarPlataforma != null){
-                    enviarPlataforma.enviarPlataformaClick(position);
+                if(onSelectFinDestino != null){
+                    onSelectFinDestino.enviarPlataformaClick(position);
                 }
             }
         });
@@ -75,7 +75,7 @@ public class SectorTrainingAdapter extends BaseAdapter{
     static class ViewSector {
         TextView sector_name;
     }
-    public interface OnEnviarPlataforma{
+    public interface OnSelectFinDestino{
         public abstract void enviarPlataformaClick(int position);
     }
 }

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements InterfazAsyntask{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        progressBar = findViewById(R.id.progressBarInicial);
+        progressBar = (ProgressBar) findViewById(R.id.progressBarInicial);
         progressBar.setIndeterminate(true);
         sharedPreferences = getSharedPreferences(getString(R.string.key_preference), MODE_PRIVATE);
         json = new JSONObject();

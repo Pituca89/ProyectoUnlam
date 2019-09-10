@@ -19,6 +19,7 @@ import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ import io.github.controlwear.virtual.joystick.android.JoystickView;
 
 
 public class TrainingFragment extends Fragment implements InterfazAsyntask{
+
     private String ruta;
     private String chipid;
     private ClienteHTTP_POST threadCliente_Post;
@@ -62,7 +64,10 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
     private ArrayList<Sector> sectorArrayList;
     TextView lblsector;
     TextView lblsectortitle;
-    TextView lblsectoractual;
+    static TextView lblsectoractual;
+    static ProgressBar progressBar;
+    static String actual;
+
     public TrainingFragment() {
         // Required empty public constructor
     }
@@ -84,12 +89,13 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         json = new JSONObject();
 
         View v = inflater.inflate(R.layout.fragment_training, container, false);
-        comenzar = v.findViewById(R.id.btn_comenzar);
-        deshacer = v.findViewById(R.id.btn_deshacer);
-        confirmar = v.findViewById(R.id.btn_confirmar);
-        lblsectoractual = v.findViewById(R.id.lbl_sector_actual);
+        comenzar = (Button) v.findViewById(R.id.btn_comenzar);
+        deshacer = (Button) v.findViewById(R.id.btn_deshacer);
+        confirmar = (Button) v.findViewById(R.id.btn_confirmar);
+        progressBar = (ProgressBar) v.findViewById(R.id.progressBarSector);
+        progressBar.setVisibility(View.INVISIBLE);
+        lblsectoractual = (TextView) v.findViewById(R.id.lbl_sector_actual);
 
-        lblsectoractual.setText("Partiendo del sector: " + plataforma.getSectoract());
         comenzar.setOnClickListener(onClickTraining);
         deshacer.setOnClickListener(onClickTraining);
         confirmar.setOnClickListener(onClickTraining);
@@ -98,8 +104,8 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         builder = new AlertDialog.Builder(getContext());
         listSector = (ListView) viewSector.findViewById(R.id.listAddSector);
         addSector = (FloatingActionButton) viewSector.findViewById(R.id.addSector);
-        lblsector = viewSector.findViewById(R.id.lblsector);
-        lblsectortitle = viewSector.findViewById(R.id.lblsectortitle);
+        lblsector = (TextView) viewSector.findViewById(R.id.lblsector);
+        lblsectortitle = (TextView) viewSector.findViewById(R.id.lblsectortitle);
         lblsectortitle.setText("Destinos disponibles");
         lblsector.setText("Registrar destino");
         sectorAdapter = new SectorTrainingAdapter(getActivity());
@@ -108,7 +114,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                 .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                             
+
                     }
                 });
 
@@ -207,20 +213,27 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
             Log.i("Sector",mensaje.getOpcion().toString());
             if(mensaje.getOpcion().equals("SECTORES")) {
                 sectorArrayList = mensaje.getSectores();
+
+                Iterator<Sector> sectorIterator = sectorArrayList.iterator();
+                while(sectorIterator.hasNext()){
+                    Sector sector = sectorIterator.next();
+                    if(sector.getActual() == 1) {
+                        lblsectoractual.setText("Partiendo del sector: " + sector.getNombre());
+                        sectorIterator.remove();
+                    }
+                }
                 sectorAdapter.setData(sectorArrayList);
                 listSector.setAdapter(sectorAdapter);
+                sectorAdapter.setListener(onSelectFinDestino);
+
             }else if(mensaje.getOpcion().contains("DUPLICADO")){
-
                 mostrarToastMake("Plataforma duplicada");
-
             }else if(mensaje.getOpcion().contains("OK")){
-
                 refreshSector();
-                mostrarToastMake("Sector registrado correctamente");
+                progressBar.setVisibility(View.INVISIBLE);
             }else{
                 mostrarToastMake("ERROR DE CONEXIÓN");
             }
-
         }catch (Exception e){
             mostrarToastMake("NO PRESENTA SECTORES REGISTRADOS");
         }
@@ -249,19 +262,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
 
                         break;
                     case R.id.btn_confirmar:
-                    /*
-                    try {
-                        json.put("url",ruta);
-                        json.put("codigo","MODO");
-                        json.put("dato","MOD_O");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    threadCliente_Post =  new ClienteHTTP_POST(TrainingFragment.this);
-                    threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
-                    */
-
-                    alertDialog.show();
+                        alertDialog.show();
                     break;
                 }
             }
@@ -299,7 +300,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         super.onActivityResult(requestCode, resultCode, data);
         final IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
         if(intentResult.getContents() != null){
-            LayoutInflater inflater = getLayoutInflater();
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
             View view = inflater.inflate(R.layout.dialog_plataforma,null);
             final EditText nombreSector = (EditText) view.findViewById(R.id.nameplataforma);
             final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -335,11 +336,50 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
 
                         }
                     });
-            AlertDialog alertDialog = builder.create();
+            AlertDialog alertDialog1 = builder.create();
 
-            alertDialog.show();
+            alertDialog1.show();
         }else{
             Log.i("QR","Error al obtener QR");
         }
     }
+    SectorTrainingAdapter.OnSelectFinDestino onSelectFinDestino = new SectorTrainingAdapter.OnSelectFinDestino() {
+        @Override
+        public void enviarPlataformaClick(final int position) {
+            alertDialog.dismiss();
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                    // Add action buttons
+                    .setTitle("")
+                    .setMessage("Desea confirmar el destino?")
+                    .setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            json = new JSONObject();
+                            String mensaje =Integer.toString(ClienteHTTP_POST.OBTENER_RUTA);
+                            try {
+                                json.put("url",getString(R.string.url));
+                                json.put("OPCION",mensaje);
+                                json.put("ID",chipid);
+                                json.put("MAC",sectorArrayList.get(position).getMac());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Log.i("JSONT",json.toString());
+                            threadCliente_Post =  new ClienteHTTP_POST(TrainingFragment.this);
+                            threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+                            actual = sectorArrayList.get(position).getNombre();
+                            progressBar.setVisibility(View.VISIBLE);
+                        }
+                    })
+                    .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            alertDialog.show();
+                        }
+                    });
+            AlertDialog alertDialog2 = builder.create();
+            alertDialog2.show();
+        }
+    };
+
+
 }
