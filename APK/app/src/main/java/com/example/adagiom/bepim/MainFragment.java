@@ -42,7 +42,6 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
     private SectorAdapter sectorAdapter;
     private ArrayList<Sector> sectorArrayList;
     JSONObject json;
-
     private String chipid;
     SharedPreferences sharedPreferences;
     ArrayList<Sector> sectors;
@@ -72,9 +71,6 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
         chipid = plataforma.getChipid();
         FirebaseMessaging.getInstance().subscribeToTopic(plataforma.getChipid().toString());
         json = new JSONObject();
-        /**Envio de mensaje a servidor**/
-
-        //new ListenerThread().start();
         sectorAdapter = new SectorAdapter(getActivity());
         actualizarSector();
 
@@ -85,7 +81,7 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
         @Override
         public void enviarPlataformaClick(int position) {
             json = new JSONObject();
-            Sector s = (Sector) sectorAdapter.getItem(position);
+            destino = (Sector) sectorAdapter.getItem(position);
             String mensaje =Integer.toString(ClienteHTTP_POST.ENVIAR_RUTA);
             try {
                 json.put("url",ruta);
@@ -93,16 +89,13 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
                 json.put("USER",1);
                 json.put("ID", chipid);
                 json.put("DESDE",plataforma.getIdsector());
-                json.put("HASTA",s.getId());
+                json.put("HASTA",destino.getId());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             threadCliente_Post =  new ClienteHTTP_POST(MainFragment.this);
             threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
-            actual.setText("EN VIAJE...");
-            destino = s;
-            //listenerThread = new ListenerThread();
-            //listenerThread.start();
+
             Log.i("HTTPRequest",json.toString());
         }
     };
@@ -138,6 +131,7 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
 
             }else if(mensaje.getOpcion().equals("OK")) {
                 mostrarToastMake("Atendiendo peticion...");
+                actual.setText("EN VIAJE...");
                 Intent intent = new Intent(getActivity(),ListPlataforma.class);
                 startActivity(intent);
                 getActivity().finish();

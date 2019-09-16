@@ -85,6 +85,16 @@ public class TabsActivity extends AppCompatActivity implements InterfazAsyntask{
                     drawerLayout.closeDrawer(Gravity.START);
                     break;
                 case R.id.btn_plataforma:
+                    String mensaje =Integer.toString(ClienteHTTP_POST.LIBERAR);
+                    try {
+                        json.put("url",ruta);
+                        json.put("OPCION",mensaje);
+                        json.put("ID",plataforma.getChipid());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    threadCliente_Post =  new ClienteHTTP_POST(TabsActivity.this);
+                    threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
                     startActivity(new Intent(TabsActivity.this,ListPlataforma.class));
                     finish();
                     break;
@@ -92,6 +102,7 @@ public class TabsActivity extends AppCompatActivity implements InterfazAsyntask{
                     Log.i("Fragment","Configuración");
                     try {
                         configFragment.setArguments(bundle);
+
                     }catch(Exception e){
 
                     }
@@ -137,8 +148,8 @@ public class TabsActivity extends AppCompatActivity implements InterfazAsyntask{
                 "Si",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        /*
-                        String mensaje =Integer.toString(ClienteHTTP_POST.LIBERAR_PLATAFORMA);
+
+                        String mensaje =Integer.toString(ClienteHTTP_POST.LIBERAR);
                         try {
                             json.put("url",ruta);
                             json.put("OPCION",mensaje);
@@ -148,7 +159,7 @@ public class TabsActivity extends AppCompatActivity implements InterfazAsyntask{
                         }
                         threadCliente_Post =  new ClienteHTTP_POST(TabsActivity.this);
                         threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
-                        */
+
                         dialog.cancel();
                         finish();
                     }

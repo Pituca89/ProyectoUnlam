@@ -37,6 +37,7 @@ public class ClienteHTTP_POST extends AsyncTask<JSONObject , JSONObject ,JSONObj
     static int LIBERAR_PLATAFORMA = 18;
     static int CONSULTAR_LLEGADA_DESTINO = 19;
     static int OBTENER_RUTA = 20;
+    static int LIBERAR = 21;
     private InterfazAsyntask caller;
     private Exception mException=null;
     private JSONObject resp;
