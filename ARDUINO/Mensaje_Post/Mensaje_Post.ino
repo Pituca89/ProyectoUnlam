@@ -8,8 +8,8 @@
 #include <BLEAdvertisedDevice.h>
 //-------------------VARIABLES GLOBALES--------------------------
 
-const char *ssid = "Javo wifi";//"Fibertel WiFi159 2.4GHz";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
-const char *password = "44540006";//"0043442422";//"matiasmanda";//"6761727565";//"SOA.2019";
+const char *ssid = "Fibertel WiFi159 2.4GHz";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
+const char *password = "0043442422";//"matiasmanda";//"6761727565";//"SOA.2019";
 WebServer server(80);   
 int flag = 0;
 int best = -40;

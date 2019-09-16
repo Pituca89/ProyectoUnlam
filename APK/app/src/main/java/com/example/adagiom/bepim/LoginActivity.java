@@ -54,11 +54,23 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
         mAuth = FirebaseAuth.getInstance();
         String psw = sharedPreferences.getString(getString(R.string.token_pass),"");
         pass.setText(psw);
-
+        Log.i("pass",psw.toString());
         if(!psw.equals("")){
-            Intent intent = new Intent(LoginActivity.this, ListPlataforma.class);
-            startActivity(intent);
-            finish();
+            FirebaseUser user = mAuth.getCurrentUser();
+            updateUI(user);
+            json = new JSONObject();
+            String mensaje =Integer.toString(ClienteHTTP_POST.ENVIAR_TOKEN);
+            String token = FirebaseInstanceId.getInstance().getToken();
+            try {
+                json.put("url",ruta);
+                json.put("OPCION",mensaje);
+                json.put("TOKEN",token);
+                json.put("USER",user.getUid());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            threadCliente_Post =  new ClienteHTTP_POST(LoginActivity.this);
+            threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
         }
     }
 

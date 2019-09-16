@@ -20,6 +20,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -40,14 +42,14 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
     private SectorAdapter sectorAdapter;
     private ArrayList<Sector> sectorArrayList;
     JSONObject json;
-    Handler handler;
+
     private String chipid;
     SharedPreferences sharedPreferences;
     ArrayList<Sector> sectors;
-    private static int HANDLER_MESSAGE_ON = 1;
-    private static int HANDLER_MESSAGE_OFF = 0;
+
     Plataforma plataforma;
     static Sector destino;
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -68,11 +70,14 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
         plataforma = (Plataforma) getArguments().getSerializable("plataforma");
         chipid = plataforma.getChipid();
+        FirebaseMessaging.getInstance().subscribeToTopic(plataforma.getChipid().toString());
         json = new JSONObject();
         /**Envio de mensaje a servidor**/
+
+        //new ListenerThread().start();
         sectorAdapter = new SectorAdapter(getActivity());
         actualizarSector();
-        handler = handler_espera_notificacion();
+
         return v;
     }
 
@@ -96,7 +101,8 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
             threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
             actual.setText("EN VIAJE...");
             destino = s;
-            new ListenerThread().start();
+            //listenerThread = new ListenerThread();
+            //listenerThread.start();
             Log.i("HTTPRequest",json.toString());
         }
     };
@@ -114,21 +120,29 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
             Response_Sectores mensaje = gson.fromJson(msg.getString("respuesta"),Response_Sectores.class);
             if(mensaje.getOpcion().equals("SECTORES")) {
                 sectorArrayList = mensaje.getSectores();
-                Iterator<Sector> sectorIterator = sectorArrayList.iterator();
-                while(sectorIterator.hasNext()){
-                    Sector sector = sectorIterator.next();
-                    if(sector.getActual() == 1) {
-                        actual.setText(sector.getNombre());
-                        sectorIterator.remove();
+                if(!sectorArrayList.isEmpty()) {
+                    Iterator<Sector> sectorIterator = sectorArrayList.iterator();
+                    while (sectorIterator.hasNext()) {
+                        Sector sector = sectorIterator.next();
+                        if (sector.getActual() == 1) {
+                            actual.setText(sector.getNombre());
+                            sectorIterator.remove();
+                        }
                     }
+                    sectorAdapter.setData(sectorArrayList);
+                    listSector.setAdapter(sectorAdapter);
+                    sectorAdapter.setListener(onEnviarPlataforma);
+                }else{
+                    mostrarToastMake("Debe registrar el sector de carga");
                 }
-                sectorAdapter.setData(sectorArrayList);
-                listSector.setAdapter(sectorAdapter);
-                sectorAdapter.setListener(onEnviarPlataforma);
+
             }else if(mensaje.getOpcion().equals("OK")) {
                 mostrarToastMake("Atendiendo peticion...");
+                Intent intent = new Intent(getActivity(),ListPlataforma.class);
+                startActivity(intent);
+                getActivity().finish();
             }else if(mensaje.getOpcion().equals("OCUPADO")) {
-                mostrarToastMake("Plataforma en uso, su peticion ha sido procesada");
+                mostrarToastMake("Plataforma en uso");
             }else if(mensaje.getOpcion().equals("ACTUAL")) {
                 actualizarSector();
             }else {
@@ -166,33 +180,5 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
         threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
     }
 
-    public Handler handler_espera_notificacion(){
-        return new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                if(msg.what == HANDLER_MESSAGE_ON){
-                    actual.setText(destino.getNombre().toString());
-                    actualizarSectorActual();
-                }else{
-                    actual.setText("EN VIAJE...");
-                }
-            }
-        };
-    }
 
-    private class ListenerThread extends Thread{
-        NotificationSingleton singleton = new NotificationSingleton().getInstance();
-
-        @Override
-        public void run() {
-            super.run();
-            while(!singleton.isNotification()){
-                Log.i("handler","singleton false");
-                handler.obtainMessage(HANDLER_MESSAGE_OFF).sendToTarget();
-            }
-            handler.obtainMessage(HANDLER_MESSAGE_ON).sendToTarget();
-            singleton.setNotification(false);
-        }
-    }
 }

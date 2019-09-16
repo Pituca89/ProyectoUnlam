@@ -39,6 +39,7 @@ public class SectorFragment extends Fragment implements InterfazAsyntask{
     private SectorListAdapter sectorAdapter;
     private ArrayList<Sector> sectorArrayList;
     JSONObject json;
+    private Sector sector;
     private String chipid;
     SharedPreferences sharedPreferences;
 
@@ -102,10 +103,16 @@ public class SectorFragment extends Fragment implements InterfazAsyntask{
             if(mensaje.getOpcion().equals("SECTORES")) {
                 sectorArrayList = mensaje.getSectores();
                 sectorAdapter.setData(sectorArrayList);
+                sectorAdapter.setListener(onActionSector);
                 listSector.setAdapter(sectorAdapter);
+
             }else if(mensaje.getOpcion().contains("DUPLICADO")){
 
                 mostrarToastMake("Plataforma duplicada");
+
+            }else if(mensaje.getOpcion().contains("ACTUAL")){
+
+                refreshSector();
 
             }else if(mensaje.getOpcion().contains("OK")){
 
@@ -133,6 +140,19 @@ public class SectorFragment extends Fragment implements InterfazAsyntask{
         threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
     }
 
+    public void actualizarSectorActual(){
+        String mensaje =Integer.toString(ClienteHTTP_POST.ACTUALIZAR_SECTOR_ACTUAL);
+        try {
+            json.put("url",ruta);
+            json.put("OPCION",mensaje);
+            json.put("ID",chipid);
+            json.put("ACTUAL",sector.getId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        threadCliente_Post =  new ClienteHTTP_POST(this);
+        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+    }
 
 
     @Override
@@ -183,5 +203,39 @@ public class SectorFragment extends Fragment implements InterfazAsyntask{
         }
     }
 
+    SectorListAdapter.OnActionSector onActionSector = new SectorListAdapter.OnActionSector() {
+        @Override
+        public void onActionEdit(int position) {
+
+        }
+
+        @Override
+        public void onActionDelete(int position) {
+
+        }
+
+        @Override
+        public void onActionChange(int position) {
+            sector = sectorArrayList.get(position);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                    .setTitle("Alerta!")
+                    .setMessage("Desea cambiar la zona de carga?")
+                    .setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            actualizarSectorActual();
+                            mostrarToastMake("Cambio exitoso");
+                        }
+                    })
+                    .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+    };
 
 }

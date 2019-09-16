@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +38,10 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
     static int RESPONSE_QR = 2;
     JSONObject json;
     String iduser;
+    ListenerThread listenerThread;
+    Handler handler;
+    private static int HANDLER_MESSAGE_ON = 1;
+    private static int HANDLER_MESSAGE_OFF = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +51,11 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
         iduser = sharedPreferences.getString(getString(R.string.token_user),"");
         refreshPlataforma();
+        handler = handler_espera_notificacion();
         listPlataforma = (ListView) findViewById(R.id.listPlataforma);
         addPlataforma = (FloatingActionButton) findViewById(R.id.addPlataforma);
-
+        listenerThread = new ListenerThread();
+        listenerThread.start();
         addPlataforma.setOnClickListener(agregarPlataforma);
         plataformaAdapter = new PlataformaAdapter(this);
 
@@ -64,7 +72,17 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
             Plataforma s = (Plataforma) plataformaAdapter.getItem(position);
             Intent intent = new Intent(ListPlataforma.this,TabsActivity.class);
             intent.putExtra("plataforma",s);
-
+            String mensaje =Integer.toString(ClienteHTTP_POST.OCUPAR_PLATAFORMA);
+            try {
+                json.put("url",ruta);
+                json.put("OPCION",mensaje);
+                json.put("ID",s.getChipid());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            threadCliente_Post =  new ClienteHTTP_POST(ListPlataforma.this);
+            threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+            //listenerThread.stop();
             startActivity(intent);
             finish();
         }
@@ -174,5 +192,38 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
         }
         threadCliente_Post =  new ClienteHTTP_POST(this);
         threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+    }
+
+    public Handler handler_espera_notificacion(){
+        return new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if(msg.what == HANDLER_MESSAGE_ON){
+                    mostrarToastMake("Su plataforma llego a destino");
+                    refreshPlataforma();
+                }
+            }
+        };
+    }
+
+    private class ListenerThread extends Thread{
+        NotificationSingleton singleton = new NotificationSingleton().getInstance();
+
+        @Override
+        public void run() {
+            super.run();
+
+            while(!singleton.isNotification()){
+                try {
+                    Thread.sleep(200);
+                    handler.obtainMessage(HANDLER_MESSAGE_OFF).sendToTarget();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            handler.obtainMessage(HANDLER_MESSAGE_ON).sendToTarget();
+            singleton.setNotification(false);
+        }
     }
 }

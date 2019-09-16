@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -37,6 +39,11 @@ public class TabsActivity extends AppCompatActivity implements InterfazAsyntask{
     NavigationView navigationView;
     DrawerLayout drawerLayout;
     BroadcastReceiver broadcastReceiver;
+    private ClienteHTTP_POST threadCliente_Post;
+    private String chipid;
+    JSONObject json;
+    Plataforma plataforma;
+    SharedPreferences sharedPreferences;
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -46,21 +53,33 @@ public class TabsActivity extends AppCompatActivity implements InterfazAsyntask{
             switch (v.getId()) {
                 case R.id.btn_principal:
                     Log.i("Fragment","Principal");
-                    mainFragment.setArguments(bundle);
+                    try {
+                        mainFragment.setArguments(bundle);
+                    }catch(Exception e){
+
+                    }
                     fm.beginTransaction().replace(R.id.container_ly,mainFragment).commit();
                     active = mainFragment;
                     drawerLayout.closeDrawer(Gravity.START);
                     break;
                 case R.id.btn_entrenar:
                     Log.i("Fragment","Entrenar");
-                    trainingFragment.setArguments(bundle);
+                    try {
+                        trainingFragment.setArguments(bundle);
+                    }catch(Exception e){
+
+                    }
                     fm.beginTransaction().replace(R.id.container_ly,trainingFragment).commit();
                     active = trainingFragment;
                     drawerLayout.closeDrawer(Gravity.START);
                     break;
                 case R.id.btn_sectores:
                     Log.i("Fragment","Sectores");
-                    sectorFragment.setArguments(bundle);
+                    try {
+                        sectorFragment.setArguments(bundle);
+                    }catch(Exception e){
+
+                    }
                     fm.beginTransaction().replace(R.id.container_ly,sectorFragment).commit();
                     active = sectorFragment;
                     drawerLayout.closeDrawer(Gravity.START);
@@ -71,7 +90,11 @@ public class TabsActivity extends AppCompatActivity implements InterfazAsyntask{
                     break;
                 case R.id.btn_configuracion:
                     Log.i("Fragment","Configuración");
-                    configFragment.setArguments(bundle);
+                    try {
+                        configFragment.setArguments(bundle);
+                    }catch(Exception e){
+
+                    }
                     fm.beginTransaction().replace(R.id.container_ly,configFragment).commit();
                     active = configFragment;
                     drawerLayout.closeDrawer(Gravity.START);
@@ -89,8 +112,11 @@ public class TabsActivity extends AppCompatActivity implements InterfazAsyntask{
         navigationView.getHeaderView(0).findViewById(R.id.btn_sectores).setOnClickListener(onClickListener);
         navigationView.getHeaderView(0).findViewById(R.id.btn_plataforma).setOnClickListener(onClickListener);
         navigationView.getHeaderView(0).findViewById(R.id.btn_configuracion).setOnClickListener(onClickListener);
-        Plataforma plataforma = (Plataforma) getIntent().getSerializableExtra("plataforma");
+        sharedPreferences = getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
+        ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
+        plataforma = (Plataforma) getIntent().getSerializableExtra("plataforma");
         bundle = new Bundle();
+        json = new JSONObject();
         if(plataforma != null) {
             bundle.putSerializable("plataforma", plataforma);
             fm = getSupportFragmentManager();
@@ -111,6 +137,18 @@ public class TabsActivity extends AppCompatActivity implements InterfazAsyntask{
                 "Si",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        /*
+                        String mensaje =Integer.toString(ClienteHTTP_POST.LIBERAR_PLATAFORMA);
+                        try {
+                            json.put("url",ruta);
+                            json.put("OPCION",mensaje);
+                            json.put("ID",plataforma.getChipid());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        threadCliente_Post =  new ClienteHTTP_POST(TabsActivity.this);
+                        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+                        */
                         dialog.cancel();
                         finish();
                     }

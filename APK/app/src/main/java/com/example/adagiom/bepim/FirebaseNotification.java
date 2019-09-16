@@ -40,13 +40,6 @@ public class FirebaseNotification extends FirebaseMessagingService{
         notificacion.put("mensaje", remoteMessage.getNotification().getBody());
         notificacion.put("action",remoteMessage.getNotification().getClickAction());
 
-        plataforma.setChipid(remoteMessage.getData().get("chipid"));
-        plataforma.setNombre(remoteMessage.getData().get("nombre"));
-        plataforma.setDisponible(Integer.parseInt(remoteMessage.getData().get("disponible")));
-        plataforma.setIp(remoteMessage.getData().get("ip"));
-        plataforma.setSectoract(remoteMessage.getData().get("sectoractual"));
-
-
         if(remoteMessage.getNotification().getBody().contains("LLEGADA")){
                 NotificationSingleton singleton = new NotificationSingleton().getInstance();
                 singleton.setNotification(true);
