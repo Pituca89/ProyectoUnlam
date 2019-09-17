@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:background="@drawable/sombra"
-                android:text="Sector 1"
+                android:text="Registre sector inicial"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="22sp" />

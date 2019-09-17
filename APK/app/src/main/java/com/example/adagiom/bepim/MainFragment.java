@@ -160,19 +160,5 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
         threadCliente_Post =  new ClienteHTTP_POST(MainFragment.this);
         threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
     }
-    public void actualizarSectorActual(){
-        String mensaje =Integer.toString(ClienteHTTP_POST.ACTUALIZAR_SECTOR_ACTUAL);
-        try {
-            json.put("url",ruta);
-            json.put("OPCION",mensaje);
-            json.put("ID",chipid);
-            json.put("ACTUAL",destino.getId());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        threadCliente_Post =  new ClienteHTTP_POST(MainFragment.this);
-        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
-    }
-
 
 }

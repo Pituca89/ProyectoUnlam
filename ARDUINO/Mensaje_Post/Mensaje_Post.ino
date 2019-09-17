@@ -22,8 +22,7 @@ float angulo;
 const char* confirma;//SI: Se verifica la potencia del beacon y se procesa la ruta - NO: No se realiza ninguna accion y la variable "modo" pasa a tener valor MOD_O
 const size_t capacity = JSON_OBJECT_SIZE(4) + JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(5) + JSON_OBJECT_SIZE(8) + 370;
 DynamicJsonDocument root(capacity);   
-DynamicJsonDocument root_pet(capacity);  
-
+DynamicJsonDocument root_pet(capacity);
 const int PinEntrenamiento = 33;
 const int Pin2binario = 27;
 const int Pin1binario = 26;
@@ -87,7 +86,6 @@ String peticionPOSTJSON(int op,int codigo,String dato){
     }
     else
     {
-        Serial.println("error in parsin json body");
         server.send(400);
     }
     return linea;  
@@ -106,8 +104,13 @@ void entrenamientoPOST()
               //macBeacon = root_pet["mac"];
               //confirma = root_pet["confirma"];  
               //angulo = root_pet["angulo"];           
-              server.send(200, "text/plain", "OK");         
-            } // 1             
+              server.send(200, "application/json", "{'opcion':'OK'}");         
+            } // 1   
+            if(root_pet["opcion"] == "BEACON"){
+              modo = "MOD_O";
+              //CONSULTAR POTENCIA AL MODULO BT
+              server.send(200, "application/json", "{'opcion':'P|60'}"); 
+            }          
         }
     }
     else{
@@ -125,7 +128,7 @@ void cambioModo()
         if (server.method() == HTTP_POST){
             if(root["codigo"] == "MODO"){
               modo = root["dato"];
-              server.send(200, "text/plain", "CAMBIO DE MODO");   
+              server.send(200, "application/json", "{'opcion':'CAMBIO DE MODO'}");   
             }             
         }
     }
@@ -148,6 +151,7 @@ int validarBeacon(String mac){
       Serial.println("Encontrado!!");
     }
   }
+  return 60;
 }
  void config_rest_server_routing() {
     server.on("/training", HTTP_POST, entrenamientoPOST);
@@ -155,15 +159,15 @@ int validarBeacon(String mac){
 }
 
 void setup() {
-pinMode(PinEntrenamiento,OUTPUT); 
-pinMode(Pin2binario,OUTPUT);
-pinMode(Pin1binario,OUTPUT); 
-pinMode(Pin0binario,OUTPUT);
-
-digitalWrite(Pin2binario,LOW);
-digitalWrite(Pin1binario,LOW);
-digitalWrite(Pin0binario,LOW);
-digitalWrite(PinEntrenamiento,LOW); 
+  pinMode(PinEntrenamiento,OUTPUT); 
+  pinMode(Pin2binario,OUTPUT);
+  pinMode(Pin1binario,OUTPUT); 
+  pinMode(Pin0binario,OUTPUT);
+  
+  digitalWrite(Pin2binario,LOW);
+  digitalWrite(Pin1binario,LOW);
+  digitalWrite(Pin0binario,LOW);
+  digitalWrite(PinEntrenamiento,LOW); 
 
   Serial.begin(115200);
   
@@ -184,7 +188,7 @@ digitalWrite(PinEntrenamiento,LOW);
 }
 
 void loop() {
-digitalWrite(PinEntrenamiento,LOW);
+  digitalWrite(PinEntrenamiento,LOW);
   //peticionPOSTJSON(13,1,"OBSTACULO"); //metodo de envio de notificación
   server.handleClient(); //espero a que algun cliente se conecte y realice una peticion
   Serial.println(modo);

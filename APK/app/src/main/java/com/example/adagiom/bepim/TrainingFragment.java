@@ -42,6 +42,7 @@ import io.github.controlwear.virtual.joystick.android.JoystickView;
 public class TrainingFragment extends Fragment implements InterfazAsyntask{
 
     private String ruta;
+    private String ruta_esp;
     private String chipid;
     private ClienteHTTP_POST threadCliente_Post;
     SharedPreferences sharedPreferences;
@@ -67,7 +68,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
     static TextView lblsectoractual;
     static ProgressBar progressBar;
     static String actual;
-
+    Sector destino;
     public TrainingFragment() {
         // Required empty public constructor
     }
@@ -127,12 +128,12 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
             @Override
             public void onMove(int angle, int strength) {
 
-                ruta = "http://"+ipPlataforma+"/training";
+                ruta_esp = "http://"+ipPlataforma+"/training";
                 if(strength == 0 && angle == 0){
                     if(estado_anterior != STOP) {
                         estado_anterior = STOP;
                         try {
-                            json.put("url",ruta);
+                            json.put("url",ruta_esp);
                             json.put("opcion", "INST");
                             json.put("sentido", "S");
                         } catch (JSONException e) {
@@ -146,7 +147,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                     if(estado_anterior != FRENTE) {
                         estado_anterior = FRENTE;
                         try {
-                            json.put("url",ruta);
+                            json.put("url",ruta_esp);
                             json.put("opcion", "INST");
                             json.put("sentido", "F");
                         } catch (JSONException e) {
@@ -160,7 +161,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                     if(estado_anterior != IZQUIERDA) {
                         estado_anterior = IZQUIERDA;
                         try {
-                            json.put("url",ruta);
+                            json.put("url",ruta_esp);
                             json.put("opcion", "INST");
                             json.put("sentido", "I");
                         } catch (JSONException e) {
@@ -174,7 +175,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                     if(estado_anterior != DERECHA) {
                         estado_anterior = DERECHA;
                         try {
-                            json.put("url",ruta);
+                            json.put("url",ruta_esp);
                             json.put("opcion", "INST");
                             json.put("sentido", "D");
                         } catch (JSONException e) {
@@ -228,11 +229,16 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
 
             }else if(mensaje.getOpcion().contains("DUPLICADO")){
                 mostrarToastMake("Plataforma duplicada");
-            }else if(mensaje.getOpcion().contains("OK")){
+            }else if(mensaje.getOpcion().contains("P|")){
+                Log.i("RESPONSE",mensaje.getOpcion().toString());
+                actualizarSectorActual();
+                //refreshSector();
+                //progressBar.setVisibility(View.INVISIBLE);
+            }else if(mensaje.getOpcion().contains("ACTUAL")){
                 refreshSector();
                 progressBar.setVisibility(View.INVISIBLE);
             }else{
-                mostrarToastMake("ERROR DE CONEXIÓN");
+                //mostrarToastMake("ERROR DE CONEXIÓN");
             }
         }catch (Exception e){
             mostrarToastMake("NO PRESENTA SECTORES REGISTRADOS");
@@ -244,11 +250,11 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         onClickTraining = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ruta = "http://" + ipPlataforma + "/mode";
+                ruta_esp = "http://" + ipPlataforma + "/mode";
                 switch (view.getId()) {
                     case R.id.btn_comenzar:
                         try {
-                            json.put("url", ruta);
+                            json.put("url", ruta_esp);
                             json.put("codigo", "MODO");
                             json.put("dato", "MOD_E");
                         } catch (JSONException e) {
@@ -347,6 +353,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         @Override
         public void enviarPlataformaClick(final int position) {
             alertDialog.dismiss();
+            destino = sectorArrayList.get(position);
             final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                     // Add action buttons
                     .setTitle("")
@@ -355,12 +362,12 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             json = new JSONObject();
-                            String mensaje =Integer.toString(ClienteHTTP_POST.OBTENER_RUTA);
+                            ruta = "http://" + ipPlataforma + "/training";
                             try {
-                                json.put("url",getString(R.string.url));
-                                json.put("OPCION",mensaje);
-                                json.put("ID",chipid);
-                                json.put("MAC",sectorArrayList.get(position).getMac());
+                                json.put("url",ruta);
+                                json.put("opcion","BEACON");
+                                json.put("id",chipid);
+                                json.put("mac",destino.getMac());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -381,5 +388,17 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         }
     };
 
-
+    public void actualizarSectorActual(){
+        String mensaje =Integer.toString(ClienteHTTP_POST.ACTUALIZAR_SECTOR_ACTUAL);
+        try {
+            json.put("url",getString(R.string.url));
+            json.put("OPCION",mensaje);
+            json.put("ID",chipid);
+            json.put("ACTUAL",destino.getId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        threadCliente_Post =  new ClienteHTTP_POST(TrainingFragment.this);
+        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+    }
 }
