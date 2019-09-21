@@ -51,6 +51,19 @@ if(file_get_contents("php://input")){
 		case ACTUALIZAR_SECTOR_ACTUAL://17
 		    echo $db->registrarSectorActual($data->ID,$data->ACTUAL);
 		break;
+		case OCUPAR_PLATAFORMA: //6
+		    echo $db->ocuparPlataforma($data->ID);
+		break;
+		case LIBERAR_PLATAFORMA: //18
+		    //$db->enviar_notificacion($data->ID,$data->MSJ);
+		    echo $db->liberarPlataforma($data->ID,$data->MSJ);
+		    
+		break;
+		case LIBERAR: //21
+		    //$db->enviar_notificacion($data->ID,$data->MSJ);
+		    echo $db->liberar($data->ID);
+		    
+		break;
 		default: "CODIGO ERRONEO"; break;
 	}
 }

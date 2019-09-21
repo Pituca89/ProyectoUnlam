@@ -197,7 +197,7 @@ class BaseDatos
     }
     /**APK */
     public function registrar_peticion($iduser,$idpl,$codigo,$dato,$destino){
-        $query = "CALL registrarPeticion(".$iduser.",".$idpl.",'".$codigo."','".$dato."');";
+        $query = "CALL registrarPeticion(".$iduser.",".$idpl.",'".$codigo."','".$dato."',".$destino.");";
         if (!$this->conexion->multi_query($query)) {
             echo "Falló CALL: (" . $this->conexion->errno . ") " . $this->conexion->error;
         }  
@@ -245,7 +245,6 @@ class BaseDatos
         $response['actual'] = $destino;
         return json_encode($response);
     }
-    
     public function enviar_notificacion($id,$msj){
 
         $path_to_fcm = 'https://fcm.googleapis.com/fcm/send';
@@ -264,7 +263,7 @@ class BaseDatos
                     $sector_actual = $row[3];
                     $nombre = $row[4];
                     $fields = array(
-                        'to'=>$keyToken, 
+                        'to'=>'/topics/'.$id,//$keyToken, 
                         'notification'=>array(
                             'title'=>"BePIM",
                             'body'=>$msj
@@ -308,5 +307,83 @@ class BaseDatos
             }
         } while ($this->conexion->more_results() && $this->conexion->next_result());
     }
+    
+    public function ocuparPlataforma($id){
+        $query = "call ocuparPlataforma('".$id."');";
+        if(!$result = mysqli_query($this->conexion,$query)) die();
+        
+        else {
+            if($row = $result->fetch_object()){
+                $response['opcion'] = $row->SALIDA;
+            }
+            return json_encode($response);
+        }
+    }
+    public function liberar($id){
+        $query = "call liberar('".$id."');";
+        if(!$result = mysqli_query($this->conexion,$query)) die();
+        
+        else {
+            if($row = $result->fetch_object()){
+                $response['opcion'] = $row->SALIDA;
+            }
+            return json_encode($response);
+        }
+    }
+    public function liberarPlataforma($id,$msj){
+        
+        $query = "call liberarPlataforma('".$id."');";
+        if(!$result = mysqli_query($this->conexion,$query)) die();
+        /*
+        else {
+            if($row = $result->fetch_object()){
+                $response['opcion'] = "ACTUAL";
+                $response['actual'] = $row->SALIDA;
+            }
+            
+        }
+        */
+        //return $this->enviar_notificacion($id,$msj);
+        $path_to_fcm = 'https://fcm.googleapis.com/fcm/send';
+        $server_key='AAAAN6C7Vaw:APA91bHpmvKHGOwhqA1_qYbiJpNEd7VGZ4bt84DLNYfQSBSDy1fKpMha6AUQfSyHYx7bunpBVNHSqdlkWLRtgfiGXg8wYkJFXhxnYpS6q38pDSmKFbF3PaQyfFSOTcaZCMyvwEzCxVxU';
+        $keyToken = $row[5];
+        $ip = $row[1];
+        $disponible = $row[2];
+        $sector_actual = $row[3];
+        $nombre = $row[4];
+        $fields = array(
+            'to'=>'/topics/'.$id,//$keyToken, 
+            'notification'=>array(
+                'title'=>"BePIM",
+                'body'=>$msj
+            ),
+            'data'=>array(
+                'titulo'=>"BePIM",
+                'msj'=> $msj,
+                'chipid'=> $id,
+                'nombre'=> $nombre,
+                'ip'=> $ip,
+                'sectoractual'=> $sector_actual,
+                'disponible'=> $disponible
+            )
+        );
+        $headers = array( 
+            'Authorization:key=' .$server_key,
+            'Content-Type:application/json'
+        );
+        $ch = curl_init($path_to_fcm);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        
+        $resultado = curl_exec($ch);
+        if ($resultado == FALSE)
+            die('Curl failed: ' . curl_error($ch));
+        curl_close($ch);      
+    }
+    
 }
 ?>

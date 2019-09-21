@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements InterfazAsyntask{
         progressBar.setIndeterminate(true);
         sharedPreferences = getSharedPreferences(getString(R.string.key_preference), MODE_PRIVATE);
         json = new JSONObject();
-        uri = sharedPreferences.getString(getString(R.string.path_plataforma),"");
+        uri = getString(R.string.url);//sharedPreferences.getString(getString(R.string.path_plataforma),"");
         String mensaje =Integer.toString(ClienteHTTP_POST.VERIFICAR_CONEXION);
         try {
             json.put("url",uri);
