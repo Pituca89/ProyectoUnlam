@@ -59,11 +59,10 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
             FirebaseUser user = mAuth.getCurrentUser();
             updateUI(user);
             json = new JSONObject();
-            String mensaje =Integer.toString(ClienteHTTP_POST.ENVIAR_TOKEN);
+            String uri = ClienteHTTP_POST.ENVIAR_TOKEN;
             String token = FirebaseInstanceId.getInstance().getToken();
             try {
-                json.put("url",ruta);
-                json.put("OPCION",mensaje);
+                json.put("url",ruta + uri);
                 json.put("TOKEN",token);
                 json.put("USER",user.getUid());
             } catch (JSONException e) {
@@ -90,11 +89,10 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
                                             FirebaseUser user = mAuth.getCurrentUser();
                                             updateUI(user);
                                             json = new JSONObject();
-                                            String mensaje =Integer.toString(ClienteHTTP_POST.ENVIAR_TOKEN);
+                                            String uri = ClienteHTTP_POST.ENVIAR_TOKEN;
                                             String token = FirebaseInstanceId.getInstance().getToken();
                                             try {
-                                                json.put("url",ruta);
-                                                json.put("OPCION",mensaje);
+                                                json.put("url",ruta + uri);
                                                 json.put("TOKEN",token);
                                                 json.put("USER",user.getUid());
                                             } catch (JSONException e) {

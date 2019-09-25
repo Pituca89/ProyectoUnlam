@@ -47,7 +47,11 @@ void loop() {
   if (ESP_BT.available()) //Check if we receive anything from Bluetooth
   {
     dato = ESP_BT.read();
-    
+
+    if (dato == 'X')
+        {        
+        ESP_BT.println("OK");
+        }  
     if (dato == 'F')
         {        
         ESP_BT.println("Avanzando...");
@@ -72,7 +76,7 @@ void loop() {
           mac[i]='\n';
           Serial.println("");
           Serial.print("Received: "); Serial.println(mac);
-          ESP_BT.println("Potencia Beacon: " + validarBeacon(mac));
+          ESP_BT.println("P|" + validarBeacon(mac));
         }  
   }
   delay(20);

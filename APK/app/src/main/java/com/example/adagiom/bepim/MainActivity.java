@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements InterfazAsyntask{
     JSONObject json;
     SharedPreferences sharedPreferences;
     ProgressBar progressBar;
-    String uri;
+    String url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +48,10 @@ public class MainActivity extends AppCompatActivity implements InterfazAsyntask{
         progressBar.setIndeterminate(true);
         sharedPreferences = getSharedPreferences(getString(R.string.key_preference), MODE_PRIVATE);
         json = new JSONObject();
-        uri = getString(R.string.url);//sharedPreferences.getString(getString(R.string.path_plataforma),"");
-        String mensaje =Integer.toString(ClienteHTTP_POST.VERIFICAR_CONEXION);
+        url = getString(R.string.url);//sharedPreferences.getString(getString(R.string.path_plataforma),"");
+        String uri = ClienteHTTP_POST.VERIFICAR_CONEXION;
         try {
-            json.put("url",uri);
-            json.put("OPCION",mensaje);
+            json.put("url",url + uri);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -83,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements InterfazAsyntask{
                 progressBar.setIndeterminate(false);
                 Intent intent = new Intent(this, LoginActivity.class);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(getString(R.string.path_plataforma),uri);
+                editor.putString(getString(R.string.path_plataforma),url);
                 editor.commit();
                 startActivity(intent);
                 finish();

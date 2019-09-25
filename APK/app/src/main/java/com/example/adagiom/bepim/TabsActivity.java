@@ -85,10 +85,9 @@ public class TabsActivity extends AppCompatActivity implements InterfazAsyntask{
                     drawerLayout.closeDrawer(Gravity.START);
                     break;
                 case R.id.btn_plataforma:
-                    String mensaje =Integer.toString(ClienteHTTP_POST.LIBERAR);
+                    String uri = ClienteHTTP_POST.LIBERAR;
                     try {
-                        json.put("url",ruta);
-                        json.put("OPCION",mensaje);
+                        json.put("url",ruta + uri);
                         json.put("ID",plataforma.getChipid());
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -149,10 +148,9 @@ public class TabsActivity extends AppCompatActivity implements InterfazAsyntask{
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        String mensaje =Integer.toString(ClienteHTTP_POST.LIBERAR);
+                        String uri = ClienteHTTP_POST.LIBERAR;
                         try {
-                            json.put("url",ruta);
-                            json.put("OPCION",mensaje);
+                            json.put("url",ruta + uri);
                             json.put("ID",plataforma.getChipid());
                         } catch (JSONException e) {
                             e.printStackTrace();

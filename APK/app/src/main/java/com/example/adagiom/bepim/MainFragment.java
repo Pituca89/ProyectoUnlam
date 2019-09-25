@@ -82,10 +82,9 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
         public void enviarPlataformaClick(int position) {
             json = new JSONObject();
             destino = (Sector) sectorAdapter.getItem(position);
-            String mensaje =Integer.toString(ClienteHTTP_POST.ENVIAR_RUTA);
+            String uri = ClienteHTTP_POST.ENVIAR_RUTA;
             try {
-                json.put("url",ruta);
-                json.put("OPCION",mensaje);
+                json.put("url",ruta + uri);
                 json.put("USER",1);
                 json.put("ID", chipid);
                 json.put("DESDE",plataforma.getIdsector());
@@ -149,10 +148,9 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
     }
 
     public void actualizarSector(){
-        String mensaje =Integer.toString(ClienteHTTP_POST.SECTORES);
+        String uri = ClienteHTTP_POST.SECTORES;
         try {
-            json.put("url",ruta);
-            json.put("OPCION",mensaje);
+            json.put("url",ruta + uri);
             json.put("ID",chipid);
         } catch (JSONException e) {
             e.printStackTrace();

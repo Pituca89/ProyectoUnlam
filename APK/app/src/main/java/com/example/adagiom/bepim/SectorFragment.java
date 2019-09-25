@@ -128,10 +128,9 @@ public class SectorFragment extends Fragment implements InterfazAsyntask{
     }
     public void refreshSector(){
         json = new JSONObject();
-        String mensaje =Integer.toString(ClienteHTTP_POST.SECTORES);
+        String uri = ClienteHTTP_POST.SECTORES;
         try {
-            json.put("url",ruta);
-            json.put("OPCION",mensaje);
+            json.put("url",ruta + uri);;
             json.put("ID",chipid);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -141,10 +140,9 @@ public class SectorFragment extends Fragment implements InterfazAsyntask{
     }
 
     public void actualizarSectorActual(){
-        String mensaje =Integer.toString(ClienteHTTP_POST.ACTUALIZAR_SECTOR_ACTUAL);
+        String uri = ClienteHTTP_POST.ACTUALIZAR_SECTOR_ACTUAL;
         try {
-            json.put("url",ruta);
-            json.put("OPCION",mensaje);
+            json.put("url",ruta + uri);
             json.put("ID",chipid);
             json.put("ACTUAL",sector.getId());
         } catch (JSONException e) {
@@ -170,11 +168,10 @@ public class SectorFragment extends Fragment implements InterfazAsyntask{
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             json = new JSONObject();
-                            String mensaje =Integer.toString(ClienteHTTP_POST.ASOCIAR_SECTOR);
+                            String uri = ClienteHTTP_POST.ASOCIAR_SECTOR;
 
                             try {
-                                json.put("url",ruta);
-                                json.put("OPCION",mensaje);
+                                json.put("url",ruta + uri);
                                 json.put("ID",chipid);
                                 json.put("MAC",intentResult.getContents());
                                 if(nombreSector.getText().toString() != ""){

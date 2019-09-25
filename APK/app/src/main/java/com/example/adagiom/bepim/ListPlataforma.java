@@ -72,10 +72,9 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
             Plataforma s = (Plataforma) plataformaAdapter.getItem(position);
             Intent intent = new Intent(ListPlataforma.this,TabsActivity.class);
             intent.putExtra("plataforma",s);
-            String mensaje =Integer.toString(ClienteHTTP_POST.OCUPAR_PLATAFORMA);
+            String uri = ClienteHTTP_POST.OCUPAR_PLATAFORMA;
             try {
-                json.put("url",ruta);
-                json.put("OPCION",mensaje);
+                json.put("url",ruta + uri);
                 json.put("ID",s.getChipid());
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -115,11 +114,10 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             json = new JSONObject();
-                            String mensaje =Integer.toString(ClienteHTTP_POST.ASOCIAR_PLATAFORMA);
+                            String uri = ClienteHTTP_POST.ASOCIAR_PLATAFORMA;
 
                             try {
-                                json.put("url",ruta);
-                                json.put("OPCION",mensaje);
+                                json.put("url",ruta + uri);
                                 json.put("USER",iduser);
                                 json.put("ID",intentResult.getContents());
                                 if(nombreplataforma.getText().toString() != ""){
@@ -182,10 +180,9 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
     }
     public void refreshPlataforma(){
         json = new JSONObject();
-        String mensaje =Integer.toString(ClienteHTTP_POST.PLATAFORMA);
+        String uri = ClienteHTTP_POST.PLATAFORMA;
         try {
-            json.put("url",ruta);
-            json.put("OPCION",mensaje);
+            json.put("url",ruta + uri);
             json.put("USER",iduser);
         } catch (JSONException e) {
             e.printStackTrace();
