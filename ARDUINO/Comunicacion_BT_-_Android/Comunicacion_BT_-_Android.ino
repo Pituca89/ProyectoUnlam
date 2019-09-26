@@ -15,7 +15,7 @@ int best = -40;
 char mac[18];
 //int LED_BUILTIN = 2;
 String validarBeacon(char* mac){
-  String potencia;
+  String potencia = "";
   BLEDevice::init("");
   BLEScan* pBLEScan = BLEDevice::getScan(); //create new scan
   pBLEScan->setActiveScan(true); //active scan uses more power, but get results faster
@@ -24,11 +24,14 @@ String validarBeacon(char* mac){
   for (int i = 0; i < foundDevices.getCount(); i++) {
     BLEAdvertisedDevice device = foundDevices.getDevice(i);  
     BLEAddress macAdd = device.getAddress();  
+    
     String dato1 = String(mac);
+    dato1.toLowerCase();//equalsIgnoreCase()
     String dato2 = String(macAdd.toString().c_str());
-    if (dato1 == dato1) {
+    if (dato1 == dato2) {
       potencia = String(device.getRSSI(),DEC);
       Serial.println("Encontrado!!");
+      Serial.println(macAdd.toString().c_str());
     }
   }
   return potencia;
@@ -73,10 +76,16 @@ void loop() {
             i++;
             dato = ESP_BT.read();
            }
-          mac[i]='\n';
+          //mac[i]='\n';
           Serial.println("");
           Serial.print("Received: "); Serial.println(mac);
-          ESP_BT.println("P|" + validarBeacon(mac));
+          String pcia = validarBeacon(mac);
+          if(pcia != ""){
+            ESP_BT.println("P|" + pcia);
+          }
+          else{
+            ESP_BT.println("ERROR");
+          }
         }  
   }
   delay(20);

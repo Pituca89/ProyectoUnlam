@@ -816,6 +816,10 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                             actualizarSectorActual();
                             progressBar.setVisibility(View.INVISIBLE);
                         }
+                        if(dataInPrint.contains("ERROR")) {
+                            mostrarToastMake("Error de procesamiento");
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
                         recDataString.delete(0, recDataString.length());
                     }
                 }

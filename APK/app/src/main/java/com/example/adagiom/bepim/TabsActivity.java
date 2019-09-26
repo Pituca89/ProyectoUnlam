@@ -116,6 +116,7 @@ public class TabsActivity extends AppCompatActivity implements InterfazAsyntask{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabs);
+
         navigationView =(NavigationView) findViewById(R.id.navigationView);
         navigationView.getHeaderView(0).findViewById(R.id.btn_principal).setOnClickListener(onClickListener);
         navigationView.getHeaderView(0).findViewById(R.id.btn_entrenar).setOnClickListener(onClickListener);
