@@ -14,6 +14,12 @@ char dato = ' ';
 int best = -40;
 char mac[18];
 //int LED_BUILTIN = 2;
+
+const int PinEntrenamiento = 33;
+const int Pin2binario = 27;
+const int Pin1binario = 26;
+const int Pin0binario = 25;
+
 String validarBeacon(char* mac){
   String potencia = "";
   BLEDevice::init("");
@@ -30,42 +36,77 @@ String validarBeacon(char* mac){
     String dato2 = String(macAdd.toString().c_str());
     if (dato1 == dato2) {
       potencia = String(device.getRSSI(),DEC);
-      Serial.println("Encontrado!!");
-      Serial.println(macAdd.toString().c_str());
+      //Serial.println("Encontrado!!");
+      //Serial.println(macAdd.toString().c_str());
     }
   }
   return potencia;
 }
 void setup() {
-  Serial.begin(9600); //Start Serial monitor in 9600
+  Serial.begin(115200); //Start Serial monitor in 9600
   //uint64_t chip = ESP.getEfuseMac();
   ESP_BT.begin("BePIM_"); //Name of your Bluetooth Signal
-  Serial.println("Dispositivo emparejado");
+  //Serial.println("Dispositivo emparejado");
   //mac = ' ';
   //pinMode (LED_BUILTIN, OUTPUT);//Specify that LED pin is output
+  
+pinMode(PinEntrenamiento,OUTPUT); 
+pinMode(Pin2binario,OUTPUT);
+pinMode(Pin1binario,OUTPUT); 
+pinMode(Pin0binario,OUTPUT);
+
+digitalWrite(Pin2binario,LOW);
+digitalWrite(Pin1binario,LOW);
+digitalWrite(Pin0binario,LOW);
+digitalWrite(PinEntrenamiento,LOW); 
+
 }
 
 void loop() {
-  
-  if (ESP_BT.available()) //Check if we receive anything from Bluetooth
+ 
+
+  while (ESP_BT.available()) //Check if we receive anything from Bluetooth
   {
+   digitalWrite(PinEntrenamiento,HIGH);  
+    /*  codigo binario de entrenamiento Pin2binario Pin1binario Pin0binario
+             *  0 0 0 : plataforma detenida (S)
+             *  0 0 1 : avanzar (F)
+             *  0 1 0 : girar derecha (D)
+             *  1 0 0 : girar izquierda (I)
+             */
     dato = ESP_BT.read();
 
     if (dato == 'X')
         {        
         ESP_BT.println("OK");
         }  
+    if (dato == 'S')
+        {        
+        //ESP_BT.println("OK");
+        digitalWrite(Pin2binario,LOW);
+        digitalWrite(Pin1binario,LOW);
+        digitalWrite(Pin0binario,LOW);
+        }  
     if (dato == 'F')
         {        
-        ESP_BT.println("Avanzando...");
+        //ESP_BT.println("Avanzando...");
+        digitalWrite(Pin2binario,LOW);
+        digitalWrite(Pin1binario,LOW);
+        digitalWrite(Pin0binario,HIGH); 
         }       
     if (dato == 'D')
         {
-        ESP_BT.println("Girando a la derecha...");
+        //ESP_BT.println("Girando a la derecha...");
+        digitalWrite(Pin2binario,LOW);
+        digitalWrite(Pin1binario,HIGH);
+        digitalWrite(Pin0binario,LOW);
         }     
     if (dato == 'I')
         {
-        ESP_BT.println("Girando a la izquierda...");
+        //ESP_BT.println("Girando a la izquierda...");
+        digitalWrite(Pin2binario,HIGH);
+        digitalWrite(Pin1binario,LOW);
+        digitalWrite(Pin0binario,LOW);
         }  
     if (dato == 'P')
         {
@@ -77,16 +118,35 @@ void loop() {
             dato = ESP_BT.read();
            }
           //mac[i]='\n';
-          Serial.println("");
-          Serial.print("Received: "); Serial.println(mac);
-          String pcia = validarBeacon(mac);
-          if(pcia != ""){
-            ESP_BT.println("P|" + pcia);
-          }
+          //Serial.println("");
+          //Serial.print("Received: "); Serial.println(mac);
+          int Banderapcia = 0;
+          String pcia;
+          while(Banderapcia == 0)
+            { 
+            pcia = validarBeacon(mac);
+            if(pcia != "")
+              {
+              //ESP_BT.println("P|" + pcia);
+              Banderapcia = 1;
+              }
           else{
-            ESP_BT.println("ERROR");
+              ESP_BT.println("ERROR");
+              }
+            }
+         digitalWrite(PinEntrenamiento,LOW);
+
+         ESP_BT.println(Serial.readStringUntil('$')+"P|" + pcia);
+        /*
+        caux = Serial.read();
+        if (caux != '|' && caux != '#')
+          {
+          intermedio += caux;
           }
+        ESP_BT.println(intermedio);*/
         }  
   }
+
+
   delay(20);
 }
