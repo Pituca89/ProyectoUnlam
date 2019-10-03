@@ -198,6 +198,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
                 super.handleMessage(msg);
                 if(msg.what == HANDLER_MESSAGE_ON){
                     mostrarToastMake("Su plataforma llego a destino");
+                    Log.i("Notificacion","Recibi mensaje");
                     refreshPlataforma();
                 }
             }

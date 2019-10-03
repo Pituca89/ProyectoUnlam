@@ -89,6 +89,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
     static ProgressBar progressBar;
     static String actual;
     Sector destino;
+    Sector origen;
     private ProgressDialog mProgressDlg;
     private ArrayList<BluetoothDevice> mDeviceList = new ArrayList<BluetoothDevice>();
     private BluetoothAdapter mBluetoothAdapter;
@@ -274,6 +275,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                 while(sectorIterator.hasNext()){
                     Sector sector = sectorIterator.next();
                     if(sector.getActual() == 1) {
+                        origen = sector;
                         lblsectoractual.setText("Partiendo del sector: " + sector.getNombre());
                         sectorIterator.remove();
                     }
@@ -284,19 +286,18 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
 
             }else if(mensaje.getOpcion().contains("DUPLICADO")){
                 mostrarToastMake("Plataforma duplicada");
-            }else if(mensaje.getOpcion().contains("P|")){
-                Log.i("RESPONSE",mensaje.getOpcion().toString());
-                actualizarSectorActual();
-                //refreshSector();
-                //progressBar.setVisibility(View.INVISIBLE);
             }else if(mensaje.getOpcion().contains("ACTUAL")){
                 refreshSector();
                 progressBar.setVisibility(View.INVISIBLE);
+            }else if(mensaje.getOpcion().contains("RUTA")){
+                //refreshSector();
+                actualizarSectorActual();
             }else{
                 //mostrarToastMake("ERROR DE CONEXIÓN");
             }
         }catch (Exception e){
-            mostrarToastMake("NO PRESENTA SECTORES REGISTRADOS");
+            progressBar.setVisibility(View.INVISIBLE);
+            mostrarToastMake("ERROR DE SERVIDOR");
         }
     }
     View.OnClickListener onClickTraining;
@@ -442,6 +443,19 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
     }
 
+    public void registrarRuta( String ruta,int desde, int hasta){
+        String uri = ClienteHTTP_POST.REG_RUTA;
+        try {
+            json.put("url",getString(R.string.url) + uri);
+            json.put("DESDE",desde);
+            json.put("HASTA",hasta);
+            json.put("RUTA",ruta);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        threadCliente_Post =  new ClienteHTTP_POST(TrainingFragment.this);
+        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+    }
     protected  void enableComponent()
     {
 
@@ -813,8 +827,9 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                         //txtPotenciometro.setText(dataInPrint);
                         Log.i("BT",dataInPrint.toString());
                         if(dataInPrint.contains("P|")) {
-                            actualizarSectorActual();
-                            progressBar.setVisibility(View.INVISIBLE);
+                            //actualizarSectorActual();
+                            //progressBar.setVisibility(View.INVISIBLE);
+                            registrarRuta(dataInPrint.toString(),origen.getId(),destino.getId());
                         }
                         if(dataInPrint.contains("ERROR")) {
                             mostrarToastMake("Error de procesamiento");

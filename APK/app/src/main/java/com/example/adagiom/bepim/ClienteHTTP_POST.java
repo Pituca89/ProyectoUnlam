@@ -22,7 +22,7 @@ public class ClienteHTTP_POST extends AsyncTask<JSONObject , JSONObject ,JSONObj
     //static int CONECTAR = 0;
     static String ENVIAR_RUTA = "/enviar_peticion";
     //static int REG_PLATAFORMA = 2;
-    //static int REG_RUTA = 3;
+    static String REG_RUTA = "/registrar_ruta";
     //static int REG_USUARIO = 4;
     //static int PLATAFORMA_DISPONIBLE = 5;
     static String OCUPAR_PLATAFORMA = "/ocupar_plataforma";

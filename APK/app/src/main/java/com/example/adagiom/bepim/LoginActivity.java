@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
                 json.put("url",ruta + uri);
                 json.put("TOKEN",token);
                 json.put("USER",user.getUid());
+                json.put("EMAIL",user.getEmail());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -95,6 +96,7 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
                                                 json.put("url",ruta + uri);
                                                 json.put("TOKEN",token);
                                                 json.put("USER",user.getUid());
+                                                json.put("EMAIL",user.getEmail());
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
                                             }
