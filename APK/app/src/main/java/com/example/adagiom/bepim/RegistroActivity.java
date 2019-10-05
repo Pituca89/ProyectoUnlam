@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -40,7 +41,9 @@ public class RegistroActivity extends AppCompatActivity  implements InterfazAsyn
     EditText user;
     EditText pass;
     EditText confpass;
+    private ClienteHTTP_POST threadCliente_Post;
     String ruta;
+    JSONObject json;
     SharedPreferences sharedPreferences;
     private static String TAG = "FirebaseLogin";
     FirebaseAuth mAuth;
@@ -62,6 +65,23 @@ public class RegistroActivity extends AppCompatActivity  implements InterfazAsyn
 
     @Override
     public void VerificarMensaje(JSONObject msj)  {
+        Gson gson = new Gson();
+        try{
+            Response_Plataforma mensaje = gson.fromJson(msj.getString("respuesta"),Response_Plataforma.class);
+            if(mensaje.getOpcion().equals("USER")) {
+                sharedPreferences.edit()
+                        .putString(getString(R.string.token_pass),pass.getText().toString())
+                        .commit();
+                Intent intent = new Intent(RegistroActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }else{
+                //ip.setEnabled(true);
+                mostrarToastMake("ERROR DE CONEXIÓN");
+            }
+        }catch (Exception e){
+            mostrarToastMake("ERROR EN SERVIDOR");
+        }
     }
     @Override
     protected void onStart() {
@@ -86,9 +106,18 @@ public class RegistroActivity extends AppCompatActivity  implements InterfazAsyn
                                             Log.d(TAG, "createUserWithEmail:success");
                                             FirebaseUser user = mAuth.getCurrentUser();
                                             updateUI(user);
-                                            Intent intent = new Intent(RegistroActivity.this,LoginActivity.class);
-                                            startActivity(intent);
-                                            finish();
+                                            json = new JSONObject();
+                                            String uri = ClienteHTTP_POST.REG_USER_APP;
+                                            String token = FirebaseInstanceId.getInstance().getToken();
+                                            try {
+                                                json.put("url",ruta + uri);
+                                                json.put("USER_ID",user.getUid());
+                                                json.put("EMAIL",user.getEmail());
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                            threadCliente_Post =  new ClienteHTTP_POST(RegistroActivity.this);
+                                            threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
                                         } else {
                                             // If sign in fails, display a message to the user.
                                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -116,6 +145,7 @@ public class RegistroActivity extends AppCompatActivity  implements InterfazAsyn
     private void updateUI(FirebaseUser currentUser) {
         if(currentUser != null){
             user.setText(currentUser.getEmail());
+
         }
     }
 

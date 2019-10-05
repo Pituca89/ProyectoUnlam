@@ -2,6 +2,7 @@ package com.example.adagiom.bepim;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,6 +38,7 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
     JSONObject json;
     SharedPreferences sharedPreferences;
     private FirebaseAuth mAuth;
+    private ProgressDialog mProgressDlg;
     private static String TAG = "FirebaseLogin";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,23 +57,10 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
         String psw = sharedPreferences.getString(getString(R.string.token_pass),"");
         pass.setText(psw);
         Log.i("pass",psw.toString());
-        if(!psw.equals("")){
-            FirebaseUser user = mAuth.getCurrentUser();
-            updateUI(user);
-            json = new JSONObject();
-            String uri = ClienteHTTP_POST.ENVIAR_TOKEN;
-            String token = FirebaseInstanceId.getInstance().getToken();
-            try {
-                json.put("url",ruta + uri);
-                json.put("TOKEN",token);
-                json.put("USER",user.getUid());
-                json.put("EMAIL",user.getEmail());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            threadCliente_Post =  new ClienteHTTP_POST(LoginActivity.this);
-            threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
-        }
+        mProgressDlg = new ProgressDialog(this);
+        mProgressDlg.setMessage("Ingresando...");
+        mProgressDlg.setCancelable(false);
+        mProgressDlg.show();
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -80,7 +69,6 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
 
             switch (v.getId()){
                 case R.id.btn_ingresar:
-
                     if(!user.getText().toString().isEmpty() && !pass.getText().toString().isEmpty()) {
                         mAuth.signInWithEmailAndPassword(user.getText().toString(), pass.getText().toString())
                                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -128,7 +116,34 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
         // Check if user is signed in (non-null) and update UI accordingly.}
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-
+        if(!user.getText().toString().isEmpty() && !pass.getText().toString().isEmpty()) {
+            mAuth.signInWithEmailAndPassword(user.getText().toString(), pass.getText().toString())
+                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                updateUI(user);
+                                json = new JSONObject();
+                                String uri = ClienteHTTP_POST.ENVIAR_TOKEN;
+                                String token = FirebaseInstanceId.getInstance().getToken();
+                                try {
+                                    json.put("url",ruta + uri);
+                                    json.put("TOKEN",token);
+                                    json.put("USER",user.getUid());
+                                    json.put("EMAIL",user.getEmail());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                threadCliente_Post =  new ClienteHTTP_POST(LoginActivity.this);
+                                threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+                            } else {
+                                mostrarToastMake("El email o la contraseña son incorrectos");
+                                updateUI(null);
+                            }
+                        }
+                    });
+        }
     }
 
 
@@ -183,14 +198,17 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
                 sharedPreferences.edit()
                         .putString(getString(R.string.token_pass),pass.getText().toString())
                         .commit();
+                mProgressDlg.dismiss();
                 startActivity(intent);
                 finish();
             }else{
                 //ip.setEnabled(true);
                 mostrarToastMake("ERROR DE CONEXIÓN");
+                mProgressDlg.dismiss();
             }
         }catch (Exception e){
             mostrarToastMake("ERROR EN SERVIDOR");
+            mProgressDlg.dismiss();
         }
     }
 

@@ -95,7 +95,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothSocket btSocket = null;
     private StringBuilder recDataString = new StringBuilder();
-
+    private String [] datos;
     private ConnectedThread mConnectedThread;
     public static final int MULTIPLE_PERMISSIONS = 10; // code you want.
     private DeviceListAdapter mAdapter;
@@ -443,13 +443,14 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
     }
 
-    public void registrarRuta( String ruta,int desde, int hasta){
+    public void registrarRuta( String ruta,int desde, int hasta,int potencia){
         String uri = ClienteHTTP_POST.REG_RUTA;
         try {
             json.put("url",getString(R.string.url) + uri);
             json.put("DESDE",desde);
             json.put("HASTA",hasta);
             json.put("RUTA",ruta);
+            json.put("POTENCIA",potencia);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -826,10 +827,11 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                         String dataInPrint = recDataString.substring(0, endOfLineIndex);
                         //txtPotenciometro.setText(dataInPrint);
                         Log.i("BT",dataInPrint.toString());
-                        if(dataInPrint.contains("P|")) {
+                        if(dataInPrint.contains("P")) {
                             //actualizarSectorActual();
                             //progressBar.setVisibility(View.INVISIBLE);
-                            registrarRuta(dataInPrint.toString(),origen.getId(),destino.getId());
+                            datos = dataInPrint.split("'P'");
+                            registrarRuta(datos[0].toString(),origen.getId(),destino.getId(),Integer.parseInt(datos[1].toString()));
                         }
                         if(dataInPrint.contains("ERROR")) {
                             mostrarToastMake("Error de procesamiento");

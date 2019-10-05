@@ -6,8 +6,8 @@
 #include <WiFiClient.h> 
 //-------------------VARIABLES GLOBALES--------------------------
 
-const char *ssid = "Fibertel WiFi159 2.4GHz";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
-const char *password = "0043442422";//"6761727565";//"SOA.2019";
+const char *ssid = "MatiasWiFi";//"Fibertel WiFi159 2.4GHz";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
+const char *password = "44540006";//"0043442422";//"6761727565";//"SOA.2019";
 ESP8266WebServer server(80);   
 int flag = 0;
 int scanTime = 1; //In seconds
@@ -19,6 +19,9 @@ const char* confirma;//SI: Se verifica la potencia del beacon y se procesa la ru
 const size_t capacity = JSON_OBJECT_SIZE(3) + 370;
 DynamicJsonDocument root(capacity);   
 DynamicJsonDocument root_pet(capacity);
+char caux;
+int flagBasuraSerial;
+const int PIN_ENVIO_SERIAL = D1;
 
 String peticionPOSTJSON(String host,String msj){
 
@@ -76,6 +79,9 @@ void cambioModo()
 
 void setup() {
 
+  pinMode(PIN_ENVIO_SERIAL,OUTPUT);
+  
+  
   Serial.begin(9600);
   
   WiFi.begin (ssid, password);
@@ -106,14 +112,40 @@ void loop() {
     peticionPOSTJSON("http://www.gestiondenegocio.esy.es/obtener_peticion","");
     //peticionPOSTJSON("obstaculo","OBSTACULO");
     //peticionPOSTJSON("liberar_plataforma","LLEGADA");
-    if(response != ""){     
+    if(response != ""){  
+      digitalWrite(PIN_ENVIO_SERIAL,HIGH);
+      delay(100);
+      digitalWrite(PIN_ENVIO_SERIAL,LOW);   
       //enviar un pulso por algun pin para avisar el envio de una ruta
       //enviar "response" por serial
       //aguardar algun pulso proveniente de arduino para avisar que ejecuto la ruta
-      Serial.println(response);
+      Serial.print(response);
       response = "";
     }
   }
-  delay(10000);
-  peticionPOSTJSON("http://www.gestiondenegocio.esy.es/liberar_plataforma","LLEGADA");
+  
+  if (Serial.available()) {
+      flagBasuraSerial=0;
+      while (Serial.available() && caux != '1'&& caux != '2'&& caux != '3'&& caux != '4')   //while (Serial.available() && caux != '#' && flagSerial == 1)
+      {
+       if (flagBasuraSerial == 0)
+        {
+         do{
+            caux = Serial.read();      //en busca del inicio de cadena con "-"
+          }while (caux != '-');
+         flagBasuraSerial=1;
+       //Serial.println("detecto -   INICIO DE CADENA");
+         }
+      
+      caux = Serial.read();
+      if (caux == '1')
+        {
+          Serial.println("se detecto 1 por serial");
+          peticionPOSTJSON("http://www.gestiondenegocio.esy.es/liberar_plataforma","OBSTACULO");
+          caux='a';
+        }
+      }
+  }
+  //delay(10000);
+  //peticionPOSTJSON("http://www.gestiondenegocio.esy.es/liberar_plataforma","LLEGADA");
 }
