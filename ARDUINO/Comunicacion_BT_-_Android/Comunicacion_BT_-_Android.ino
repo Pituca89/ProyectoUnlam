@@ -136,7 +136,7 @@ void loop() {
             }
          digitalWrite(PinEntrenamiento,LOW);
 
-         ESP_BT.println(Serial.readStringUntil('$')+"P|" + pcia);
+         ESP_BT.println(Serial.readStringUntil('$')+"P" + pcia);
         /*
         caux = Serial.read();
         if (caux != '|' && caux != '#')
