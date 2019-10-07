@@ -9,6 +9,8 @@ const int Pin1binario = 26;
 const int Pin0binario = 24;
 
 const int PinProxiFrontal = 52;     // Pin para el sensor de proximidad frontal
+const int PinProxiIzquierdo = 51;     // Pin para el sensor de proximidad Izquierdo
+const int PinProxiDerecho = 53;     // Pin para el sensor de proximidad Derecho
 const int intPinSerial = 2;   // pin de interrupcion para recibir ruta por serial1 desde wifi
 
 String rutaEntrenamiento; 
@@ -35,7 +37,7 @@ int flagPrimerInstruccionEntrenamiento;
 int contObstaculo;
 
 #define delaiPulsos 2500       // microsegundos entre pulsos, menor numero mayor velocidad de giro 
-#define desvioObstaculo 300    // pasos para esquivar un obstaculo
+#define desvioObstaculo 800    // pasos MAXIMOS de desvio para esquivar un obstaculo
 
 
 void setup() {
@@ -45,6 +47,8 @@ pinMode(stepPinDER,OUTPUT);
 pinMode(dirPinDER,OUTPUT);
 
 pinMode(PinProxiFrontal,INPUT); 
+pinMode(PinProxiIzquierdo,INPUT); 
+pinMode(PinProxiDerecho,INPUT); 
 
 pinMode(PinEntrenamiento,INPUT); 
 pinMode(Pin2binario,INPUT);
@@ -144,39 +148,39 @@ if(flagSerial==1)
     k=0;
     if (ruta[h].sentido == 'F')
       {
+      Serial.println("Ejecuta avance");
       while (k < ruta[h].pasos)
         {
+          /*
         contObstaculo=0;
-        if (digitalRead(PinProxiFrontal) == LOW){Serial1.print("-1");}    //alerta de obstaculo
+        if (digitalRead(PinProxiFrontal) == LOW){Serial1.print("-1");Serial.println("OBSTACULO");}    //alerta de obstaculo
           while((digitalRead(PinProxiFrontal) == LOW)&&(contObstaculo<5))    
             {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
             delay(1000);
             contObstaculo++;
             }
-        if((contObstaculo==5)&&((k+desvioObstaculo)<ruta[h].pasos))
+        if((contObstaculo==5))
           {
+          GirarIzquierda(209);
           m=0;
-          while (m <= 205)  //valor empirico de giro a 90 grados
+          while ((digitalRead(PinProxiDerecho) == LOW)&&(m <= desvioObstaculo))
             {
-            GirarIzquierda();
-            m++;
-            }
-          m=0;
-          while (m <= desvioObstaculo)
-            {
-            if (digitalRead(PinProxiFrontal) == LOW){Serial1.print("-1");}//alerta de obstaculo
-            while((digitalRead(PinProxiFrontal) == LOW))    
-              {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
+            contObstaculo=0;
+            if (digitalRead(PinProxiFrontal) == LOW)
+              {Serial1.print("-1");Serial.println("OBSTACULO");    //alerta de obstaculo
+              while((digitalRead(PinProxiFrontal) == LOW)&&(contObstaculo<5))    
+                {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
+                delay(1000);
+                contObstaculo++;
+                }
               }
+            
+            }//alerta de obstaculo
+            
             Avance();
             m++;
-            }
-          m=0;
-          while (m <= 205)  //valor empirico de giro a 90 grados
-            {
-            GirarDerecha();
-            m++;
-            }
+            
+            GirarDerecha(209);
           m=0;
           while (m <= desvioObstaculo)
             {
@@ -187,13 +191,7 @@ if(flagSerial==1)
             Avance();
             m++;
             } 
-           m=0;
-          while (m <= 205)  //valor empirico de giro a 90 grados
-            {
-            GirarDerecha();
-            m++;
-            } 
-          
+          GirarDerecha(209);
         m=0;
         while (m <= desvioObstaculo)
             {
@@ -204,38 +202,37 @@ if(flagSerial==1)
             Avance();
             m++;
             }
-         m=0;
-          while (m <= 205)  //valor empirico de giro a 90 grados
-            {
-            GirarIzquierda();
-            m++;
-            } 
+          GirarIzquierda(209);
           k=k+desvioObstaculo;
           }
+        */
         Avance();
         k++;
         }
-      }
+        }
+      
     if (ruta[h].sentido == 'D')
       {
+      Serial.println("Ejecuta Giro Derecha");
       while (k <= ruta[h].pasos)
         {
-        GirarDerecha();
+        GirarDerecha(1);
         k++;
         }
       }
     if (ruta[h].sentido == 'I')
       {
+      Serial.println("Ejecuta Giro Izquierda");
       while (k <= ruta[h].pasos)
         {
-        GirarIzquierda();
+        GirarIzquierda(1);
         k++;
         }
       }   
     h++;
-    }
-  }
+    
   
+  }  }
 if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
   {
   rutaEntrenamiento="";
@@ -248,9 +245,9 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
         ContPasos = 0;
         while((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == LOW)&&(digitalRead(Pin0binario) == HIGH))
           {
-          /*while(digitalRead(PinProxiFrontal) == LOW)    //DESCOMENTAR!!!!!
+          while(digitalRead(PinProxiFrontal) == LOW)    
             {                              // se queda frenado en un bucle mientras haya un obstaculo adelante  
-            }*/
+            }
           Avance();                        // Avanza 1 paso
           ContPasos++;
           }
@@ -265,10 +262,10 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
           }
         rutaEntrenamiento.concat(String(ContPasos));
         
-        //Serial.print("Avance pasos;");
-        //Serial.print(ContPasos);
-        //Serial.print("   Ruta parcial: ");
-        //Serial.println(rutaEntrenamiento);
+        Serial.print("Avance pasos;");
+        Serial.print(ContPasos);
+        Serial.print("   Ruta parcial: ");
+       Serial.println(rutaEntrenamiento);
         }
         
       if ((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == LOW)) //Girar DERECHA
@@ -276,10 +273,7 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
         ContPasos = 0;
         while((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == LOW))
           {
-          /*while(digitalRead(PinProxiFrontal) == LOW)
-            {                              // se queda frenado en un bucle mientras haya un obstaculo adelante  
-            }*/
-          GirarDerecha();                        // Gira derecha 1 paso
+          GirarDerecha(1);                        // Gira derecha 1 paso
           ContPasos++;
           }
         if(flagPrimerInstruccionEntrenamiento == 0)
@@ -292,10 +286,10 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
           rutaEntrenamiento.concat("D");
           }
         rutaEntrenamiento.concat(String(ContPasos));
-        //Serial.print("derecha pasos;");
-        //Serial.print(ContPasos);
-        //Serial.print("   Ruta parcial: ");
-        //Serial.println(rutaEntrenamiento);
+        Serial.print("derecha pasos;");
+        Serial.print(ContPasos);
+        Serial.print("   Ruta parcial: ");
+        Serial.println(rutaEntrenamiento);
         }
         
       if ((digitalRead(Pin2binario) == HIGH)&&(digitalRead(Pin1binario) == LOW)&&(digitalRead(Pin0binario) == LOW)) //Girar IZQUIERDA
@@ -303,10 +297,7 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
         ContPasos = 0;
         while((digitalRead(Pin2binario) == HIGH)&&(digitalRead(Pin1binario) == LOW)&&(digitalRead(Pin0binario) == LOW))
           {
-          /*while(digitalRead(PinProxiFrontal) == LOW)
-            {                              // se queda frenado en un bucle mientras haya un obstaculo adelante  
-            }*/
-          GirarIzquierda();                        // Gira derecha 1 paso
+          GirarIzquierda(1);                        // Gira derecha 1 paso
           ContPasos++;
           }
         if(flagPrimerInstruccionEntrenamiento == 0)
@@ -319,10 +310,10 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
           rutaEntrenamiento.concat("I");
           }
         rutaEntrenamiento.concat(String(ContPasos));
-        //Serial.print("Izquierda pasos;");
-        //Serial.print(ContPasos);
-        //Serial.print("   Ruta parcial: ");
-        //Serial.println(rutaEntrenamiento);
+       // Serial.print("Izquierda pasos;");
+       // Serial.print(ContPasos);
+       // Serial.print("   Ruta parcial: ");
+       // Serial.println(rutaEntrenamiento);
         }
  
     }
@@ -375,32 +366,32 @@ void MotorStop()
 
 
 
-void GirarDerecha()
+void GirarDerecha(int giro)
 {
+int x = 0;
 digitalWrite(dirPinIZ,HIGH); 
 digitalWrite(dirPinDER,LOW); 
-//for(int x = 0; x < giro; x++) 
-  //{
+do{x++;
   digitalWrite(stepPinIZ,HIGH); 
   digitalWrite(stepPinDER,HIGH); 
   delayMicroseconds(delaiPulsos); 
   digitalWrite(stepPinIZ,LOW);
   digitalWrite(stepPinDER,LOW); 
   delayMicroseconds(delaiPulsos); 
-  //}
+  }while(x < giro);
 }
 
-void GirarIzquierda()
+void GirarIzquierda(int giro)
 {
+int x = 0;
 digitalWrite(dirPinIZ,LOW); 
 digitalWrite(dirPinDER,HIGH); 
-//for(int x = 0; x < giro; x++) 
-  //{
+do{x++;
   digitalWrite(stepPinIZ,HIGH); 
   digitalWrite(stepPinDER,HIGH); 
   delayMicroseconds(delaiPulsos); 
   digitalWrite(stepPinIZ,LOW);
   digitalWrite(stepPinDER,LOW); 
   delayMicroseconds(delaiPulsos); 
-  //}
+  }while(x < giro);
 }
