@@ -185,7 +185,7 @@ if(flagSerial==1)
   
 
   //EJECUCION DE LA RUTA
-  while (ruta[h].sentido != '#')
+  while ((ruta[h].sentido != '#')&&(potenciaBeaconDestino!=0))
     {
     k=0;
     if (ruta[h].sentido == 'F')
@@ -274,7 +274,7 @@ if(flagSerial==1)
     h++;
     
   
-  }  }
+  } h=0; }
 if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
   {
   rutaEntrenamiento="";
