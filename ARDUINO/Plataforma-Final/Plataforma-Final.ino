@@ -83,6 +83,10 @@ MotorStop();
 
 if(flagSerial==1)
   {
+  h=0;
+  ruta[h].sentido = 'Q';      //para que no imprima por serial en el debagueo cuando no recibio nada
+  macBeaconDestino="";
+  potenciaBeaconDestino=0;
   if (Serial1.available()) 
     {
     Serial.println("MODO OPERACION");
@@ -93,12 +97,12 @@ if(flagSerial==1)
         Serial.println("en busca del -");
         do{
           caux = Serial1.read();
-          Serial.println(caux);
+          //Serial.println(caux);
           }while (caux != '-');
         flagBasuraSerial=1;
         Serial.println("detecto -   INICIO DE CADENA");
         }
-      Serial.println("ENTRO AL WHILE"); 
+      //Serial.println("ENTRO AL WHILE"); 
       //ruta[h].sentido=Serial.write(Serial1.read());
       ruta[h].sentido=Serial1.read();
       j=0;
@@ -149,32 +153,36 @@ if(flagSerial==1)
      
       //ruta[h].pasos = intermedio.toInt();
       //intermedio= "";
+    flagSerial=0;
+    caux="";
+    flagBasuraSerial = 0;
+    h=0;
     }
   
   //  IMPRIMIR EN SERIAL LA RUTA RECIBIDA POR SERIAL 1 DESDE PLACA WIFI 
-  Serial.println(" IMPRIME LO RECIBIDO: ");
+  
   //delay(2000);
   h=0;
-  while ((ruta[h].sentido != '#')&&(h<30))
+  while ((ruta[h].sentido != '#')&&(h<30)&&(ruta[h].sentido != 'Q'))  //preguntar por distinto de Q es para que solo imprima cuando recibe datos
     { 
-    if(h==0){Serial.println("ENTRO AL WHILE de imprimir");}
+    if(h==0){Serial.println(" IMPRIME en el while LO RECIBIDO: ");}
     Serial.print("Sentido: " );
     Serial.print(ruta[h].sentido);
     Serial.print(" - pasos: " );
     Serial.println(ruta[h].pasos);
     h++;
     }
-    Serial.print("mac: " );
-    Serial.println(macBeaconDestino);
-    Serial.print("Potencia Beacon de destion: " );
-    Serial.println(potenciaBeaconDestino);
+   if (potenciaBeaconDestino!=0)
+     {
+     Serial.print("mac: " );
+     Serial.println(macBeaconDestino);
+     Serial.print("Potencia Beacon de destion: " );
+     Serial.println(potenciaBeaconDestino);
+     }
   // FIN -- IMPRIMIR EN SERIAL LA RUTA RECIBIDA POR SERIAL 1 DESDE PLACA WIFI //
   
   //delay(1200);
-  flagSerial=0;
-  caux="";
-  flagBasuraSerial = 0;
-  h=0;
+  
 
   //EJECUCION DE LA RUTA
   while (ruta[h].sentido != '#')
