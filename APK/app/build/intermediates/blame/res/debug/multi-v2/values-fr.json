@@ -1,0 +1,77 @@
+{
+    "logs": [
+        {
+            "outputFile": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-fr\\values-fr.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\adagiom\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-9.6.1.aar\\70652b26551bebcc5f616c8134181cdb\\res\\values-fr\\values.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "340,448,660,792,903,1140,1377,1512,1654,1930,2054,2168,2384,2522,2741,2879,3088,3191,3288",
+                        "endColumns": "107,211,131,110,236,236,134,141,275,123,113,215,137,218,137,208,102,96,112",
+                        "endOffsets": "443,655,787,898,1135,1372,1507,1649,1925,2049,2163,2379,2517,2736,2874,3083,3186,3283,3396"
+                    },
+                    "to": {
+                        "startLines": "21,22,23,24,25,26,27,28,30,31,32,33,34,35,36,37,38,39,40",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "2111,2219,2431,2563,2674,2911,3148,3283,3713,3989,4113,4227,4443,4581,4800,4938,5147,5250,5347",
+                        "endColumns": "107,211,131,110,236,236,134,141,275,123,113,215,137,218,137,208,102,96,112",
+                        "endOffsets": "2214,2426,2558,2669,2906,3143,3278,3420,3984,4108,4222,4438,4576,4795,4933,5142,5245,5342,5455"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\adagiom\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-basement-9.6.1.aar\\6cfcd78e613089bcdf57ed3d810267f9\\res\\values-fr\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "4",
+                        "startOffsets": "343",
+                        "endColumns": "287",
+                        "endOffsets": "626"
+                    },
+                    "to": {
+                        "startLines": "29",
+                        "startColumns": "4",
+                        "startOffsets": "3425",
+                        "endColumns": "287",
+                        "endOffsets": "3708"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\adagiom\\.gradle\\caches\\transforms-1\\files-1.1\\zxing-android-embedded-3.2.0.aar\\1924379ea874140b56da0a5c2bbddd4f\\res\\values-fr\\values-fr.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,114,161,327",
+                        "endColumns": "58,46,165,108",
+                        "endOffsets": "109,156,322,431"
+                    },
+                    "to": {
+                        "startLines": "43,44,45,46",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "5647,5706,5753,5919",
+                        "endColumns": "58,46,165,108",
+                        "endOffsets": "5701,5748,5914,6023"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\adagiom\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.3.1.aar\\f30a4d0d2e419a2f3eea830bfd6460ae\\res\\values-fr\\values-fr.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,166,274,397,512,623,705,811,941,1024,1104,1190,1300,1412,1515,1626,1733,1840,1962,2061,2147",
+                        "endColumns": "110,107,122,114,110,81,105,129,82,79,85,109,111,102,110,106,106,121,98,85,100",
+                        "endOffsets": "161,269,392,507,618,700,806,936,1019,1099,1185,1295,1407,1510,1621,1728,1835,1957,2056,2142,2243"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,41,42",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,216,324,447,562,673,755,861,991,1074,1154,1240,1350,1462,1565,1676,1783,1890,2012,5460,5546",
+                        "endColumns": "110,107,122,114,110,81,105,129,82,79,85,109,111,102,110,106,106,121,98,85,100",
+                        "endOffsets": "211,319,442,557,668,750,856,986,1069,1149,1235,1345,1457,1560,1671,1778,1885,2007,2106,5541,5642"
+                    }
+                }
+            ]
+        }
+    ]
+}

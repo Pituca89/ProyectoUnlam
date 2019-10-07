@@ -359,7 +359,7 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
         }
  
     }
-  rutaEntrenamiento.concat("$");
+  rutaEntrenamiento.concat("#$");
   //ENVIAR rutaEntrenamiento POR SERIAL 2 al Bluethoot
   Serial.print("Ruta de Entrenamiento: ");
   Serial.println(rutaEntrenamiento);
