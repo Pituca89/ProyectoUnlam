@@ -26,6 +26,8 @@ struct rutas
 char caux;
 rutas ruta[50]; 
 String intermedio;
+String macBeaconDestino;
+int potenciaBeaconDestino;
   
 int h;
 int j;
@@ -57,7 +59,7 @@ pinMode(Pin0binario,INPUT);
 rutaEntrenamiento="";
 
 Serial2.begin(115200);      //Comunicacion con placa Bluethoot para enviar rutas modo entrenamiento
-Serial.begin(115200);       //debagueo
+Serial.begin(9600);       //debagueo
 Serial1.begin(9600);      //Comunicacion con placa wifi para recibir rutas modo operacion
 
 h=0;
@@ -70,7 +72,8 @@ flagBasuraSerial = 0;
 flagPrimerInstruccionEntrenamiento = 0;
 contObstaculo=0;
 attachInterrupt(digitalPinToInterrupt(intPinSerial), interrupcionSerial, RISING); //interrupcion del wifi
-
+macBeaconDestino="";
+potenciaBeaconDestino=0;
 }
 
 
@@ -83,7 +86,7 @@ if(flagSerial==1)
   if (Serial1.available()) 
     {
     Serial.println("MODO OPERACION");
-    while (Serial1.available() && caux != '#' && flagSerial == 1)
+    while (Serial1.available() && caux != '$' && flagSerial == 1)
       {
       if (flagBasuraSerial == 0)
         {
@@ -104,12 +107,12 @@ if(flagSerial==1)
         caux = Serial1.read();
         Serial.print(" valor de caux: ");
         Serial.println(caux);
-        if (caux != '|' && caux != '#')
+        if (caux != '|' && caux != '$')
           {
           intermedio += caux;
           }
         j++;
-        }while (caux != '|' && caux != '#' && j<50);
+        }while (caux != '|' && caux != '$' && j<50);
       //Serial.print("valor de j ");
       //Serial.println(j);
       //delay(1000);
@@ -119,6 +122,33 @@ if(flagSerial==1)
       }
      Serial.println("SALIO DEL  WHILE");
     ruta[h].sentido='#';
+
+   //Inicio Guardar la MAC y la potencia del beacon recibida por wifi
+    j=0;  
+      do{
+        caux = Serial1.read();
+        if (caux != 'P')
+          {
+          macBeaconDestino.concat(caux);// += caux;
+          }
+        j++;
+        }while (caux != 'P' && j<50);
+      //caux = Serial1.read();  // Leo el "-" entre la potencia y el valor de la misma ejemplo P-67
+      j=0;
+      intermedio="";
+      do{
+        caux = Serial1.read();
+        if (caux != '#')
+          {
+          intermedio += caux;
+          }
+        j++;
+        }while (caux != '#' && j<50);
+      potenciaBeaconDestino = intermedio.toInt();
+      //FIN Guardar la MAC y la potencia del beacon recibida por wifi //
+     
+      //ruta[h].pasos = intermedio.toInt();
+      //intermedio= "";
     }
   
   //  IMPRIMIR EN SERIAL LA RUTA RECIBIDA POR SERIAL 1 DESDE PLACA WIFI 
@@ -134,7 +164,11 @@ if(flagSerial==1)
     Serial.println(ruta[h].pasos);
     h++;
     }
-  // FIN -- IMPRIMIR EN SERIAL LA RUTA RECIBIDA POR SERIAL 1 DESDE PLACA WIFI 
+    Serial.print("mac: " );
+    Serial.println(macBeaconDestino);
+    Serial.print("Potencia Beacon de destion: " );
+    Serial.println(potenciaBeaconDestino);
+  // FIN -- IMPRIMIR EN SERIAL LA RUTA RECIBIDA POR SERIAL 1 DESDE PLACA WIFI //
   
   //delay(1200);
   flagSerial=0;
