@@ -151,6 +151,7 @@ if(flagSerial==1)
       Serial.println("Ejecuta avance");
       while (k < ruta[h].pasos)
         {
+          /*
         contObstaculo=0;
         if (digitalRead(PinProxiFrontal) == LOW){Serial1.print("-1");Serial.println("OBSTACULO");}    //alerta de obstaculo
           while((digitalRead(PinProxiFrontal) == LOW)&&(contObstaculo<5))    
@@ -158,19 +159,27 @@ if(flagSerial==1)
             delay(1000);
             contObstaculo++;
             }
-        if((contObstaculo==5)&&((k+desvioObstaculo)<ruta[h].pasos))
+        if((contObstaculo==5))
           {
           GirarIzquierda(209);
           m=0;
           while ((digitalRead(PinProxiDerecho) == LOW)&&(m <= desvioObstaculo))
             {
-            if (digitalRead(PinProxiFrontal) == LOW){Serial1.print("-1");}//alerta de obstaculo
-            while((digitalRead(PinProxiFrontal) == LOW))    
-              {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
+            contObstaculo=0;
+            if (digitalRead(PinProxiFrontal) == LOW)
+              {Serial1.print("-1");Serial.println("OBSTACULO");    //alerta de obstaculo
+              while((digitalRead(PinProxiFrontal) == LOW)&&(contObstaculo<5))    
+                {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
+                delay(1000);
+                contObstaculo++;
+                }
               }
+            
+            }//alerta de obstaculo
+            
             Avance();
             m++;
-            }
+            
             GirarDerecha(209);
           m=0;
           while (m <= desvioObstaculo)
@@ -196,10 +205,12 @@ if(flagSerial==1)
           GirarIzquierda(209);
           k=k+desvioObstaculo;
           }
+        */
         Avance();
         k++;
         }
-      }
+        }
+      
     if (ruta[h].sentido == 'D')
       {
       Serial.println("Ejecuta Giro Derecha");
@@ -219,9 +230,9 @@ if(flagSerial==1)
         }
       }   
     h++;
-    }
-  }
+    
   
+  }  }
 if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
   {
   rutaEntrenamiento="";
