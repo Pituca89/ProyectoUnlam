@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\assets"/><source path="D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\debug\assets"/></dataSet></merger>

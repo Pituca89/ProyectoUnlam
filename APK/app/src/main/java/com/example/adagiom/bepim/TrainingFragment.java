@@ -86,11 +86,11 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
     TextView lblsector;
     TextView lblsectortitle;
     static TextView lblsectoractual;
-    static ProgressBar progressBar;
     static String actual;
     Sector destino;
     Sector origen;
     private ProgressDialog mProgressDlg;
+    private ProgressDialog mProgressDlg1;
     private ArrayList<BluetoothDevice> mDeviceList = new ArrayList<BluetoothDevice>();
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothSocket btSocket = null;
@@ -144,8 +144,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         comenzar = (Button) v.findViewById(R.id.btn_comenzar);
         deshacer = (Button) v.findViewById(R.id.btn_deshacer);
         confirmar = (Button) v.findViewById(R.id.btn_confirmar);
-        progressBar = (ProgressBar) v.findViewById(R.id.progressBarSector);
-        progressBar.setVisibility(View.INVISIBLE);
+
         lblsectoractual = (TextView) v.findViewById(R.id.lbl_sector_actual);
 
         comenzar.setOnClickListener(onClickTraining);
@@ -242,9 +241,11 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         mAdapter = new DeviceListAdapter(getContext());
         //Se Crea la ventana de dialogo que indica que se esta buscando dispositivos bluethoot
         mProgressDlg = new ProgressDialog(getContext());
-
+        mProgressDlg1 = new ProgressDialog(getContext());
         mProgressDlg.setMessage("Buscando dispositivos...");
         mProgressDlg.setCancelable(false);
+        mProgressDlg1.setMessage("Escaneando Beacon...");
+        mProgressDlg1.setCancelable(false);
         bluetoothIn = Handler_Msg_Hilo_Principal();
         //se asocia un listener al boton cancelar para la ventana de dialogo ue busca los dispositivos bluethoot
         mProgressDlg.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancelar", btnCancelarDialogListener);
@@ -288,7 +289,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                 mostrarToastMake("Plataforma duplicada");
             }else if(mensaje.getOpcion().contains("ACTUAL")){
                 refreshSector();
-                progressBar.setVisibility(View.INVISIBLE);
+                mProgressDlg1.dismiss();
             }else if(mensaje.getOpcion().contains("RUTA")){
                 //refreshSector();
                 actualizarSectorActual();
@@ -296,7 +297,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                 //mostrarToastMake("ERROR DE CONEXIÓN");
             }
         }catch (Exception e){
-            progressBar.setVisibility(View.INVISIBLE);
+            mProgressDlg1.dismiss();
             mostrarToastMake("ERROR DE SERVIDOR");
         }
     }
@@ -417,7 +418,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                         public void onClick(DialogInterface dialog, int id) {
                             mConnectedThread.write("P"+destino.getMac()+"#");
                             actual = sectorArrayList.get(position).getNombre();
-                            progressBar.setVisibility(View.VISIBLE);
+                            mProgressDlg1.show();
                         }
                     })
                     .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
@@ -443,7 +444,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
     }
 
-    public void registrarRuta( String ruta,int desde, int hasta,int potencia){
+    public void registrarRuta( String ruta,int desde, int hasta,int potencia,int costo){
         String uri = ClienteHTTP_POST.REG_RUTA;
         try {
             json.put("url",getString(R.string.url) + uri);
@@ -451,6 +452,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
             json.put("HASTA",hasta);
             json.put("RUTA",ruta);
             json.put("POTENCIA",potencia);
+            json.put("COSTO",costo);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -830,12 +832,12 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                         if(dataInPrint.contains("P")) {
                             //actualizarSectorActual();
                             //progressBar.setVisibility(View.INVISIBLE);
-                            datos = dataInPrint.split("'P'");
-                            registrarRuta(datos[0].toString(),origen.getId(),destino.getId(),Integer.parseInt(datos[1].toString()));
+                            datos = dataInPrint.split("P");
+                            int costo = obtenerCosto(datos[0]);
+                            registrarRuta(datos[0].toString(),origen.getId(),destino.getId(),Integer.parseInt(datos[1].toString()),costo);
                         }
                         if(dataInPrint.contains("ERROR")) {
-                            mostrarToastMake("Error de procesamiento");
-                            progressBar.setVisibility(View.INVISIBLE);
+                            mProgressDlg1.dismiss();
                         }
                         recDataString.delete(0, recDataString.length());
                     }
@@ -843,6 +845,18 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
             }
         };
 
+    }
+
+    public int obtenerCosto(String ruta){
+        int costoTotal = 0;
+
+        String [] costos = ruta.split("\\|");
+        for (String costo: costos) {
+            if (costo.contains("F")){
+                costoTotal += Integer.parseInt(costo.substring(1,costo.length()));
+            }
+        }
+        return costoTotal;
     }
     public void iniciarComunicacion() {
 

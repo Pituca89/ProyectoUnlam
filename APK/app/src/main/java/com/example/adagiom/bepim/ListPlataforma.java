@@ -214,14 +214,15 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
 
             while(!singleton.isNotification()){
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(1000);
                     handler.obtainMessage(HANDLER_MESSAGE_OFF).sendToTarget();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            handler.obtainMessage(HANDLER_MESSAGE_ON).sendToTarget();
             singleton.setNotification(false);
+            handler.obtainMessage(HANDLER_MESSAGE_ON).sendToTarget();
+
         }
     }
 }

@@ -79,11 +79,4 @@
         android:textColor="@color/colorPrimary"
         android:textSize="18sp" />
 
-    <ProgressBar
-        android:id="@+id/progressBarSector"
-        android:layout_width="167dp"
-        android:layout_height="86dp"
-        android:layout_centerInParent="true"
-        android:progressTint="@color/colorPrimary" />
-
 </RelativeLayout>

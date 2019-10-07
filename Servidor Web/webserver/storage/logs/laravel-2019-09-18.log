@@ -1,0 +1,121 @@
+[2019-09-18 19:15:55] local.ERROR: Command "migrate:model" is not defined.
+
+Did you mean one of these?
+    make:model
+    migrate
+    migrate:fresh
+    migrate:install
+    migrate:refresh
+    migrate:reset
+    migrate:rollback
+    migrate:status {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"migrate:model\" is not defined.
+
+Did you mean one of these?
+    make:model
+    migrate
+    migrate:fresh
+    migrate:install
+    migrate:refresh
+    migrate:reset
+    migrate:rollback
+    migrate:status at C:\\laragon\\www\\webserver\\vendor\\symfony\\console\\Application.php:646)
+[stacktrace]
+#0 C:\\laragon\\www\\webserver\\vendor\\symfony\\console\\Application.php(236): Symfony\\Component\\Console\\Application->find('migrate:model')
+#1 C:\\laragon\\www\\webserver\\vendor\\symfony\\console\\Application.php(148): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(131): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 C:\\laragon\\www\\webserver\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
+[2019-09-18 19:26:47] local.ERROR: Target class [App\Http\Controllers\UserController] does not exist. {"exception":"[object] (Illuminate\\Contracts\\Container\\BindingResolutionException(code: 0): Target class [App\\Http\\Controllers\\UserController] does not exist. at C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:806)
+[stacktrace]
+#0 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(682): Illuminate\\Container\\Container->build('App\\\\Http\\\\Contro...')
+#1 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(630): Illuminate\\Container\\Container->resolve('App\\\\Http\\\\Contro...', Array)
+#2 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(768): Illuminate\\Container\\Container->make('App\\\\Http\\\\Contro...', Array)
+#3 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(233): Illuminate\\Foundation\\Application->make('App\\\\Http\\\\Contro...')
+#4 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(833): Illuminate\\Routing\\Route->getController()
+#5 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(794): Illuminate\\Routing\\Route->controllerMiddleware()
+#6 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\RouteListCommand.php(173): Illuminate\\Routing\\Route->gatherMiddleware()
+#7 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\RouteListCommand.php(117): Illuminate\\Foundation\\Console\\RouteListCommand->getMiddleware(Object(Illuminate\\Routing\\Route))
+#8 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\RouteListCommand.php(89): Illuminate\\Foundation\\Console\\RouteListCommand->getRouteInformation(Object(Illuminate\\Routing\\Route))
+#9 [internal function]: Illuminate\\Foundation\\Console\\RouteListCommand->Illuminate\\Foundation\\Console\\{closure}(Object(Illuminate\\Routing\\Route), 5)
+#10 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Collection.php(638): array_map(Object(Closure), Array, Array)
+#11 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\RouteListCommand.php(90): Illuminate\\Support\\Collection->map(Object(Closure))
+#12 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\RouteListCommand.php(74): Illuminate\\Foundation\\Console\\RouteListCommand->getRoutes()
+#13 [internal function]: Illuminate\\Foundation\\Console\\RouteListCommand->handle()
+#14 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(32): call_user_func_array(Array, Array)
+#15 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#16 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#17 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(591): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#18 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(192): Illuminate\\Container\\Container->call(Array)
+#19 C:\\laragon\\www\\webserver\\vendor\\symfony\\console\\Command\\Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#20 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(179): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#21 C:\\laragon\\www\\webserver\\vendor\\symfony\\console\\Application.php(915): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#22 C:\\laragon\\www\\webserver\\vendor\\symfony\\console\\Application.php(272): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Foundation\\Console\\RouteListCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 C:\\laragon\\www\\webserver\\vendor\\symfony\\console\\Application.php(148): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(131): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 C:\\laragon\\www\\webserver\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#27 {main}
+
+[previous exception] [object] (ReflectionException(code: -1): Class App\\Http\\Controllers\\UserController does not exist at C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:804)
+[stacktrace]
+#0 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(804): ReflectionClass->__construct('App\\\\Http\\\\Contro...')
+#1 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(682): Illuminate\\Container\\Container->build('App\\\\Http\\\\Contro...')
+#2 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(630): Illuminate\\Container\\Container->resolve('App\\\\Http\\\\Contro...', Array)
+#3 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(768): Illuminate\\Container\\Container->make('App\\\\Http\\\\Contro...', Array)
+#4 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(233): Illuminate\\Foundation\\Application->make('App\\\\Http\\\\Contro...')
+#5 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(833): Illuminate\\Routing\\Route->getController()
+#6 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(794): Illuminate\\Routing\\Route->controllerMiddleware()
+#7 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\RouteListCommand.php(173): Illuminate\\Routing\\Route->gatherMiddleware()
+#8 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\RouteListCommand.php(117): Illuminate\\Foundation\\Console\\RouteListCommand->getMiddleware(Object(Illuminate\\Routing\\Route))
+#9 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\RouteListCommand.php(89): Illuminate\\Foundation\\Console\\RouteListCommand->getRouteInformation(Object(Illuminate\\Routing\\Route))
+#10 [internal function]: Illuminate\\Foundation\\Console\\RouteListCommand->Illuminate\\Foundation\\Console\\{closure}(Object(Illuminate\\Routing\\Route), 5)
+#11 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Collection.php(638): array_map(Object(Closure), Array, Array)
+#12 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\RouteListCommand.php(90): Illuminate\\Support\\Collection->map(Object(Closure))
+#13 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\RouteListCommand.php(74): Illuminate\\Foundation\\Console\\RouteListCommand->getRoutes()
+#14 [internal function]: Illuminate\\Foundation\\Console\\RouteListCommand->handle()
+#15 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(32): call_user_func_array(Array, Array)
+#16 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#17 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#18 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(591): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#19 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(192): Illuminate\\Container\\Container->call(Array)
+#20 C:\\laragon\\www\\webserver\\vendor\\symfony\\console\\Command\\Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#21 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(179): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#22 C:\\laragon\\www\\webserver\\vendor\\symfony\\console\\Application.php(915): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 C:\\laragon\\www\\webserver\\vendor\\symfony\\console\\Application.php(272): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Foundation\\Console\\RouteListCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 C:\\laragon\\www\\webserver\\vendor\\symfony\\console\\Application.php(148): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(131): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#27 C:\\laragon\\www\\webserver\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#28 {main}
+"} 
+[2019-09-18 19:53:13] local.ERROR: Command "migrate:model" is not defined.
+
+Did you mean one of these?
+    make:model
+    migrate
+    migrate:fresh
+    migrate:install
+    migrate:refresh
+    migrate:reset
+    migrate:rollback
+    migrate:status {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"migrate:model\" is not defined.
+
+Did you mean one of these?
+    make:model
+    migrate
+    migrate:fresh
+    migrate:install
+    migrate:refresh
+    migrate:reset
+    migrate:rollback
+    migrate:status at C:\\laragon\\www\\webserver\\vendor\\symfony\\console\\Application.php:646)
+[stacktrace]
+#0 C:\\laragon\\www\\webserver\\vendor\\symfony\\console\\Application.php(236): Symfony\\Component\\Console\\Application->find('migrate:model')
+#1 C:\\laragon\\www\\webserver\\vendor\\symfony\\console\\Application.php(148): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 C:\\laragon\\www\\webserver\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(131): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 C:\\laragon\\www\\webserver\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
