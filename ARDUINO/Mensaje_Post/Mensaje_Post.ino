@@ -6,8 +6,8 @@
 #include <WiFiClient.h> 
 //-------------------VARIABLES GLOBALES--------------------------
 
-const char *ssid = "MatiasWiFi";//"Fibertel WiFi159 2.4GHz";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
-const char *password = "44540006";//"0043442422";//"6761727565";//"SOA.2019";
+const char *ssid = "Fibertel WiFi159 2.4GHz";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
+const char *password = "0043442422";//"6761727565";//"SOA.2019";
 ESP8266WebServer server(80);   
 int flag = 0;
 int scanTime = 1; //In seconds
@@ -82,7 +82,7 @@ void setup() {
   pinMode(PIN_ENVIO_SERIAL,OUTPUT);
   
   
-  Serial.begin(9600);
+  Serial.begin(115200);
   
   WiFi.begin (ssid, password);
   
@@ -103,7 +103,6 @@ void setup() {
 void loop() {
   //peticionPOSTJSON(13,1,"OBSTACULO"); //metodo de envio de notificación
   server.handleClient(); //espero a que algun cliente se conecte y realice una peticion
-  Serial.println(modo);
 
   if(String(modo) == "MOD_E"){
        
@@ -119,7 +118,7 @@ void loop() {
       //enviar un pulso por algun pin para avisar el envio de una ruta
       //enviar "response" por serial
       //aguardar algun pulso proveniente de arduino para avisar que ejecuto la ruta
-      Serial.print(response);
+      Serial.write(response);
       response = "";
     }
   }
@@ -141,7 +140,7 @@ void loop() {
       if (caux == '1')
         {
           Serial.println("se detecto 1 por serial");
-          peticionPOSTJSON("http://www.gestiondenegocio.esy.es/liberar_plataforma","OBSTACULO");
+          peticionPOSTJSON("http://www.gestiondenegocio.esy.es/obstaculo","OBSTACULO");
           caux='a';
         }
       }

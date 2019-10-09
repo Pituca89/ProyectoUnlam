@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -109,7 +110,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
     // String for MAC address del Hc05
     private static String address = null;
     //se crea un array de String con los permisos a solicitar en tiempo de ejecucion
-    //Esto se debe realizar a partir de Android 6.0, ya que con verdiones anteriores
+    //Esto se debe realizar a partir de Android 6.0, ya que con versiones anteriores
     //con solo solicitarlos en el Manifest es suficiente
     String[] permissions= new String[]{
             Manifest.permission.BLUETOOTH,
@@ -127,7 +128,12 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        if (checkPermissions())
+        {
+            enableComponent();
+        }
     }
 
     @Override
@@ -198,29 +204,33 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
             @Override
             public void onMove(int angle, int strength) {
 
-                if(strength == 0 && angle == 0){
-                    if(estado_anterior != STOP) {
-                        estado_anterior = STOP;
-                        mConnectedThread.write("S");
+                try {
+                    if (strength == 0 && angle == 0) {
+                        if (estado_anterior != STOP) {
+                            estado_anterior = STOP;
+                            mConnectedThread.write("S");
+                        }
                     }
-                }
-                if(strength != 0 && angle < 135 && angle > 45){
-                    if(estado_anterior != FRENTE) {
-                        estado_anterior = FRENTE;
-                        mConnectedThread.write("F");
+                    if (strength != 0 && angle < 135 && angle > 45) {
+                        if (estado_anterior != FRENTE) {
+                            estado_anterior = FRENTE;
+                            mConnectedThread.write("F");
+                        }
                     }
-                }
-                if(strength != 0 && angle > 135 && angle < 225){
-                    if(estado_anterior != IZQUIERDA) {
-                        estado_anterior = IZQUIERDA;
-                        mConnectedThread.write("I");
+                    if (strength != 0 && angle > 135 && angle < 225) {
+                        if (estado_anterior != IZQUIERDA) {
+                            estado_anterior = IZQUIERDA;
+                            mConnectedThread.write("I");
+                        }
                     }
-                }
-                if(strength != 0 && angle < 315 && angle < 45){
-                    if(estado_anterior != DERECHA) {
-                        estado_anterior = DERECHA;
-                        mConnectedThread.write("D");
+                    if (strength != 0 && angle < 315 && angle < 45) {
+                        if (estado_anterior != DERECHA) {
+                            estado_anterior = DERECHA;
+                            mConnectedThread.write("D");
+                        }
                     }
+                }catch (Exception e){
+                    mostrarToastMake("Plataforma desconectada");
                 }
             }
         });
@@ -250,11 +260,6 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         //se asocia un listener al boton cancelar para la ventana de dialogo ue busca los dispositivos bluethoot
         mProgressDlg.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancelar", btnCancelarDialogListener);
         //
-        if (checkPermissions())
-        {
-            enableComponent();
-        }
-        mBluetoothAdapter.startDiscovery();
         return v;
     }
 
@@ -310,16 +315,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                 ruta_esp = "http://" + ipPlataforma + "/mode";
                 switch (view.getId()) {
                     case R.id.btn_comenzar:
-                        try {
-                            json.put("url", ruta_esp);
-                            json.put("codigo", "MODO");
-                            json.put("dato", "MOD_E");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        threadCliente_Post = new ClienteHTTP_POST(TrainingFragment.this);
-                        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, json);
-
+                        mBluetoothAdapter.startDiscovery();
                         break;
                     case R.id.btn_deshacer:
 
@@ -416,9 +412,13 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                     .setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            mConnectedThread.write("P"+destino.getMac()+"#");
-                            actual = sectorArrayList.get(position).getNombre();
-                            mProgressDlg1.show();
+                            try {
+                                mConnectedThread.write("P"+destino.getMac()+"#");
+                                actual = sectorArrayList.get(position).getNombre();
+                                mProgressDlg1.show();
+                            }catch (Exception e){
+                                mostrarToastMake("Plataforma desconectada");
+                            }
                         }
                     })
                     .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
@@ -472,6 +472,8 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
 
         //se define (registra) el handler que captura los broadcast anterirmente mencionados.
         getActivity().registerReceiver(mReceiver, filter);
+
+        //mBluetoothAdapter.startDiscovery();
     }
 
     @Override
@@ -491,9 +493,8 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
     //Cuando se detruye la Acivity se quita el registro de los brodcast. Apartir de este momento no se
     //recibe mas broadcast del SO. del bluethoot
     public void onDestroy() {
-        getActivity().unregisterReceiver(mReceiver);
-
         super.onDestroy();
+        getActivity().unregisterReceiver(mReceiver);
     }
 
 
@@ -628,20 +629,21 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
 
 
         for (String p:permissions) {
-            result = ContextCompat.checkSelfPermission(getContext(),p);
+            result = ActivityCompat.checkSelfPermission(getContext(),p);
             if (result != PackageManager.PERMISSION_GRANTED) {
                 listPermissionsNeeded.add(p);
             }
         }
         if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(getActivity(), listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),MULTIPLE_PERMISSIONS );
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),MULTIPLE_PERMISSIONS );
             return false;
         }
         return true;
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case MULTIPLE_PERMISSIONS: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -660,6 +662,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
             }
         }
     }
+
     private void pairDevice(BluetoothDevice device) {
         try {
             Method method = device.getClass().getMethod("createBond", (Class[]) null);
@@ -897,4 +900,5 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         //If it is not an exception will be thrown in the write method and finish() will be called
         mConnectedThread.write("X");
     }
+
 }

@@ -57,10 +57,11 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
         String psw = sharedPreferences.getString(getString(R.string.token_pass),"");
         pass.setText(psw);
         Log.i("pass",psw.toString());
+
         mProgressDlg = new ProgressDialog(this);
         mProgressDlg.setMessage("Ingresando...");
         mProgressDlg.setCancelable(false);
-        mProgressDlg.show();
+
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -93,6 +94,7 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
                                         } else {
                                             mostrarToastMake("El email o la contraseña son incorrectos");
                                             updateUI(null);
+                                            mProgressDlg.dismiss();
                                         }
 
                                     }
@@ -117,6 +119,7 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
         if(!user.getText().toString().isEmpty() && !pass.getText().toString().isEmpty()) {
+            mProgressDlg.show();
             mAuth.signInWithEmailAndPassword(user.getText().toString(), pass.getText().toString())
                     .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -140,6 +143,7 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
                             } else {
                                 mostrarToastMake("El email o la contraseña son incorrectos");
                                 updateUI(null);
+                                mProgressDlg.dismiss();
                             }
                         }
                     });

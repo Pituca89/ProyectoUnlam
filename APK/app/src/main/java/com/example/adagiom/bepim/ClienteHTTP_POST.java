@@ -3,6 +3,7 @@ package com.example.adagiom.bepim;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.AsyncTask;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -51,7 +52,6 @@ public class ClienteHTTP_POST extends AsyncTask<JSONObject , JSONObject ,JSONObj
     {
         this.caller=(InterfazAsyntask)a;
     }
-
     private JSONObject POST (JSONObject jsonData)
     {
         HttpURLConnection urlConnection = null;

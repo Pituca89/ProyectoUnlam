@@ -46,6 +46,7 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:backgroundTint="@color/colorPrimary"
+        android:buttonTint="@color/colorPrimary"
         android:textColor="@color/colorPrimary" />
 
 

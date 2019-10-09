@@ -34,7 +34,7 @@
         <TextView
             android:id="@+id/lblsector"
             android:layout_width="274dp"
-            android:layout_height="70dp"
+            android:layout_height="37dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="18dp"
@@ -46,13 +46,13 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addSector"
-        android:layout_width="78dp"
-        android:layout_height="76dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:layout_weight="1"
         android:clickable="true"
-        app:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:backgroundTint="@color/ColorOcupado"
+        app:srcCompat="@drawable/camera" />
 
 </android.support.design.widget.CoordinatorLayout>

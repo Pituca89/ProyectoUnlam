@@ -88,6 +88,7 @@
         </activity>
         <activity
             android:name="com.example.adagiom.bepim.LoginActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.example.adagiom.bepim.RegistroActivity"
@@ -95,8 +96,6 @@
         <activity
             android:name="com.example.adagiom.bepim.ActivityDriver"
             android:screenOrientation="portrait" />
-        <activity android:name="com.example.adagiom.bepim.TabsActivity" >
-        </activity>
 
         <service
             android:name="com.example.adagiom.bepim.ServiceNotification"
@@ -105,8 +104,7 @@
 
         <activity
             android:name="com.example.adagiom.bepim.LecturaQR"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
 
         <service
             android:name="com.example.adagiom.bepim.FirebaseNotification"
@@ -124,6 +122,19 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name="com.example.adagiom.bepim.DrawerPrincipal"
+            android:label="@string/title_activity_drawer_principal"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" >
+            <intent-filter>
+                <action android:name="TABS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <!--
          FirebaseMessagingService performs security checks at runtime,
              no need for explicit permissions despite exported="true"

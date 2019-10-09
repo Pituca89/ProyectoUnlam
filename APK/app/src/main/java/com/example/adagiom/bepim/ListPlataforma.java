@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ListPlataforma extends AppCompatActivity implements InterfazAsyntask{
+
     private ClienteHTTP_POST threadCliente_Post;
     private String ruta;
     ListView listPlataforma;
@@ -51,11 +52,13 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
         iduser = sharedPreferences.getString(getString(R.string.token_user),"");
         refreshPlataforma();
-        handler = handler_espera_notificacion();
         listPlataforma = (ListView) findViewById(R.id.listPlataforma);
         addPlataforma = (FloatingActionButton) findViewById(R.id.addPlataforma);
+
+        handler = handler_espera_notificacion();
         listenerThread = new ListenerThread();
         listenerThread.start();
+
         addPlataforma.setOnClickListener(agregarPlataforma);
         plataformaAdapter = new PlataformaAdapter(this);
 
@@ -70,7 +73,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
         public void selectPlataforma(int position) {
 
             Plataforma s = (Plataforma) plataformaAdapter.getItem(position);
-            Intent intent = new Intent(ListPlataforma.this,TabsActivity.class);
+            Intent intent = new Intent(ListPlataforma.this,DrawerPrincipal.class);
             intent.putExtra("plataforma",s);
             String uri = ClienteHTTP_POST.OCUPAR_PLATAFORMA;
             try {
@@ -215,7 +218,6 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
             while(!singleton.isNotification()){
                 try {
                     Thread.sleep(1000);
-                    handler.obtainMessage(HANDLER_MESSAGE_OFF).sendToTarget();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
