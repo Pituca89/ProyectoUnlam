@@ -3,6 +3,7 @@ const int stepPinIZ =31 ;
 const int dirPinDER = 32; 
 const int stepPinDER =33 ; 
 
+
 const int PinEntrenamiento = 22;
 const int Pin2binario = 28;
 const int Pin1binario = 26;
@@ -83,13 +84,14 @@ MotorStop();
 
 if(flagSerial==1)
   {
-  h=0;
-  ruta[h].sentido = 'Q';      //para que no imprima por serial en el debagueo cuando no recibio nada
+  
+  //ruta[h].sentido = 'Q';      //para que no imprima por serial en el debagueo cuando no recibio nada
   macBeaconDestino="";
   potenciaBeaconDestino=0;
   if (Serial1.available()) 
     {
     Serial.println("MODO OPERACION");
+    h=0;
     while (Serial1.available() && caux != '$' && flagSerial == 1)
       {
       if (flagBasuraSerial == 0)
@@ -102,12 +104,9 @@ if(flagSerial==1)
         flagBasuraSerial=1;
         Serial.println("detecto -   INICIO DE CADENA");
         }
-      //Serial.println("ENTRO AL WHILE"); 
-      //ruta[h].sentido=Serial.write(Serial1.read());
       ruta[h].sentido=Serial1.read();
       j=0;
       do{
-        //caux = Serial.write(Serial1.read());
         caux = Serial1.read();
         Serial.print(" valor de caux: ");
         Serial.println(caux);
@@ -117,15 +116,12 @@ if(flagSerial==1)
           }
         j++;
         }while (caux != '|' && caux != '$' && j<50);
-      //Serial.print("valor de j ");
-      //Serial.println(j);
-      //delay(1000);
       ruta[h].pasos = intermedio.toInt();
       intermedio= "";
       h++;
       }
      Serial.println("SALIO DEL  WHILE");
-    ruta[h].sentido='#';
+    ruta[h].sentido='$';
 
    //Inicio Guardar la MAC y la potencia del beacon recibida por wifi
     j=0;  
@@ -163,7 +159,7 @@ if(flagSerial==1)
   
   //delay(2000);
   h=0;
-  while ((ruta[h].sentido != '#')&&(h<30)&&(ruta[h].sentido != 'Q'))  //preguntar por distinto de Q es para que solo imprima cuando recibe datos
+  while ((ruta[h].sentido != '$')&&(h<30)&&(potenciaBeaconDestino!=0))  //preguntar por distinto de Q es para que solo imprima cuando recibe datos
     { 
     if(h==0){Serial.println(" IMPRIME en el while LO RECIBIDO: ");}
     Serial.print("Sentido: " );
@@ -185,7 +181,8 @@ if(flagSerial==1)
   
 
   //EJECUCION DE LA RUTA
-  while (ruta[h].sentido != '#')
+  h=0;
+  while ((ruta[h].sentido != '$')&&(potenciaBeaconDestino!=0))
     {
     k=0;
     if (ruta[h].sentido == 'F')
@@ -274,7 +271,7 @@ if(flagSerial==1)
     h++;
     
   
-  }  }
+  } h=0; }
 if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
   {
   rutaEntrenamiento="";
@@ -359,7 +356,7 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
         }
  
     }
-  rutaEntrenamiento.concat("#$");
+  rutaEntrenamiento.concat("$");
   //ENVIAR rutaEntrenamiento POR SERIAL 2 al Bluethoot
   Serial.print("Ruta de Entrenamiento: ");
   Serial.println(rutaEntrenamiento);
