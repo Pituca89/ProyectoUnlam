@@ -32,35 +32,35 @@ public final class R {
     }
     public static final class id {
         public static final int centerCrop = 0x7f080037;
-        public static final int fitCenter = 0x7f08005d;
-        public static final int fitXY = 0x7f08005e;
-        public static final int zxing_back_button = 0x7f0800ef;
-        public static final int zxing_barcode_scanner = 0x7f0800f0;
-        public static final int zxing_barcode_surface = 0x7f0800f1;
-        public static final int zxing_camera_error = 0x7f0800f2;
-        public static final int zxing_decode = 0x7f0800f3;
-        public static final int zxing_decode_failed = 0x7f0800f4;
-        public static final int zxing_decode_succeeded = 0x7f0800f5;
-        public static final int zxing_possible_result_points = 0x7f0800f6;
-        public static final int zxing_prewiew_size_ready = 0x7f0800f7;
-        public static final int zxing_status_view = 0x7f0800f8;
-        public static final int zxing_viewfinder_view = 0x7f0800f9;
+        public static final int fitCenter = 0x7f08005e;
+        public static final int fitXY = 0x7f08005f;
+        public static final int zxing_back_button = 0x7f0800f8;
+        public static final int zxing_barcode_scanner = 0x7f0800f9;
+        public static final int zxing_barcode_surface = 0x7f0800fa;
+        public static final int zxing_camera_error = 0x7f0800fb;
+        public static final int zxing_decode = 0x7f0800fc;
+        public static final int zxing_decode_failed = 0x7f0800fd;
+        public static final int zxing_decode_succeeded = 0x7f0800fe;
+        public static final int zxing_possible_result_points = 0x7f0800ff;
+        public static final int zxing_prewiew_size_ready = 0x7f080100;
+        public static final int zxing_status_view = 0x7f080101;
+        public static final int zxing_viewfinder_view = 0x7f080102;
     }
     public static final class layout {
-        public static final int zxing_barcode_scanner = 0x7f0a0051;
-        public static final int zxing_capture = 0x7f0a0052;
+        public static final int zxing_barcode_scanner = 0x7f0a0056;
+        public static final int zxing_capture = 0x7f0a0057;
     }
     public static final class raw {
         public static final int zxing_beep = 0x7f0d0000;
     }
     public static final class string {
-        public static final int zxing_app_name = 0x7f0e0068;
-        public static final int zxing_button_ok = 0x7f0e0069;
-        public static final int zxing_msg_camera_framework_bug = 0x7f0e006a;
-        public static final int zxing_msg_default_status = 0x7f0e006b;
+        public static final int zxing_app_name = 0x7f0e006c;
+        public static final int zxing_button_ok = 0x7f0e006d;
+        public static final int zxing_msg_camera_framework_bug = 0x7f0e006e;
+        public static final int zxing_msg_default_status = 0x7f0e006f;
     }
     public static final class style {
-        public static final int zxing_CaptureTheme = 0x7f0f017f;
+        public static final int zxing_CaptureTheme = 0x7f0f0181;
     }
     public static final class styleable {
         public static final int[] zxing_camera_preview = { 0x7f030184, 0x7f030185, 0x7f030187, 0x7f03018a };

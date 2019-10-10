@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,6 +16,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -29,6 +32,7 @@ import java.util.Map;
 
 public class FirebaseNotification extends FirebaseMessagingService{
 
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -38,28 +42,37 @@ public class FirebaseNotification extends FirebaseMessagingService{
 
         notificacion.put("titulo", remoteMessage.getNotification().getTitle());
         notificacion.put("mensaje", remoteMessage.getNotification().getBody());
+        notificacion.put("action", remoteMessage.getNotification().getClickAction());
 
+        plataforma.setIp(remoteMessage.getData().get("ip"));
+        plataforma.setDisponible(Integer.parseInt(remoteMessage.getData().get("disponible")));
+        plataforma.setNombre(remoteMessage.getData().get("nombre"));
+        plataforma.setIdsector(Integer.parseInt(remoteMessage.getData().get("idsector")));
+        plataforma.setSectoract(remoteMessage.getData().get("sectoract"));
+        plataforma.setChipid(remoteMessage.getData().get("chipid"));
+
+        Log.i("Action",remoteMessage.getNotification().getClickAction());
+        Log.i("Data",remoteMessage.getData().get("chipid").toString());
         Log.i("Notificacion","LLEGO");
         if(remoteMessage.getNotification().getBody().contains("LLEGADA")){
-                NotificationSingleton singleton = new NotificationSingleton().getInstance();
-                singleton.setNotification(true);
+            NotificationSingleton singleton = new NotificationSingleton().getInstance();
+            singleton.setNotification(true);
         }
 
-        //createNotification(notificacion, plataforma);
+        createNotification(notificacion, plataforma);
     }
 
     @SuppressLint("ResourceAsColor")
     @RequiresApi(api = Build.VERSION_CODES.KITKAT_WATCH)
     public void createNotification(Map<String, String> notificacion, Plataforma s) {
         Intent notificacionIntent = null;
+        notificacionIntent = new Intent(getApplicationContext(), DrawerPrincipal.class);
+        notificacionIntent.putExtra("plataforma", s)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        if(notificacion.get("action").equals("TABS")) {
-            notificacionIntent = new Intent(getApplicationContext(), ListPlataforma.class);
-            notificacionIntent.putExtra("plataforma", s);
-            notificacionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        }
-        PendingIntent notificacionPendingIntent = PendingIntent.getActivity(this, 0, notificacionIntent,
-                PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent notificacionPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,
+                notificacionIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
 
         @SuppressLint("ResourceAsColor")
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
@@ -81,8 +94,7 @@ public class FirebaseNotification extends FirebaseMessagingService{
         NotificationManager notificationManager =(NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Notification notification = new NotificationCompat.InboxStyle(notificationBuilder)
-                .addLine(notificacion.get("mensaje"))
-                .addLine("Plataforma: "+ s.getNombre()).build();
+                .addLine(notificacion.get("mensaje")).build();
 
         //el atributo flags de la notificación nos permite ciertas opciones
         notification.flags |= Notification.FLAG_AUTO_CANCEL;//oculta la notificación una vez pulsada
