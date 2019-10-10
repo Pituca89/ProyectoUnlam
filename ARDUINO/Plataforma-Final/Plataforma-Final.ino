@@ -61,7 +61,7 @@ rutaEntrenamiento="";
 
 Serial2.begin(115200);      //Comunicacion con placa Bluethoot para enviar rutas modo entrenamiento
 Serial.begin(9600);       //debagueo
-Serial1.begin(9600);      //Comunicacion con placa wifi para recibir rutas modo operacion
+Serial1.begin(115200);      //Comunicacion con placa wifi para recibir rutas modo operacion
 
 h=0;
 j=0;
@@ -99,12 +99,18 @@ if(flagSerial==1)
         Serial.println("en busca del -");
         do{
           caux = Serial1.read();
-          //Serial.println(caux);
+          Serial.println(caux);
           }while (caux != '-');
         flagBasuraSerial=1;
-        Serial.println("detecto -   INICIO DE CADENA");
+       // Serial.println("detecto -   INICIO DE CADENA");
         }
       ruta[h].sentido=Serial1.read();
+      Serial.print(" valor de primer sentido: ");
+      Serial.println(ruta[h].sentido);
+      //ruta[h].sentido=Serial1.read();
+      //Serial.print(" valor de primer sentido 2: ");
+      //Serial.println(ruta[h].sentido);
+      intermedio= "";
       j=0;
       do{
         caux = Serial1.read();
@@ -112,12 +118,14 @@ if(flagSerial==1)
         Serial.println(caux);
         if (caux != '|' && caux != '$')
           {
-          intermedio += caux;
+          intermedio.concat(caux);
           }
         j++;
         }while (caux != '|' && caux != '$' && j<50);
+     // Serial.print(" valor de Intermedio: ");
+      //  Serial.println(intermedio);
       ruta[h].pasos = intermedio.toInt();
-      intermedio= "";
+      //intermedio= "";
       h++;
       }
      Serial.println("SALIO DEL  WHILE");
@@ -192,7 +200,7 @@ if(flagSerial==1)
         {
           /*
         contObstaculo=0;
-        if (digitalRead(PinProxiFrontal) == LOW){Serial1.print("-1");Serial.println("OBSTACULO");}    //alerta de obstaculo
+        if (digitalRead(PinProxiFrontal) == LOW){Serial1.write("-1");Serial.println("OBSTACULO");}    //alerta de obstaculo
           while((digitalRead(PinProxiFrontal) == LOW)&&(contObstaculo<5))    
             {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
             delay(1000);
@@ -206,7 +214,7 @@ if(flagSerial==1)
             {
             contObstaculo=0;
             if (digitalRead(PinProxiFrontal) == LOW)
-              {Serial1.print("-1");Serial.println("OBSTACULO");    //alerta de obstaculo
+              {Serial1.write("-1");Serial.println("OBSTACULO");    //alerta de obstaculo
               while((digitalRead(PinProxiFrontal) == LOW)&&(contObstaculo<5))    
                 {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
                 delay(1000);
@@ -223,7 +231,7 @@ if(flagSerial==1)
           m=0;
           while (m <= desvioObstaculo)
             {
-            if (digitalRead(PinProxiFrontal) == LOW){Serial1.print("-1");}    //alerta de obstaculo
+            if (digitalRead(PinProxiFrontal) == LOW){Serial1.write("-1");}    //alerta de obstaculo
             while((digitalRead(PinProxiFrontal) == LOW))    
               {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
               }
@@ -234,7 +242,7 @@ if(flagSerial==1)
         m=0;
         while (m <= desvioObstaculo)
             {
-            if (digitalRead(PinProxiFrontal) == LOW){Serial1.print("-1");}    //alerta de obstaculo
+            if (digitalRead(PinProxiFrontal) == LOW){Serial1.write("-1");}    //alerta de obstaculo
             while((digitalRead(PinProxiFrontal) == LOW))    
               {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
               }
