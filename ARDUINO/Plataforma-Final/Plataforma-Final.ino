@@ -34,13 +34,14 @@ int h;
 int j;
 unsigned int k;
 int m;
+int p;
 int flagSerial;
 int flagBasuraSerial;
 int flagPrimerInstruccionEntrenamiento;
 int contObstaculo;
 
 #define delaiPulsos 2500       // microsegundos entre pulsos, menor numero mayor velocidad de giro 
-#define desvioObstaculo 800    // pasos MAXIMOS de desvio para esquivar un obstaculo
+#define desvioObstaculo 400    // pasos MAXIMOS de desvio para esquivar un obstaculo
 
 
 void setup() {
@@ -67,6 +68,7 @@ h=0;
 j=0;
 k=0;
 m=0;
+p=0;
 caux="";
 flagSerial = 0;
 flagBasuraSerial = 0;
@@ -198,35 +200,40 @@ if(flagSerial==1)
       Serial.println("Ejecuta avance");
       while (k < ruta[h].pasos)
         {
-          /*
-        contObstaculo=0;
-        if (digitalRead(PinProxiFrontal) == LOW){Serial1.write("-1");Serial.println("OBSTACULO");}    //alerta de obstaculo
-          while((digitalRead(PinProxiFrontal) == LOW)&&(contObstaculo<5))    
-            {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
-            delay(1000);
-            contObstaculo++;
-            }
-        if((contObstaculo==5))
+          /*//// INICIO DE ESQUIVAR OBSTACULO /////////
+        if(detectarObstaculo())
           {
           GirarIzquierda(209);
           m=0;
-          while ((digitalRead(PinProxiDerecho) == LOW)&&(m <= desvioObstaculo))
+          while ((m <= desvioObstaculo)&&(detectarObstaculo()== true))
             {
-            contObstaculo=0;
-            if (digitalRead(PinProxiFrontal) == LOW)
-              {Serial1.write("-1");Serial.println("OBSTACULO");    //alerta de obstaculo
-              while((digitalRead(PinProxiFrontal) == LOW)&&(contObstaculo<5))    
-                {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
-                delay(1000);
-                contObstaculo++;
+              Avance();
+              m++;
+              
+            }
+          if (contObstaculo==5)  //tengo que volver e intentar otro camino
+            {
+             GirarIzquierda(418);
+             p=0;
+              while ((digitalRead(PinProxiDerecho) == LOW)&&(p <= m)&&(contObstaculo<5))
+                {
+                contObstaculo=0;
+                if (digitalRead(PinProxiFrontal) == LOW)
+                  {Serial1.write("-1");Serial.println("OBSTACULO");    //alerta de obstaculo
+                  while((digitalRead(PinProxiFrontal) == LOW)&&(contObstaculo<5))    
+                    {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
+                    delay(1000);
+                    contObstaculo++;
+                    }
+                  }
+                else{
+                  Avance();
+                  p++;
+                  }
                 }
-              }
-            
-            }//alerta de obstaculo
-            
-            Avance();
-            m++;
-            
+             GirarIzquierda(209);
+            }
+            else{
             GirarDerecha(209);
           m=0;
           while (m <= desvioObstaculo)
@@ -252,7 +259,8 @@ if(flagSerial==1)
           GirarIzquierda(209);
           k=k+desvioObstaculo;
           }
-        */
+          }
+          //// FIN DE ESQUIVAR OBSTACULO /////////*/
         Avance();
         k++;
         }
@@ -442,3 +450,20 @@ do{x++;
   delayMicroseconds(delaiPulsos); 
   }while(x < giro);
 }
+
+bool detectarObstaculo()
+ {
+  int auxObstaculo=0;
+  if (digitalRead(PinProxiFrontal) == LOW){Serial1.write("-1");Serial.println("OBSTACULO");}    //alerta de obstaculo
+  while((digitalRead(PinProxiFrontal) == LOW)&&(auxObstaculo<5))    
+    {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
+    delay(1000);
+    auxObstaculo++;
+    }
+  if(auxObstaculo==5)
+    {
+    return true;
+    }else{
+    return false;
+    }//detectarObstaculo();
+ }
