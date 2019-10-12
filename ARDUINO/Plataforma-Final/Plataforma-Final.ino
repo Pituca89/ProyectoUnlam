@@ -14,6 +14,10 @@ const int PinProxiIzquierdo = 51;     // Pin para el sensor de proximidad Izquie
 const int PinProxiDerecho = 53;     // Pin para el sensor de proximidad Derecho
 const int intPinSerial = 2;   // pin de interrupcion para recibir ruta por serial1 desde wifi
 
+const int validacionBeaconDestino = 23; // Pin donde el bluethoot va a poner un 1 cuando haya procesado la mac y potencia del beacon de destino
+const int ResultadoBeaconDestino = 25;
+
+
 String rutaEntrenamiento; 
 
 int i=0;
@@ -28,6 +32,7 @@ char caux;
 rutas ruta[50]; 
 String intermedio;
 String macBeaconDestino;
+String macBeaconDestinoMasPotencia;
 int potenciaBeaconDestino;
   
 int h;
@@ -58,6 +63,11 @@ pinMode(PinEntrenamiento,INPUT);
 pinMode(Pin2binario,INPUT);
 pinMode(Pin1binario,INPUT); 
 pinMode(Pin0binario,INPUT);
+
+pinMode(validacionBeaconDestino,INPUT);
+pinMode(ResultadoBeaconDestino,INPUT);
+
+
 rutaEntrenamiento="";
 
 Serial2.begin(115200);      //Comunicacion con placa Bluethoot para enviar rutas modo entrenamiento
@@ -76,6 +86,7 @@ flagPrimerInstruccionEntrenamiento = 0;
 contObstaculo=0;
 attachInterrupt(digitalPinToInterrupt(intPinSerial), interrupcionSerial, RISING); //interrupcion del wifi
 macBeaconDestino="";
+macBeaconDestinoMasPotencia="";
 potenciaBeaconDestino=0;
 }
 
@@ -287,7 +298,26 @@ if(flagSerial==1)
     h++;
     
   
-  } h=0; }
+  } h=0;
+  // INICIO  Validar potencia y mac de beacon /////////////////////////////////////////////
+  Serial2.print("M");
+  Serial2.print(macBeaconDestino);
+  Serial2.print("P");
+  Serial2.print(potenciaBeaconDestino);
+  Serial2.print("$");
+  while(digitalRead(validacionBeaconDestino) == LOW)
+    {delay(1); //Espera mientras el bluethoot procesa la mac y potencia del beacon 
+     }
+  if (digitalRead(ResultadoBeaconDestino) == HIGH)
+    {
+    Serial1.print("-2");      // mensaje -2 a la placa wifi "llego ok"
+    Serial.println("potencia del Beacon destino CORRECTA");
+    }else{
+    Serial1.print("-3");    // mensaje -3 no llego "no llego"
+    Serial.println("potencia del Beacon destino FUERA DE RANGO");  
+    }
+  // FIN  Validar potencia y mac de beacon   //////////////////////////////////////////////  /
+  }
 if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
   {
   rutaEntrenamiento="";
