@@ -12,11 +12,14 @@ public class NotificationSingleton {
          return singleton;
      }
 
-    public void setNotification(boolean notification) {
-        this.notification = notification;
+    public synchronized void setNotificationTrue() {
+        notification = true;
     }
 
-    public boolean isNotification() {
+    public synchronized void setNotificationFalse() {
+        notification = false;
+    }
+    public static boolean isNotification() {
         return notification;
     }
 }

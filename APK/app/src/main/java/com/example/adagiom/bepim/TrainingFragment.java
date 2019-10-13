@@ -835,8 +835,10 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                         if(dataInPrint.contains("P")) {
                             //actualizarSectorActual();
                             //progressBar.setVisibility(View.INVISIBLE);
-                            datos = dataInPrint.split("P");
+
+                            datos = dataInPrint.split("P\\|");
                             int costo = obtenerCosto(datos[0]);
+                            Log.i("Costo",Integer.toString(costo));
                             registrarRuta(datos[0].toString(),origen.getId(),destino.getId(),Integer.parseInt(datos[1].toString()),costo);
                         }
                         if(dataInPrint.contains("ERROR")) {

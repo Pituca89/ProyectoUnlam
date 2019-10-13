@@ -261,7 +261,7 @@ public class PlataformaFragment extends Fragment implements InterfazAsyntask{
                     e.printStackTrace();
                 }
             }
-            singleton.setNotification(false);
+            singleton.setNotificationFalse();
             handler.obtainMessage(HANDLER_MESSAGE_ON).sendToTarget();
 
         }
