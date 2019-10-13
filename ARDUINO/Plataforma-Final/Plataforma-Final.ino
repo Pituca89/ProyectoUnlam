@@ -14,6 +14,10 @@ const int PinProxiIzquierdo = 51;     // Pin para el sensor de proximidad Izquie
 const int PinProxiDerecho = 53;     // Pin para el sensor de proximidad Derecho
 const int intPinSerial = 2;   // pin de interrupcion para recibir ruta por serial1 desde wifi
 
+const int validacionBeaconDestino = 23; // Pin donde el bluethoot va a poner un 1 cuando haya procesado la mac y potencia del beacon de destino
+const int ResultadoBeaconDestino = 25;
+
+
 String rutaEntrenamiento; 
 
 int i=0;
@@ -28,19 +32,21 @@ char caux;
 rutas ruta[50]; 
 String intermedio;
 String macBeaconDestino;
+String macBeaconDestinoMasPotencia;
 int potenciaBeaconDestino;
   
 int h;
 int j;
 unsigned int k;
 int m;
+int p;
 int flagSerial;
 int flagBasuraSerial;
 int flagPrimerInstruccionEntrenamiento;
 int contObstaculo;
 
 #define delaiPulsos 2500       // microsegundos entre pulsos, menor numero mayor velocidad de giro 
-#define desvioObstaculo 800    // pasos MAXIMOS de desvio para esquivar un obstaculo
+#define desvioObstaculo 400    // pasos MAXIMOS de desvio para esquivar un obstaculo
 
 
 void setup() {
@@ -57,6 +63,11 @@ pinMode(PinEntrenamiento,INPUT);
 pinMode(Pin2binario,INPUT);
 pinMode(Pin1binario,INPUT); 
 pinMode(Pin0binario,INPUT);
+
+pinMode(validacionBeaconDestino,INPUT);
+pinMode(ResultadoBeaconDestino,INPUT);
+
+
 rutaEntrenamiento="";
 
 Serial2.begin(115200);      //Comunicacion con placa Bluethoot para enviar rutas modo entrenamiento
@@ -67,6 +78,7 @@ h=0;
 j=0;
 k=0;
 m=0;
+p=0;
 caux="";
 flagSerial = 0;
 flagBasuraSerial = 0;
@@ -74,6 +86,7 @@ flagPrimerInstruccionEntrenamiento = 0;
 contObstaculo=0;
 attachInterrupt(digitalPinToInterrupt(intPinSerial), interrupcionSerial, RISING); //interrupcion del wifi
 macBeaconDestino="";
+macBeaconDestinoMasPotencia="";
 potenciaBeaconDestino=0;
 }
 
@@ -99,12 +112,18 @@ if(flagSerial==1)
         Serial.println("en busca del -");
         do{
           caux = Serial1.read();
-          //Serial.println(caux);
+          Serial.println(caux);
           }while (caux != '-');
         flagBasuraSerial=1;
-        Serial.println("detecto -   INICIO DE CADENA");
+       // Serial.println("detecto -   INICIO DE CADENA");
         }
       ruta[h].sentido=Serial1.read();
+      Serial.print(" valor de primer sentido: ");
+      Serial.println(ruta[h].sentido);
+      //ruta[h].sentido=Serial1.read();
+      //Serial.print(" valor de primer sentido 2: ");
+      //Serial.println(ruta[h].sentido);
+      intermedio= "";
       j=0;
       do{
         caux = Serial1.read();
@@ -112,12 +131,14 @@ if(flagSerial==1)
         Serial.println(caux);
         if (caux != '|' && caux != '$')
           {
-          intermedio += caux;
+          intermedio.concat(caux);
           }
         j++;
         }while (caux != '|' && caux != '$' && j<50);
+     // Serial.print(" valor de Intermedio: ");
+      //  Serial.println(intermedio);
       ruta[h].pasos = intermedio.toInt();
-      intermedio= "";
+      //intermedio= "";
       h++;
       }
      Serial.println("SALIO DEL  WHILE");
@@ -190,40 +211,45 @@ if(flagSerial==1)
       Serial.println("Ejecuta avance");
       while (k < ruta[h].pasos)
         {
-          /*
-        contObstaculo=0;
-        if (digitalRead(PinProxiFrontal) == LOW){Serial1.print("-1");Serial.println("OBSTACULO");}    //alerta de obstaculo
-          while((digitalRead(PinProxiFrontal) == LOW)&&(contObstaculo<5))    
-            {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
-            delay(1000);
-            contObstaculo++;
-            }
-        if((contObstaculo==5))
+          /*//// INICIO DE ESQUIVAR OBSTACULO /////////
+        if(detectarObstaculo())
           {
           GirarIzquierda(209);
           m=0;
-          while ((digitalRead(PinProxiDerecho) == LOW)&&(m <= desvioObstaculo))
+          while ((m <= desvioObstaculo)&&(detectarObstaculo()== true))
             {
-            contObstaculo=0;
-            if (digitalRead(PinProxiFrontal) == LOW)
-              {Serial1.print("-1");Serial.println("OBSTACULO");    //alerta de obstaculo
-              while((digitalRead(PinProxiFrontal) == LOW)&&(contObstaculo<5))    
-                {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
-                delay(1000);
-                contObstaculo++;
+              Avance();
+              m++;
+              
+            }
+          if (contObstaculo==5)  //tengo que volver e intentar otro camino
+            {
+             GirarIzquierda(418);
+             p=0;
+              while ((digitalRead(PinProxiDerecho) == LOW)&&(p <= m)&&(contObstaculo<5))
+                {
+                contObstaculo=0;
+                if (digitalRead(PinProxiFrontal) == LOW)
+                  {Serial1.write("-1");Serial.println("OBSTACULO");    //alerta de obstaculo
+                  while((digitalRead(PinProxiFrontal) == LOW)&&(contObstaculo<5))    
+                    {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
+                    delay(1000);
+                    contObstaculo++;
+                    }
+                  }
+                else{
+                  Avance();
+                  p++;
+                  }
                 }
-              }
-            
-            }//alerta de obstaculo
-            
-            Avance();
-            m++;
-            
+             GirarIzquierda(209);
+            }
+            else{
             GirarDerecha(209);
           m=0;
           while (m <= desvioObstaculo)
             {
-            if (digitalRead(PinProxiFrontal) == LOW){Serial1.print("-1");}    //alerta de obstaculo
+            if (digitalRead(PinProxiFrontal) == LOW){Serial1.write("-1");}    //alerta de obstaculo
             while((digitalRead(PinProxiFrontal) == LOW))    
               {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
               }
@@ -234,7 +260,7 @@ if(flagSerial==1)
         m=0;
         while (m <= desvioObstaculo)
             {
-            if (digitalRead(PinProxiFrontal) == LOW){Serial1.print("-1");}    //alerta de obstaculo
+            if (digitalRead(PinProxiFrontal) == LOW){Serial1.write("-1");}    //alerta de obstaculo
             while((digitalRead(PinProxiFrontal) == LOW))    
               {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
               }
@@ -244,7 +270,8 @@ if(flagSerial==1)
           GirarIzquierda(209);
           k=k+desvioObstaculo;
           }
-        */
+          }
+          //// FIN DE ESQUIVAR OBSTACULO /////////*/
         Avance();
         k++;
         }
@@ -271,7 +298,26 @@ if(flagSerial==1)
     h++;
     
   
-  } h=0; }
+  } h=0;
+  // INICIO  Validar potencia y mac de beacon /////////////////////////////////////////////
+  Serial2.print("M");
+  Serial2.print(macBeaconDestino);
+  Serial2.print("P");
+  Serial2.print(potenciaBeaconDestino);
+  Serial2.print("$");
+  while(digitalRead(validacionBeaconDestino) == LOW)
+    {delay(1); //Espera mientras el bluethoot procesa la mac y potencia del beacon 
+     }
+  if (digitalRead(ResultadoBeaconDestino) == HIGH)
+    {
+    Serial1.print("-2");      // mensaje -2 a la placa wifi "llego ok"
+    Serial.println("potencia del Beacon destino CORRECTA");
+    }else{
+    Serial1.print("-3");    // mensaje -3 no llego "no llego"
+    Serial.println("potencia del Beacon destino FUERA DE RANGO");  
+    }
+  // FIN  Validar potencia y mac de beacon   //////////////////////////////////////////////  /
+  }
 if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
   {
   rutaEntrenamiento="";
@@ -435,3 +481,20 @@ do{x++;
   delayMicroseconds(delaiPulsos); 
   }while(x < giro);
 }
+
+bool detectarObstaculo()
+ {
+  int auxObstaculo=0;
+  if (digitalRead(PinProxiFrontal) == LOW){Serial1.write("-1");Serial.println("OBSTACULO");}    //alerta de obstaculo
+  while((digitalRead(PinProxiFrontal) == LOW)&&(auxObstaculo<5))    
+    {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
+    delay(1000);
+    auxObstaculo++;
+    }
+  if(auxObstaculo==5)
+    {
+    return true;
+    }else{
+    return false;
+    }//detectarObstaculo();
+ }
