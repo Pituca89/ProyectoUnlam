@@ -6,8 +6,8 @@
 #include <WiFiClient.h> 
 //-------------------VARIABLES GLOBALES--------------------------
 
-const char *ssid = "Fibertel WiFi159 2.4GHz";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
-const char *password = "0043442422";//"6761727565";//"SOA.2019";
+const char *ssid = "Javo wifi";//"Fibertel WiFi159 2.4GHz";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
+const char *password = "44540006";//"0043442422";//"6761727565";//"SOA.2019";
 ESP8266WebServer server(80);   
 int flag = 0;
 int scanTime = 1; //In seconds

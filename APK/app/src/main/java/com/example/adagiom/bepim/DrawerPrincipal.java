@@ -145,17 +145,23 @@ public class DrawerPrincipal extends AppCompatActivity
         int id = item.getItemId();
         int title;
         if (id == R.id.nav_home) {
-            active = mainFragment;
-            mainFragment.setArguments(bundle);
-            fm.beginTransaction().replace(R.id.container_ly,mainFragment).commit();
+            if(active != mainFragment) {
+                active = mainFragment;
+                mainFragment.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.container_ly, mainFragment).commit();
+            }
         } else if (id == R.id.nav_training) {
-            active = trainingFragment;
-            trainingFragment.setArguments(bundle);
-            fm.beginTransaction().replace(R.id.container_ly,trainingFragment).commit();
+            if(active != trainingFragment) {
+                active = trainingFragment;
+                trainingFragment.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.container_ly, trainingFragment).commit();
+            }
         } else if (id == R.id.nav_sectors) {
-            active = sectorFragment;
-            sectorFragment.setArguments(bundle);
-            fm.beginTransaction().replace(R.id.container_ly,sectorFragment).commit();
+            if(active != sectorFragment) {
+                active = sectorFragment;
+                sectorFragment.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.container_ly, sectorFragment).commit();
+            }
         } else if (id == R.id.nav_plataform) {
             String uri = ClienteHTTP_POST.LIBERAR;
             try {

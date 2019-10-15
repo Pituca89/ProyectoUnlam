@@ -56,7 +56,7 @@ public class FirebaseNotification extends FirebaseMessagingService{
         Log.i("Notificacion","LLEGO");
         if(remoteMessage.getNotification().getBody().contains("LLEGADA")){
             NotificationSingleton singleton = new NotificationSingleton().getInstance();
-            singleton.setNotification(true);
+            singleton.setNotificationTrue();
         }
 
         createNotification(notificacion, plataforma);

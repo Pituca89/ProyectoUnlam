@@ -202,7 +202,12 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
                 if(msg.what == HANDLER_MESSAGE_ON){
                     mostrarToastMake("Su plataforma llego a destino");
                     Log.i("Notificacion","Recibi mensaje");
-                    refreshPlataforma();
+                    try {
+                        Thread.sleep(1000);
+                        refreshPlataforma();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         };
@@ -222,7 +227,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
                     e.printStackTrace();
                 }
             }
-            singleton.setNotification(false);
+            singleton.setNotificationFalse();
             handler.obtainMessage(HANDLER_MESSAGE_ON).sendToTarget();
 
         }

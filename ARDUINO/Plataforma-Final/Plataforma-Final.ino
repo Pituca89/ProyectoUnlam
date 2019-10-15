@@ -1,7 +1,7 @@
 const int dirPinIZ = 30; 
-const int stepPinIZ =31 ; 
+const int stepPinIZ = 31 ; 
 const int dirPinDER = 32; 
-const int stepPinDER =33 ; 
+const int stepPinDER = 33 ; 
 
 
 const int PinEntrenamiento = 22;
@@ -347,6 +347,7 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
           Avance();                        // Avanza 1 paso
           ContPasos++;
           }
+          
         if(flagPrimerInstruccionEntrenamiento == 0)
           {
           rutaEntrenamiento.concat("F");
@@ -357,11 +358,11 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
           rutaEntrenamiento.concat("F");
           }
         rutaEntrenamiento.concat(String(ContPasos));
-        
+          
         Serial.print("Avance pasos;");
         Serial.print(ContPasos);
         Serial.print("   Ruta parcial: ");
-       Serial.println(rutaEntrenamiento);
+        Serial.println(rutaEntrenamiento);
         }
         
       if ((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == LOW)) //Girar DERECHA
@@ -406,8 +407,8 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
           rutaEntrenamiento.concat("I");
           }
         rutaEntrenamiento.concat(String(ContPasos));
-       // Serial.print("Izquierda pasos;");
-       // Serial.print(ContPasos);
+        Serial.print("Izquierda pasos;");
+        Serial.print(ContPasos);
        // Serial.print("   Ruta parcial: ");
        // Serial.println(rutaEntrenamiento);
         }
