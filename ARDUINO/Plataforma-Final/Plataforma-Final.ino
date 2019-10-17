@@ -45,6 +45,7 @@ int flagBasuraSerial;
 int flagPrimerInstruccionEntrenamiento;
 int contObstaculo;
 
+
 #define delaiPulsos 2500       // microsegundos entre pulsos, menor numero mayor velocidad de giro 
 #define desvioObstaculo 400    // pasos MAXIMOS de desvio para esquivar un obstaculo
 
@@ -135,8 +136,8 @@ if(flagSerial==1)
           }
         j++;
         }while (caux != '|' && caux != '$' && j<50);
-     // Serial.print(" valor de Intermedio: ");
-      //  Serial.println(intermedio);
+      Serial.print(" valor de Intermedio: ");
+       Serial.println(intermedio);
       ruta[h].pasos = intermedio.toInt();
       //intermedio= "";
       h++;
@@ -144,7 +145,7 @@ if(flagSerial==1)
      Serial.println("SALIO DEL  WHILE");
     ruta[h].sentido='$';
 
-   //Inicio Guardar la MAC y la potencia del beacon recibida por wifi
+   ///////////Inicio Guardar la MAC y la potencia del beacon recibida por wifi /////////
     j=0;  
       do{
         caux = Serial1.read();
@@ -166,7 +167,7 @@ if(flagSerial==1)
         j++;
         }while (caux != '#' && j<50);
       potenciaBeaconDestino = intermedio.toInt();
-      //FIN Guardar la MAC y la potencia del beacon recibida por wifi //
+      //FIN Guardar la MAC y la potencia del beacon recibida por wifi /////////////////////// /
      
       //ruta[h].pasos = intermedio.toInt();
       //intermedio= "";
@@ -208,7 +209,7 @@ if(flagSerial==1)
     k=0;
     if (ruta[h].sentido == 'F')
       {
-      Serial.println("Ejecuta avance");
+      Serial.println("Ejecuta avance: ");Serial.print(ruta[h].pasos);Serial.println(" pasos");
       while (k < ruta[h].pasos)
         {
           /*//// INICIO DE ESQUIVAR OBSTACULO /////////
@@ -279,7 +280,7 @@ if(flagSerial==1)
       
     if (ruta[h].sentido == 'D')
       {
-      Serial.println("Ejecuta Giro Derecha");
+      Serial.println("Ejecuta Giro Derecha: ");Serial.print(ruta[h].pasos);Serial.println(" pasos");
       while (k <= ruta[h].pasos)
         {
         GirarDerecha(1);
@@ -288,7 +289,7 @@ if(flagSerial==1)
       }
     if (ruta[h].sentido == 'I')
       {
-      Serial.println("Ejecuta Giro Izquierda");
+      Serial.print("Ejecuta Giro Izquierda: ");Serial.print(ruta[h].pasos);Serial.println(" pasos");
       while (k <= ruta[h].pasos)
         {
         GirarIzquierda(1);
@@ -300,14 +301,18 @@ if(flagSerial==1)
   
   } h=0;
   // INICIO  Validar potencia y mac de beacon /////////////////////////////////////////////
+  if(potenciaBeaconDestino!=0)
+  {
   Serial2.print("M");
   Serial2.print(macBeaconDestino);
   Serial2.print("P");
   Serial2.print(potenciaBeaconDestino);
   Serial2.print("$");
-  while(digitalRead(validacionBeaconDestino) == LOW)
-    {delay(1); //Espera mientras el bluethoot procesa la mac y potencia del beacon 
-     }
+  int contDelayValidarBeacon=0;
+  while((digitalRead(validacionBeaconDestino) == LOW)&&(contDelayValidarBeacon<=60))
+    {delay(500); 
+    contDelayValidarBeacon++;//Espera mientras el bluethoot procesa la mac y potencia del beacon, salida forzada en 30 segundos
+    }
   if (digitalRead(ResultadoBeaconDestino) == HIGH)
     {
     Serial1.print("-2");      // mensaje -2 a la placa wifi "llego ok"
@@ -316,8 +321,14 @@ if(flagSerial==1)
     Serial1.print("-3");    // mensaje -3 no llego "no llego"
     Serial.println("potencia del Beacon destino FUERA DE RANGO");  
     }
-  // FIN  Validar potencia y mac de beacon   //////////////////////////////////////////////  /
   }
+  // FIN  Validar potencia y mac de beacon   //////////////////////////////////////////////  */
+
+  potenciaBeaconDestino=0;
+  ruta[0].sentido='$';
+  } //  FIN  Recibir y ejecutar ruta   //////////////////////////////////////////////  /
+
+
 if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
   {
   rutaEntrenamiento="";
@@ -328,11 +339,12 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
       if ((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == LOW)&&(digitalRead(Pin0binario) == HIGH)) //Avanzar
         { 
         ContPasos = 0;
+        Serial.println("orden de avance ");
         while((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == LOW)&&(digitalRead(Pin0binario) == HIGH))
           {
-          while(digitalRead(PinProxiFrontal) == LOW)    
-            {                              // se queda frenado en un bucle mientras haya un obstaculo adelante  
-            }
+          //while(digitalRead(PinProxiFrontal) == LOW)    
+         //   {                              // se queda frenado en un bucle mientras haya un obstaculo adelante  
+          //  }
           Avance();                        // Avanza 1 paso
           ContPasos++;
           }
@@ -357,6 +369,7 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
       if ((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == LOW)) //Girar DERECHA
         {
         ContPasos = 0;
+        Serial.println("orden de Girar a la derecha ");
         while((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == LOW))
           {
           GirarDerecha(1);                        // Gira derecha 1 paso
@@ -381,6 +394,7 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
       if ((digitalRead(Pin2binario) == HIGH)&&(digitalRead(Pin1binario) == LOW)&&(digitalRead(Pin0binario) == LOW)) //Girar IZQUIERDA
         {
         ContPasos = 0;
+        Serial.println("orden de Girar a la izquierda ");
         while((digitalRead(Pin2binario) == HIGH)&&(digitalRead(Pin1binario) == LOW)&&(digitalRead(Pin0binario) == LOW))
           {
           GirarIzquierda(1);                        // Gira derecha 1 paso
@@ -398,14 +412,14 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
         rutaEntrenamiento.concat(String(ContPasos));
         Serial.print("Izquierda pasos;");
         Serial.print(ContPasos);
-       // Serial.print("   Ruta parcial: ");
-       // Serial.println(rutaEntrenamiento);
+        Serial.print("   Ruta parcial: ");
+        Serial.println(rutaEntrenamiento);
         }
  
     }
   rutaEntrenamiento.concat("$");
   //ENVIAR rutaEntrenamiento POR SERIAL 2 al Bluethoot
-  Serial.print("Ruta de Entrenamiento: ");
+  Serial.print("Ruta de Entrenamiento enviada al Bluethoot: ");
   Serial.println(rutaEntrenamiento);
   Serial2.print(rutaEntrenamiento); 
   flagPrimerInstruccionEntrenamiento=0; 
