@@ -6,8 +6,8 @@
 #include <WiFiClient.h> 
 //-------------------VARIABLES GLOBALES--------------------------
 
-const char *ssid = "Javo wifi";//"Fibertel WiFi159 2.4GHz";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
-const char *password = "44540006";//"0043442422";//"6761727565";//"SOA.2019";
+const char *ssid = "Pablo";//"Fibertel WiFi159 2.4GHz";//"Javo wifi";//"Fibertel WiFi159 2.4GHz";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
+const char *password = "12345678";//"0043442422";//"44540006";//"0043442422";//"6761727565";//"SOA.2019";
 ESP8266WebServer server(80);   
 int flag = 0;
 int scanTime = 1; //In seconds
@@ -15,6 +15,7 @@ const char* response = "";
 const char* modo;
 const char* sentido;//Frente-Derecha-Izquierda-Reversa
 float angulo;  
+int MAX_BUFFER = 60;
 const char* confirma;//SI: Se verifica la potencia del beacon y se procesa la ruta - NO: No se realiza ninguna accion y la variable "modo" pasa a tener valor MOD_O
 const size_t capacity = JSON_OBJECT_SIZE(3) + 370;
 DynamicJsonDocument root(capacity);   
@@ -118,7 +119,31 @@ void loop() {
       //enviar un pulso por algun pin para avisar el envio de una ruta
       //enviar "response" por serial
       //aguardar algun pulso proveniente de arduino para avisar que ejecuto la ruta
-      Serial.write(response);
+      
+      String instruccion = String(response);
+      if(instruccion.length() <= MAX_BUFFER){
+        Serial.print(instruccion);
+      }else{
+        int division = instruccion.length() / MAX_BUFFER;
+        int resto = instruccion.length() % MAX_BUFFER;
+        int cantEnvios = division + resto;
+        int cantEnviosAux = 0;
+        int index = 0;
+        char aux[MAX_BUFFER];
+        while(cantEnviosAux < cantEnvios - 1){
+          String substr = instruccion.substring(index,index + MAX_BUFFER);
+          //substr.toCharArray(aux,MAX_BUFFER);
+          Serial.write(substr.c_str());
+          index += MAX_BUFFER;
+          cantEnviosAux++;
+          delay(1000);
+        }
+        String substr = instruccion.substring(index,instruccion.length());
+        //substr.toCharArray(aux,MAX_BUFFER);
+        Serial.write(substr.c_str());
+      }   
+      
+      //Serial.write(response);
       response = "";
     }
   }
