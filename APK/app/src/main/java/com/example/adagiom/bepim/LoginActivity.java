@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -18,10 +19,15 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
@@ -77,26 +83,30 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
                                             FirebaseUser user = mAuth.getCurrentUser();
-                                            updateUI(user);
-                                            json = new JSONObject();
-                                            String uri = ClienteHTTP_POST.ENVIAR_TOKEN;
-                                            String token = FirebaseInstanceId.getInstance().getToken();
-                                            try {
-                                                json.put("url",ruta + uri);
-                                                json.put("TOKEN",token);
-                                                json.put("USER",user.getUid());
-                                                json.put("EMAIL",user.getEmail());
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
+                                            user.reload();
+                                            if (user.isEmailVerified()) {
+                                                updateUI(user);
+                                                json = new JSONObject();
+                                                String uri = ClienteHTTP_POST.ENVIAR_TOKEN;
+                                                String token = FirebaseInstanceId.getInstance().getToken();
+                                                try {
+                                                    json.put("url", ruta + uri);
+                                                    json.put("TOKEN", token);
+                                                    json.put("USER", user.getUid());
+                                                    json.put("EMAIL", user.getEmail());
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                threadCliente_Post = new ClienteHTTP_POST(LoginActivity.this);
+                                                threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, json);
+                                            } else {
+                                                mostrarToastMake("Revise su casilla de correo electrónico");
                                             }
-                                            threadCliente_Post =  new ClienteHTTP_POST(LoginActivity.this);
-                                            threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
-                                        } else {
-                                            mostrarToastMake("El email o la contraseña son incorrectos");
+                                        }else {
+                                            mostrarToastMake("Error de usuario y contraseña");
                                             updateUI(null);
                                             mProgressDlg.dismiss();
                                         }
-
                                     }
                                 });
                     }
@@ -126,22 +136,28 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                updateUI(user);
-                                json = new JSONObject();
-                                String uri = ClienteHTTP_POST.ENVIAR_TOKEN;
-                                String token = FirebaseInstanceId.getInstance().getToken();
-                                try {
-                                    json.put("url",ruta + uri);
-                                    json.put("TOKEN",token);
-                                    json.put("USER",user.getUid());
-                                    json.put("EMAIL",user.getEmail());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                user.reload();
+                                if (user.isEmailVerified()) {
+                                    updateUI(user);
+                                    json = new JSONObject();
+                                    String uri = ClienteHTTP_POST.ENVIAR_TOKEN;
+                                    String token = FirebaseInstanceId.getInstance().getToken();
+                                    try {
+                                        json.put("url", ruta + uri);
+                                        json.put("TOKEN", token);
+                                        json.put("USER", user.getUid());
+                                        json.put("EMAIL", user.getEmail());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    threadCliente_Post = new ClienteHTTP_POST(LoginActivity.this);
+                                    threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, json);
+                                } else {
+                                    mostrarToastMake("Revise su casilla de correo electrónico");
+                                    updateUI(null);
+                                    mProgressDlg.dismiss();
                                 }
-                                threadCliente_Post =  new ClienteHTTP_POST(LoginActivity.this);
-                                threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
-                            } else {
-                                mostrarToastMake("El email o la contraseña son incorrectos");
+                            }else {
                                 updateUI(null);
                                 mProgressDlg.dismiss();
                             }

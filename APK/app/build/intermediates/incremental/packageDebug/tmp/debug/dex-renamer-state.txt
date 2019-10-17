@@ -1,4 +1,4 @@
-#Sat Oct 12 17:09:22 GMT-03:00 2019
+#Tue Oct 15 19:58:19 GMT-03:00 2019
 base.0=D\:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\16
 path.0=classes.dex
 renamed.0=classes.dex

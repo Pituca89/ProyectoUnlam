@@ -22,25 +22,13 @@
         android:id="@+id/btn_comenzar"
         android:layout_width="171dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/lbl_sector_actual"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="138dp"
         android:background="@drawable/sombra3"
         android:text="CONECTAR"
         android:textColor="@android:color/white"
         android:textSize="24dp" />
 
-    <io.github.controlwear.virtual.joystick.android.JoystickView
-        android:id="@+id/joystickView_right"
-        android:layout_width="297dp"
-        android:layout_height="270dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="81dp"
-        app:JV_backgroundColor="@color/colorPrimary"
-        app:JV_borderColor="@color/colorPrimaryDark"
-        app:JV_borderWidth="8dp"
-        app:JV_buttonImage="@drawable/redball" />
 
     <Button
         android:id="@+id/btn_deshacer"
@@ -72,11 +60,41 @@
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="86dp"
+        android:layout_below="@+id/textView5"
         android:text="Sector Actual: NULL"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/btn_frente"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#fff"
+        android:drawableTop="@drawable/arrow_up_256_b"
+        android:layout_marginTop="187dp"
+        android:background="@drawable/btn_redondeado" />
+
+    <Button
+        android:id="@+id/btn_izquierda"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentBottom="true"
+        android:drawableLeft="@drawable/arrow_left_256_b"
+        android:layout_alignStart="@+id/btn_deshacer"
+        android:layout_marginBottom="133dp"
+        android:background="@drawable/btn_redondeado" />
+
+    <Button
+        android:id="@+id/btn_derecha"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:drawableRight="@drawable/arrow_right_256_b"
+        android:textColor="#fff"
+        android:layout_alignEnd="@+id/btn_confirmar"
+        android:layout_alignTop="@+id/btn_izquierda"
+        android:background="@drawable/btn_redondeado" />
 
 </RelativeLayout>

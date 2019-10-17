@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -18,10 +19,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
@@ -61,6 +67,25 @@ public class RegistroActivity extends AppCompatActivity  implements InterfazAsyn
         sharedPreferences = getSharedPreferences(getString(R.string.key_preference),MODE_PRIVATE);
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
         mAuth = FirebaseAuth.getInstance();
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        // Get deep link from result (may be null if no link is found)
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                            Log.i("DynamicLink",deepLink.toString());
+                        }
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "getDynamicLink:onFailure", e);
+                    }
+                });
     }
 
     @Override
@@ -72,9 +97,13 @@ public class RegistroActivity extends AppCompatActivity  implements InterfazAsyn
                 sharedPreferences.edit()
                         .putString(getString(R.string.token_pass),pass.getText().toString())
                         .commit();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                currentUser.sendEmailVerification();
                 Intent intent = new Intent(RegistroActivity.this,LoginActivity.class);
+                intent.putExtra("verificar",true);
                 startActivity(intent);
                 finish();
+
             }else{
                 //ip.setEnabled(true);
                 mostrarToastMake("ERROR DE CONEXIÓN");
@@ -138,6 +167,22 @@ public class RegistroActivity extends AppCompatActivity  implements InterfazAsyn
             }
         }
     };
+    //bepim.page.link
+    ActionCodeSettings actionCodeSettings =
+            ActionCodeSettings.newBuilder()
+                    // URL you want to redirect back to. The domain (www.example.com) for this
+                    // URL must be whitelisted in the Firebase Console.
+                    .setUrl("https://bepim-54fc0.firebaseapp.com")
+                    // This must be true
+                    .setHandleCodeInApp(true)
+                    .setIOSBundleId("com.example.ios")
+                    .setAndroidPackageName(
+                            "bepim.page.link/logIn",
+                            true, /* installIfNotAvailable */
+                            "12"    /* minimumVersion */)
+                    .build();
+
+
     @Override
     public void mostrarToastMake(String msg) {
         Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();

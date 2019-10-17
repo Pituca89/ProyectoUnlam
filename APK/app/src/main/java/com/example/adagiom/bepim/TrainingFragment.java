@@ -68,6 +68,9 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
     Button comenzar;
     Button deshacer;
     Button confirmar;
+    Button up;
+    Button left;
+    Button right;
     JSONObject json;
     public static int FRENTE = 0;
     public static int STOP = 1;
@@ -150,13 +153,17 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         comenzar = (Button) v.findViewById(R.id.btn_comenzar);
         deshacer = (Button) v.findViewById(R.id.btn_deshacer);
         confirmar = (Button) v.findViewById(R.id.btn_confirmar);
-
+        up = (Button) v.findViewById(R.id.btn_frente);
+        left = (Button) v.findViewById(R.id.btn_izquierda);
+        right = (Button) v.findViewById(R.id.btn_derecha);
         lblsectoractual = (TextView) v.findViewById(R.id.lbl_sector_actual);
 
         comenzar.setOnClickListener(onClickTraining);
         deshacer.setOnClickListener(onClickTraining);
         confirmar.setOnClickListener(onClickTraining);
-
+        left.setOnClickListener(onActionButton);
+        up.setOnClickListener(onActionButton);
+        right.setOnClickListener(onActionButton);
         View viewSector = inflater.inflate(R.layout.fragment_sector,null);
         View viewDevice = inflater.inflate(R.layout.activity_paired_devices,null);
 
@@ -197,43 +204,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
 
 
         refreshSector();
-        final JoystickView joystickRight = (JoystickView) v.findViewById(R.id.joystickView_right);
-        joystickRight.setOnMoveListener(new JoystickView.OnMoveListener() {
 
-            @SuppressLint("DefaultLocale")
-            @Override
-            public void onMove(int angle, int strength) {
-
-                try {
-                    if (strength == 0 && angle == 0) {
-                        if (estado_anterior != STOP) {
-                            estado_anterior = STOP;
-                            mConnectedThread.write("S");
-                        }
-                    }
-                    if (strength != 0 && angle < 135 && angle > 45) {
-                        if (estado_anterior != FRENTE) {
-                            estado_anterior = FRENTE;
-                            mConnectedThread.write("F");
-                        }
-                    }
-                    if (strength != 0 && angle > 135 && angle < 225) {
-                        if (estado_anterior != IZQUIERDA) {
-                            estado_anterior = IZQUIERDA;
-                            mConnectedThread.write("I");
-                        }
-                    }
-                    if (strength != 0 && angle < 315 && angle < 45) {
-                        if (estado_anterior != DERECHA) {
-                            estado_anterior = DERECHA;
-                            mConnectedThread.write("D");
-                        }
-                    }
-                }catch (Exception e){
-                    mostrarToastMake("Plataforma desconectada");
-                }
-            }
-        });
 
         /**
          * IP/training
@@ -263,6 +234,30 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         return v;
     }
 
+    View.OnClickListener onActionButton = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            try {
+                switch (view.getId()){
+                    case R.id.btn_frente:
+                        Log.i("DatoBT","F");
+                        mConnectedThread.write("F");
+                        break;
+                    case R.id.btn_derecha:
+                        Log.i("DatoBT","D");
+                        mConnectedThread.write("D");
+                        break;
+                    case R.id.btn_izquierda:
+                        Log.i("DatoBT","I");
+                        mConnectedThread.write("I");
+                        break;
+                }
+            }catch (Exception e){
+                mostrarToastMake("Plataforma desconectada");
+            }
+
+        }
+    };
     @Override
     public void mostrarToastMake(String msg) {
         Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
@@ -839,7 +834,12 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                             datos = dataInPrint.split("P\\|");
                             int costo = obtenerCosto(datos[0]);
                             Log.i("Costo",Integer.toString(costo));
-                            registrarRuta(datos[0].toString(),origen.getId(),destino.getId(),Integer.parseInt(datos[1].toString()),costo);
+                            try{
+                                registrarRuta(datos[0].toString(),origen.getId(),destino.getId(),Integer.parseInt(datos[1].toString()),costo);
+                            }catch (Exception e){
+                                mostrarToastMake("ERROR DE PROCESAMIENTO");
+                            }
+
                         }
                         if(dataInPrint.contains("ERROR")) {
                             mProgressDlg1.dismiss();
@@ -855,11 +855,15 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
     public int obtenerCosto(String ruta){
         int costoTotal = 0;
 
-        String [] costos = ruta.split("\\|");
-        for (String costo: costos) {
-            if (costo.contains("F")){
-                costoTotal += Integer.parseInt(costo.substring(1,costo.length()));
+        try {
+            String[] costos = ruta.split("\\|");
+            for (String costo : costos) {
+                if (costo.contains("F")) {
+                    costoTotal += Integer.parseInt(costo.substring(1, costo.length()));
+                }
             }
+        }catch (Exception e){
+            mostrarToastMake("ERROR AL OBTENER EL COSTO DE LA RUTA");
         }
         return costoTotal;
     }

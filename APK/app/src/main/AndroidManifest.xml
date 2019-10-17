@@ -55,10 +55,23 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask">
+
+        </activity>
         <activity
             android:name=".RegistroActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask">
+            <intent-filter android:autoVerify="true">
+
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="bepim.page.link/registro" android:scheme="http"/>
+                <data android:host="bepim.page.link/registro" android:scheme="https"/>
+
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ActivityDriver"
             android:screenOrientation="portrait" />

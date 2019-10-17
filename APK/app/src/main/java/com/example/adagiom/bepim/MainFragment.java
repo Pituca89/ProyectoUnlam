@@ -45,7 +45,7 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
     private String chipid;
     SharedPreferences sharedPreferences;
     ArrayList<Sector> sectors;
-
+    private TextView namePlataforma;
     Plataforma plataforma;
     static Sector destino;
 
@@ -64,11 +64,13 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
 
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         actual = (TextView) v.findViewById(R.id.sectoract);
+        namePlataforma = (TextView) v.findViewById(R.id.namePlataform);
         listSector = (ListView) v.findViewById(R.id.listSector);
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
         plataforma = (Plataforma) getArguments().getSerializable("plataforma");
         chipid = plataforma.getChipid();
+        namePlataforma.setText(plataforma.getNombre());
         FirebaseMessaging.getInstance().subscribeToTopic(plataforma.getChipid().toString());
         json = new JSONObject();
         sectorAdapter = new SectorAdapter(getActivity());
