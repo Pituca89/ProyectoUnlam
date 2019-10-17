@@ -136,8 +136,8 @@ if(flagSerial==1)
           }
         j++;
         }while (caux != '|' && caux != '$' && j<50);
-     // Serial.print(" valor de Intermedio: ");
-      //  Serial.println(intermedio);
+      Serial.print(" valor de Intermedio: ");
+       Serial.println(intermedio);
       ruta[h].pasos = intermedio.toInt();
       //intermedio= "";
       h++;
@@ -300,7 +300,7 @@ if(flagSerial==1)
     
   
   } h=0;
-  /*/ INICIO  Validar potencia y mac de beacon /////////////////////////////////////////////
+  // INICIO  Validar potencia y mac de beacon /////////////////////////////////////////////
   if(potenciaBeaconDestino!=0)
   {
   Serial2.print("M");
@@ -339,11 +339,12 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
       if ((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == LOW)&&(digitalRead(Pin0binario) == HIGH)) //Avanzar
         { 
         ContPasos = 0;
+        Serial.println("orden de avance ");
         while((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == LOW)&&(digitalRead(Pin0binario) == HIGH))
           {
-          while(digitalRead(PinProxiFrontal) == LOW)    
-            {                              // se queda frenado en un bucle mientras haya un obstaculo adelante  
-            }
+          //while(digitalRead(PinProxiFrontal) == LOW)    
+         //   {                              // se queda frenado en un bucle mientras haya un obstaculo adelante  
+          //  }
           Avance();                        // Avanza 1 paso
           ContPasos++;
           }
@@ -368,6 +369,7 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
       if ((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == LOW)) //Girar DERECHA
         {
         ContPasos = 0;
+        Serial.println("orden de Girar a la derecha ");
         while((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == LOW))
           {
           GirarDerecha(1);                        // Gira derecha 1 paso
@@ -392,6 +394,7 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
       if ((digitalRead(Pin2binario) == HIGH)&&(digitalRead(Pin1binario) == LOW)&&(digitalRead(Pin0binario) == LOW)) //Girar IZQUIERDA
         {
         ContPasos = 0;
+        Serial.println("orden de Girar a la izquierda ");
         while((digitalRead(Pin2binario) == HIGH)&&(digitalRead(Pin1binario) == LOW)&&(digitalRead(Pin0binario) == LOW))
           {
           GirarIzquierda(1);                        // Gira derecha 1 paso
@@ -409,14 +412,14 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
         rutaEntrenamiento.concat(String(ContPasos));
         Serial.print("Izquierda pasos;");
         Serial.print(ContPasos);
-       // Serial.print("   Ruta parcial: ");
-       // Serial.println(rutaEntrenamiento);
+        Serial.print("   Ruta parcial: ");
+        Serial.println(rutaEntrenamiento);
         }
  
     }
   rutaEntrenamiento.concat("$");
   //ENVIAR rutaEntrenamiento POR SERIAL 2 al Bluethoot
-  Serial.print("Ruta de Entrenamiento: ");
+  Serial.print("Ruta de Entrenamiento enviada al Bluethoot: ");
   Serial.println(rutaEntrenamiento);
   Serial2.print(rutaEntrenamiento); 
   flagPrimerInstruccionEntrenamiento=0; 
