@@ -44,7 +44,10 @@ int flagSerial;
 int flagBasuraSerial;
 int flagPrimerInstruccionEntrenamiento;
 int contObstaculo;
-
+int flagObstaculo;
+int desvio1;        //variables usadas para contar los pasos que se desvia de la ruta original para esquivar un obstaculo
+int desvio2;        //la ruta para esquivar un obstaculo es un cuadrado, hay 3 tramos de desvio a contabilizar
+int desvio3;
 
 #define delaiPulsos 2500       // microsegundos entre pulsos, menor numero mayor velocidad de giro 
 #define desvioObstaculo 400    // pasos MAXIMOS de desvio para esquivar un obstaculo
@@ -78,17 +81,21 @@ Serial1.begin(115200);      //Comunicacion con placa wifi para recibir rutas mod
 h=0;
 j=0;
 k=0;
-m=0;
+//m=0;
 p=0;
 caux="";
 flagSerial = 0;
 flagBasuraSerial = 0;
 flagPrimerInstruccionEntrenamiento = 0;
+flagObstaculo=0;
 contObstaculo=0;
 attachInterrupt(digitalPinToInterrupt(intPinSerial), interrupcionSerial, RISING); //interrupcion del wifi
 macBeaconDestino="";
 macBeaconDestinoMasPotencia="";
 potenciaBeaconDestino=0;
+desvio1=0;        
+desvio2=0;        
+desvio3=0;
 }
 
 
@@ -212,69 +219,145 @@ if(flagSerial==1)
       Serial.println("Ejecuta avance: ");Serial.print(ruta[h].pasos);Serial.println(" pasos");
       while (k < ruta[h].pasos)
         {
-          /*//// INICIO DE ESQUIVAR OBSTACULO /////////
+          ///// INICIO DE ESQUIVAR OBSTACULO /////////
         if(detectarObstaculo())
           {
           GirarIzquierda(209);
-          m=0;
-          while ((m <= desvioObstaculo)&&(detectarObstaculo()== true))
+          flagObstaculo=0;
+          desvio1=0;
+          while ((desvio1 <= desvioObstaculo)&&(flagObstaculo==0))
             {
+              if (detectarObstaculo()== true)
+              {flagObstaculo=1;}
+              else{
               Avance();
-              m++;
-              
+              desvio1++; 
+              }
             }
-          if (contObstaculo==5)  //tengo que volver e intentar otro camino
+          if(flagObstaculo==1)  //detecto obstaculo en ruta alternativa tengo que volver e intentar otro camino
             {
-             GirarIzquierda(418);
-             p=0;
-              while ((digitalRead(PinProxiDerecho) == LOW)&&(p <= m)&&(contObstaculo<5))
+            GirarDerecha(418);
+            p=0;
+              while (p <= desvio1)
                 {
-                contObstaculo=0;
-                if (digitalRead(PinProxiFrontal) == LOW)
-                  {Serial1.write("-1");Serial.println("OBSTACULO");    //alerta de obstaculo
-                  while((digitalRead(PinProxiFrontal) == LOW)&&(contObstaculo<5))    
-                    {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
-                    delay(1000);
-                    contObstaculo++;
-                    }
-                  }
-                else{
+                 if (detectarObstaculo()== true)
+                  {Serial1.write("-4");                 //Definir mensaje al wifi -4 Plataforma detenida por obstaculo
+                   Serial.println("Plataforma DETENIDA por OBSTACULO");
+                  }        
+                  else{
                   Avance();
-                  p++;
+                  p++; 
                   }
                 }
-             GirarIzquierda(209);
+            GirarIzquierda(209);
             }
-            else{
-            GirarDerecha(209);
-          m=0;
-          while (m <= desvioObstaculo)
-            {
-            if (digitalRead(PinProxiFrontal) == LOW){Serial1.write("-1");}    //alerta de obstaculo
-            while((digitalRead(PinProxiFrontal) == LOW))    
-              {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
-              }
-            Avance();
-            m++;
-            } 
+          else{
           GirarDerecha(209);
-        m=0;
-        while (m <= desvioObstaculo)
+          flagObstaculo=0;
+          desvio2=0;
+          while ((desvio2 <= desvioObstaculo)&&(flagObstaculo==0))
             {
-            if (digitalRead(PinProxiFrontal) == LOW){Serial1.write("-1");}    //alerta de obstaculo
-            while((digitalRead(PinProxiFrontal) == LOW))    
-              {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
+              if (detectarObstaculo()== true)
+              {flagObstaculo=1;}
+              else{
+              Avance();
+              desvio2++; 
               }
-            Avance();
-            m++;
             }
-          GirarIzquierda(209);
-          k=k+desvioObstaculo;
+          if(flagObstaculo==1)  //detecto obstaculo en ruta alternativa tengo que volver e intentar otro camino
+            {
+            GirarDerecha(418);
+            p=0;
+              while (p <= desvio2)
+                {
+                 if (detectarObstaculo()== true)
+                  {Serial1.write("-4");                 //Definir mensaje al wifi -4 Plataforma detenida por obstaculo
+                   Serial.println("Plataforma DETENIDA por OBSTACULO");
+                  }        
+                  else{
+                  Avance();
+                  p++; 
+                  }
+                }
+            GirarIzquierda(209);
+            p=0;
+              while (p <= desvio1)
+                {
+                 if (detectarObstaculo()== true)
+                  {Serial1.write("-4");                 //Definir mensaje al wifi -4 Plataforma detenida por obstaculo
+                   Serial.println("Plataforma DETENIDA por OBSTACULO");
+                  }        
+                  else{
+                  Avance();
+                  p++; 
+                  }
+                }
+            GirarIzquierda(209);
+            } else {
+          GirarDerecha(209);
+         flagObstaculo=0;
+          desvio3=0;
+          while ((desvio3 <= desvioObstaculo)&&(flagObstaculo==0))
+            {
+              if (detectarObstaculo()== true)
+              {flagObstaculo=1;}
+              else{
+              Avance();
+              desvio3++; 
+              }
+            }
+          if(flagObstaculo==1)  //detecto obstaculo en ruta alternativa tengo que volver e intentar otro camino
+            { 
+            GirarDerecha(418);
+            p=0;
+            while (p <= desvio3)
+              {
+                 if (detectarObstaculo()== true)
+                  {Serial1.write("-4");                 //Definir mensaje al wifi -4 Plataforma detenida por obstaculo
+                   Serial.println("Plataforma DETENIDA por OBSTACULO");
+                  }        
+                  else{
+                  Avance();
+                  p++; 
+                  }
+              }
+            GirarIzquierda(209);
+            p=0;
+              while (p <= desvio2)
+                {
+                 if (detectarObstaculo()== true)
+                  {Serial1.write("-4");                 //Definir mensaje al wifi -4 Plataforma detenida por obstaculo
+                   Serial.println("Plataforma DETENIDA por OBSTACULO");
+                  }        
+                  else{
+                  Avance();
+                  p++; 
+                  }
+                }
+            GirarIzquierda(209);
+            p=0;
+              while (p <= desvio1)
+                {
+                 if (detectarObstaculo()== true)
+                  {Serial1.write("-4");                 //Definir mensaje al wifi -4 Plataforma detenida por obstaculo
+                   Serial.println("Plataforma DETENIDA por OBSTACULO");
+                  }        
+                  else{
+                  Avance();
+                  p++; 
+                  }
+                }
+            }else{
+            GirarIzquierda(209);
+            k=k+desvioObstaculo;
+            }
+            
+          }}}
+          else{
+            //// FIN DE ESQUIVAR OBSTACULO /////////*/
+          Avance();
+          k++;
           }
-          }
-          //// FIN DE ESQUIVAR OBSTACULO /////////*/
-        Avance();
-        k++;
         }
         }
       
