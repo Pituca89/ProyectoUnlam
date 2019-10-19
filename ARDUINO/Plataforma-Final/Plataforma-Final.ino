@@ -48,6 +48,7 @@ int flagObstaculo;
 int desvio1;        //variables usadas para contar los pasos que se desvia de la ruta original para esquivar un obstaculo
 int desvio2;        //la ruta para esquivar un obstaculo es un cuadrado, hay 3 tramos de desvio a contabilizar
 int desvio3;
+int flagDesvioIzquierda;
 
 #define delaiPulsos 2500       // microsegundos entre pulsos, menor numero mayor velocidad de giro 
 #define desvioObstaculo 400    // pasos MAXIMOS de desvio para esquivar un obstaculo
@@ -88,6 +89,7 @@ flagSerial = 0;
 flagBasuraSerial = 0;
 flagPrimerInstruccionEntrenamiento = 0;
 flagObstaculo=0;
+flagDesvioIzquierda=0;
 contObstaculo=0;
 attachInterrupt(digitalPinToInterrupt(intPinSerial), interrupcionSerial, RISING); //interrupcion del wifi
 macBeaconDestino="";
@@ -217,12 +219,24 @@ if(flagSerial==1)
     if (ruta[h].sentido == 'F')
       {
       Serial.println("Ejecuta avance: ");Serial.print(ruta[h].pasos);Serial.println(" pasos");
+      flagDesvioIzquierda=0;
       while (k < ruta[h].pasos)
         {
           ///// INICIO DE ESQUIVAR OBSTACULO /////////
         if(detectarObstaculo())
           {
-          GirarIzquierda(209);
+          if(desvioObstaculo>(ruta[h].pasos-k))
+          {
+          Serial1.write("-5");                 //Definir mensaje al wifi -5 Plataforma detenida por obstaculo sin posibilidad de esquivarlo
+          Serial.println("Plataforma DETENIDA los pasos pendientes no permiten maniobrar para esquivarlo");
+            // Evaluar volver al punto anterior
+           while(digitalRead(PinProxiFrontal) == LOW)    
+              {                              // se queda frenado en un bucle mientras haya un obstaculo adelante  
+              delay(100);
+              }
+          }else{
+          if(flagDesvioIzquierda==0){
+          GirarIzquierda(209);}else{GirarDerecha(209);}
           flagObstaculo=0;
           desvio1=0;
           while ((desvio1 <= desvioObstaculo)&&(flagObstaculo==0))
@@ -237,6 +251,7 @@ if(flagSerial==1)
           if(flagObstaculo==1)  //detecto obstaculo en ruta alternativa tengo que volver e intentar otro camino
             {
             GirarDerecha(418);
+            
             p=0;
               while (p <= desvio1)
                 {
@@ -249,10 +264,15 @@ if(flagSerial==1)
                   p++; 
                   }
                 }
-            GirarIzquierda(209);
+            
+            if(flagDesvioIzquierda==0){
+            GirarIzquierda(209);}else{GirarDerecha(209);}
+            flagDesvioIzquierda=1;
             }
           else{
-          GirarDerecha(209);
+          if(flagDesvioIzquierda==0){
+          GirarDerecha(209);}else{GirarIzquierda(209);}
+          
           flagObstaculo=0;
           desvio2=0;
           while ((desvio2 <= desvioObstaculo)&&(flagObstaculo==0))
@@ -267,6 +287,7 @@ if(flagSerial==1)
           if(flagObstaculo==1)  //detecto obstaculo en ruta alternativa tengo que volver e intentar otro camino
             {
             GirarDerecha(418);
+            
             p=0;
               while (p <= desvio2)
                 {
@@ -279,7 +300,8 @@ if(flagSerial==1)
                   p++; 
                   }
                 }
-            GirarIzquierda(209);
+            if(flagDesvioIzquierda==0){
+            GirarIzquierda(209);}else{GirarDerecha(209);}
             p=0;
               while (p <= desvio1)
                 {
@@ -292,9 +314,12 @@ if(flagSerial==1)
                   p++; 
                   }
                 }
-            GirarIzquierda(209);
+            if(flagDesvioIzquierda==0){
+            GirarIzquierda(209);}else{GirarDerecha(209);}
+            flagDesvioIzquierda=1;
             } else {
-          GirarDerecha(209);
+          if(flagDesvioIzquierda==0){
+          GirarDerecha(209);}else{GirarIzquierda(209);}
          flagObstaculo=0;
           desvio3=0;
           while ((desvio3 <= desvioObstaculo)&&(flagObstaculo==0))
@@ -321,7 +346,8 @@ if(flagSerial==1)
                   p++; 
                   }
               }
-            GirarIzquierda(209);
+            if(flagDesvioIzquierda==0){
+            GirarIzquierda(209);}else{GirarDerecha(209);}
             p=0;
               while (p <= desvio2)
                 {
@@ -334,7 +360,8 @@ if(flagSerial==1)
                   p++; 
                   }
                 }
-            GirarIzquierda(209);
+            if(flagDesvioIzquierda==0){
+            GirarIzquierda(209);}else{GirarDerecha(209);}
             p=0;
               while (p <= desvio1)
                 {
@@ -347,12 +374,14 @@ if(flagSerial==1)
                   p++; 
                   }
                 }
+            flagDesvioIzquierda=1;
             }else{
-            GirarIzquierda(209);
+            if(flagDesvioIzquierda==0){
+            GirarIzquierda(209);}else{GirarDerecha(209);}
             k=k+desvioObstaculo;
             }
             
-          }}}
+          }}}}
           else{
             //// FIN DE ESQUIVAR OBSTACULO /////////*/
           Avance();
