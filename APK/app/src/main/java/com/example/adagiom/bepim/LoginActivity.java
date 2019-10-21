@@ -127,6 +127,7 @@ public class LoginActivity extends AppCompatActivity implements InterfazAsyntask
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.}
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
         updateUI(currentUser);
         if(!user.getText().toString().isEmpty() && !pass.getText().toString().isEmpty()) {
             mProgressDlg.show();

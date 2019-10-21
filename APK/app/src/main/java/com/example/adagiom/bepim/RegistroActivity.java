@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -98,6 +99,7 @@ public class RegistroActivity extends AppCompatActivity  implements InterfazAsyn
                         .putString(getString(R.string.token_pass),pass.getText().toString())
                         .commit();
                 FirebaseUser currentUser = mAuth.getCurrentUser();
+                FirebaseMessaging.getInstance().subscribeToTopic("");
                 currentUser.sendEmailVerification();
                 Intent intent = new Intent(RegistroActivity.this,LoginActivity.class);
                 intent.putExtra("verificar",true);

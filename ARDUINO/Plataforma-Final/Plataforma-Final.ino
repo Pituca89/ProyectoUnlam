@@ -151,9 +151,9 @@ if(flagSerial==1)
       //intermedio= "";
       h++;
       }
-     Serial.println("SALIO DEL  WHILE");
+    Serial.println("SALIO DEL  WHILE");
     ruta[h].sentido='$';
-
+    
    ///////////Inicio Guardar la MAC y la potencia del beacon recibida por wifi /////////
     j=0;  
       do{
@@ -164,6 +164,8 @@ if(flagSerial==1)
           }
         j++;
         }while (caux != 'P' && j<50);
+        Serial.print("MAC RECIBIDA : ");
+        Serial.println(macBeaconDestino);
       //caux = Serial1.read();  // Leo el "-" entre la potencia y el valor de la misma ejemplo P-67
       j=0;
       intermedio="";
@@ -176,6 +178,8 @@ if(flagSerial==1)
         j++;
         }while (caux != '#' && j<50);
       potenciaBeaconDestino = intermedio.toInt();
+      Serial.print("POTENCIA RECIBIDA : ");
+      Serial.println(intermedio);
       //FIN Guardar la MAC y la potencia del beacon recibida por wifi /////////////////////// /
      
       //ruta[h].pasos = intermedio.toInt();
@@ -190,7 +194,7 @@ if(flagSerial==1)
   
   //delay(2000);
   h=0;
-  while ((ruta[h].sentido != '$')&&(h<30)&&(potenciaBeaconDestino!=0))  //preguntar por distinto de Q es para que solo imprima cuando recibe datos
+  while ((ruta[h].sentido != '$')&&(h<50)&&(potenciaBeaconDestino!=0))  //preguntar por distinto de Q es para que solo imprima cuando recibe datos
     { 
     if(h==0){Serial.println(" IMPRIME en el while LO RECIBIDO: ");}
     Serial.print("Sentido: " );

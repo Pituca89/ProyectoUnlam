@@ -153,17 +153,17 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         comenzar = (Button) v.findViewById(R.id.btn_comenzar);
         deshacer = (Button) v.findViewById(R.id.btn_deshacer);
         confirmar = (Button) v.findViewById(R.id.btn_confirmar);
-        up = (Button) v.findViewById(R.id.btn_frente);
-        left = (Button) v.findViewById(R.id.btn_izquierda);
-        right = (Button) v.findViewById(R.id.btn_derecha);
+        //up = (Button) v.findViewById(R.id.btn_frente);
+        //left = (Button) v.findViewById(R.id.btn_izquierda);
+        //right = (Button) v.findViewById(R.id.btn_derecha);
         lblsectoractual = (TextView) v.findViewById(R.id.lbl_sector_actual);
 
         comenzar.setOnClickListener(onClickTraining);
         deshacer.setOnClickListener(onClickTraining);
         confirmar.setOnClickListener(onClickTraining);
-        left.setOnClickListener(onActionButton);
-        up.setOnClickListener(onActionButton);
-        right.setOnClickListener(onActionButton);
+        //left.setOnClickListener(onActionButton);
+        //up.setOnClickListener(onActionButton);
+        //right.setOnClickListener(onActionButton);
         View viewSector = inflater.inflate(R.layout.fragment_sector,null);
         View viewDevice = inflater.inflate(R.layout.activity_paired_devices,null);
 
@@ -202,7 +202,47 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
 
         alertDialogDevice = builderDevice.create();
 
+        final JoystickView joystickRight = (JoystickView) v.findViewById(R.id.joystickView_right);
+        joystickRight.setOnMoveListener(new JoystickView.OnMoveListener() {
 
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onMove(int angle, int strength) {
+                Log.i("DatoBT",Integer.toString(angle));
+                try {
+                    if (strength == 0 && angle == 0) {
+                        if (estado_anterior != STOP) {
+                            estado_anterior = STOP;
+                            Log.i("DatoBT","S");
+                            mConnectedThread.write("S");
+                        }
+                    }
+                    if (strength != 0 && angle < 125 && angle > 55) {
+                        if (estado_anterior != FRENTE) {
+                            estado_anterior = FRENTE;
+                            Log.i("DatoBT","F");
+                            mConnectedThread.write("F");
+                        }
+                    }
+                    if (strength != 0 && angle > 145 && angle < 215) {
+                        if (estado_anterior != IZQUIERDA) {
+                            estado_anterior = IZQUIERDA;
+                            Log.i("DatoBT","I");
+                            mConnectedThread.write("I");
+                        }
+                    }
+                    if (strength != 0 && (angle > 325 && angle < 359) || (angle < 35 && angle > 0)) {
+                        if (estado_anterior != DERECHA) {
+                            estado_anterior = DERECHA;
+                            Log.i("DatoBT","D");
+                            mConnectedThread.write("D");
+                        }
+                    }
+                }catch (Exception e){
+                    mostrarToastMake("Plataforma desconectada");
+                }
+            }
+        });
         refreshSector();
 
 
@@ -234,6 +274,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
         return v;
     }
 
+/*
     View.OnClickListener onActionButton = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -251,13 +292,16 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask{
                         Log.i("DatoBT","I");
                         mConnectedThread.write("I");
                         break;
+                    default:
+                        Log.i("DatoBT","S");
+                        mConnectedThread.write("S");
                 }
             }catch (Exception e){
                 mostrarToastMake("Plataforma desconectada");
             }
-
         }
     };
+    */
     @Override
     public void mostrarToastMake(String msg) {
         Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();

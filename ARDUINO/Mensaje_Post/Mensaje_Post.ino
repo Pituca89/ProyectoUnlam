@@ -15,7 +15,7 @@ const char* response = "";
 const char* modo;
 const char* sentido;//Frente-Derecha-Izquierda-Reversa
 float angulo;  
-int MAX_BUFFER = 60;
+int MAX_BUFFER = 50;
 const char* confirma;//SI: Se verifica la potencia del beacon y se procesa la ruta - NO: No se realiza ninguna accion y la variable "modo" pasa a tener valor MOD_O
 const size_t capacity = JSON_OBJECT_SIZE(3) + 370;
 DynamicJsonDocument root(capacity);   
@@ -133,7 +133,9 @@ void loop() {
         while(cantEnviosAux < cantEnvios - 1){
           String substr = instruccion.substring(index,index + MAX_BUFFER);
           //substr.toCharArray(aux,MAX_BUFFER);
+          Serial.flush();
           Serial.write(substr.c_str());
+          Serial.flush();
           index += MAX_BUFFER;
           cantEnviosAux++;
           delay(1000);
@@ -150,7 +152,7 @@ void loop() {
   
   if (Serial.available()) {
       flagBasuraSerial=0;
-      while (Serial.available() && caux != '1'&& caux != '2'&& caux != '3'&& caux != '4')   //while (Serial.available() && caux != '#' && flagSerial == 1)
+      while (Serial.available() && caux != '1'&& caux != '2'&& caux != '3'&& caux != '4' && caux != '5')   //while (Serial.available() && caux != '#' && flagSerial == 1)
       {
        if (flagBasuraSerial == 0)
         {
@@ -161,15 +163,37 @@ void loop() {
        //Serial.println("detecto -   INICIO DE CADENA");
          }
       
-      caux = Serial.read();
-      if (caux == '1')
+        caux = Serial.read();
+        if (caux == '1')
+          {
+            //Serial.println("se detecto 1 por serial");
+            peticionPOSTJSON("http://www.gestiondenegocio.esy.es/obstaculo","OBSTACULO");
+            caux='a';
+          }
+        if (caux == '2')
         {
-          Serial.println("se detecto 1 por serial");
-          peticionPOSTJSON("http://www.gestiondenegocio.esy.es/obstaculo","OBSTACULO");
+          //Serial.println("se detecto 2 por serial");
+          peticionPOSTJSON("http://www.gestiondenegocio.esy.es/liberar_plataforma","LLEGADA");
+          caux='a';
+        }
+        if (caux == '3')
+        {
+          //Serial.println("se detecto 3 por serial");
+          peticionPOSTJSON("http://www.gestiondenegocio.esy.es/obstaculo","POTENCIA BEACON NO OK");
+          caux='a';
+        }       
+        if (caux == '4')
+        {
+          //Serial.println("se detecto 4 por serial");
+          peticionPOSTJSON("http://www.gestiondenegocio.esy.es/obstaculo","PLATAFORMA DETENIDA POR OBSTACULO");
+          caux='a';
+        }
+        if (caux == '5')
+        {
+          //Serial.println("se detecto 5 por serial");
+          peticionPOSTJSON("http://www.gestiondenegocio.esy.es/obstaculo","PLATAFORMA DETENIDA SIN POSIBILIDAD DE SORTEAR");
           caux='a';
         }
       }
-  }
-  //delay(10000);
-  //peticionPOSTJSON("http://www.gestiondenegocio.esy.es/liberar_plataforma","LLEGADA");
+    }
 }

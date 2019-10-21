@@ -61,8 +61,20 @@ int validarBeaconLlegada(char* mac, int pot){
     String dato1 = String(mac);
     dato1.toLowerCase();//equalsIgnoreCase()
     String dato2 = String(macAdd.toString().c_str());
+    Serial.print("Beacons econtrados: ");
+    Serial.println(device.getAddress().toString().c_str());
+    Serial.print("Potencia");
+    Serial.println(device.getRSSI());
+    Serial.print("Ventana ");
+    Serial.print((pot - ventana));Serial.print(" ");Serial.println((pot + ventana));
     if (dato1 == dato2) {
+      Serial.println("Encontre Beacon");
       if(device.getRSSI() >= (pot - ventana) && device.getRSSI() <= (pot + ventana)){
+        
+        Serial.print("Potencia detectada del Beacon: ");
+        Serial.println(dato2);
+        Serial.print(" Valor: ");
+        Serial.println(device.getRSSI());
         encontrado = 1;
         }
        else{
@@ -98,6 +110,7 @@ digitalWrite(PinEntrenamiento,LOW);
 
 void loop() {
   digitalWrite(ValidacionBeaconDestino,LOW);
+  digitalWrite(ResultadoBeaconDestino,LOW);
   if(Serial.available()){
     
     while(Serial.available()){  
@@ -119,19 +132,29 @@ void loop() {
             j++;
             dato = Serial.read();
            } 
+           Serial.print("MAC: ");
+           Serial.println(mac);
+           Serial.print(" Potencia: ");
+           Serial.println(potencia);
            int busqueda = 0;
-           int llegada = validarBeaconLlegada(mac,potencia.toInt());
-           while(busqueda < vecesDeBusqueda && llegada != 2){
+           int llegada = 2;
+           
+           while(busqueda < vecesDeBusqueda && llegada == 2){
             llegada = validarBeaconLlegada(mac,potencia.toInt());
+            Serial.print("Salida validacion: ");
+            Serial.println(llegada);
+            Serial.println("-----------------------------------------------------------------");
             busqueda++;
            }
            if(llegada == 1){
+              Serial.print("Reconoce el Beacon");
               digitalWrite(ResultadoBeaconDestino,HIGH);
             }else{
+              Serial.print("No reconoce el Beacon");
               digitalWrite(ResultadoBeaconDestino,LOW);
             } 
          digitalWrite(ValidacionBeaconDestino,HIGH); 
-         delay(500);
+         delay(2000);
         }
     }     
   }
