@@ -40,6 +40,8 @@ public class ClienteHTTP_POST extends AsyncTask<JSONObject , JSONObject ,JSONObj
     //static int OBTENER_RUTA = 20;
     static String LIBERAR = "/cancelar";
     static String REG_USER_APP = "/register_user_app";
+    static String EDIT_SECTOR = "/sector";
+    static String DELETE_SECTOR = "/sector";
     private InterfazAsyntask caller;
     private Exception mException=null;
     private JSONObject resp;

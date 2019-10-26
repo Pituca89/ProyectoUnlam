@@ -99,7 +99,6 @@ public class RegistroActivity extends AppCompatActivity  implements InterfazAsyn
                         .putString(getString(R.string.token_pass),pass.getText().toString())
                         .commit();
                 FirebaseUser currentUser = mAuth.getCurrentUser();
-                FirebaseMessaging.getInstance().subscribeToTopic("");
                 currentUser.sendEmailVerification();
                 Intent intent = new Intent(RegistroActivity.this,LoginActivity.class);
                 intent.putExtra("verificar",true);

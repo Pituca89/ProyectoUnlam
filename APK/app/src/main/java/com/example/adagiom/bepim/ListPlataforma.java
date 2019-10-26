@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -90,6 +92,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
         }
     };
 
+
     View.OnClickListener agregarPlataforma = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -132,6 +135,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            FirebaseMessaging.getInstance().subscribeToTopic(intentResult.getContents().toString());
                             threadCliente_Post =  new ClienteHTTP_POST(ListPlataforma.this);
                             threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
                         }

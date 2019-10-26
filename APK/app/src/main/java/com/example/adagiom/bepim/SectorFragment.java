@@ -15,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,7 @@ import java.util.Iterator;
 public class SectorFragment extends Fragment implements InterfazAsyntask{
 
     private ClienteHTTP_POST threadCliente_Post;
+    private ClienteHTTP_DELETE clienteHTTP_delete;
     private String ruta;
     ListView listSector;
     FloatingActionButton addSector;
@@ -42,7 +45,9 @@ public class SectorFragment extends Fragment implements InterfazAsyntask{
     private Sector sector;
     private String chipid;
     SharedPreferences sharedPreferences;
-
+    ImageView edit;
+    ImageView delete;
+    static String TAG = SectorFragment.class.getName();
     public SectorFragment() {
         // Required empty public constructor
     }
@@ -66,6 +71,8 @@ public class SectorFragment extends Fragment implements InterfazAsyntask{
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_sector, container, false);
         addSector = (FloatingActionButton) v.findViewById(R.id.addSector);
+        edit = (ImageView) v.findViewById(R.id.edit);
+        delete = (ImageView) v.findViewById(R.id.delete);
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
         Plataforma plataforma = (Plataforma) getArguments().getSerializable("plataforma");
@@ -75,6 +82,7 @@ public class SectorFragment extends Fragment implements InterfazAsyntask{
         refreshSector();
         listSector = (ListView) v.findViewById(R.id.listAddSector);
         sectorAdapter = new SectorListAdapter(getActivity());
+        sectorAdapter.setListener(onActionSector);
         addSector.setOnClickListener(agregarSector);
         return v;
     }
@@ -86,6 +94,13 @@ public class SectorFragment extends Fragment implements InterfazAsyntask{
                 case R.id.addSector:
                     IntentIntegrator.forSupportFragment(SectorFragment.this).initiateScan();
                 break;
+                case R.id.edit:
+
+                break;
+                case R.id.delete:
+
+                break;
+
             }
         }
     };
@@ -111,6 +126,10 @@ public class SectorFragment extends Fragment implements InterfazAsyntask{
                 mostrarToastMake("Plataforma duplicada");
 
             }else if(mensaje.getOpcion().contains("ACTUAL")){
+
+                refreshSector();
+
+            }else if(mensaje.getOpcion().contains("BORRADO")){
 
                 refreshSector();
 
@@ -208,6 +227,39 @@ public class SectorFragment extends Fragment implements InterfazAsyntask{
 
         @Override
         public void onActionDelete(int position) {
+            final int pos = position;
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+            builder.setMessage("Desea eliminar el sector seleccionado?");
+            builder.setCancelable(true);
+
+            builder.setPositiveButton(
+                    "Si",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            Sector sector = (Sector) sectorAdapter.getItem(pos);
+                            String uri = ClienteHTTP_DELETE.DELETE_SECTOR;
+                            try {
+                                json.put("url",ruta + uri + "/" + sector.getId());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Log.i(TAG,ruta + uri + "/" + sector.getId());
+                            clienteHTTP_delete =  new ClienteHTTP_DELETE(SectorFragment.this);
+                            clienteHTTP_delete.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+                        }
+                    });
+
+            builder.setNegativeButton(
+                    "No",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            android.app.AlertDialog alert1 = builder.create();
+            alert1.show();
 
         }
 

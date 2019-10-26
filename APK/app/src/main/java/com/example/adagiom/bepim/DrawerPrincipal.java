@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -38,10 +39,7 @@ public class DrawerPrincipal extends AppCompatActivity
     String ruta;
     Bundle bundle;
     NavigationView navigationView;
-    DrawerLayout drawerLayout;
-    BroadcastReceiver broadcastReceiver;
     private ClienteHTTP_POST threadCliente_Post;
-    private String chipid;
     JSONObject json;
     Plataforma plataforma;
     SharedPreferences sharedPreferences;
@@ -131,7 +129,13 @@ public class DrawerPrincipal extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_refresh) {
+            active.setArguments(bundle);
+            fm.beginTransaction()
+                    .detach(active)
+                    .attach(active)
+                    .commit();
+            Log.i("Refresh","Presione Refresh");
             return true;
         }
 
@@ -162,6 +166,9 @@ public class DrawerPrincipal extends AppCompatActivity
                 sectorFragment.setArguments(bundle);
                 fm.beginTransaction().replace(R.id.container_ly, sectorFragment).commit();
             }
+        }else if (id == R.id.action_refresh) {
+                active.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.container_ly, active).commit();
         } else if (id == R.id.nav_plataform) {
             String uri = ClienteHTTP_POST.LIBERAR;
             try {
@@ -174,7 +181,10 @@ public class DrawerPrincipal extends AppCompatActivity
             threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
             startActivity(new Intent(DrawerPrincipal.this,ListPlataforma.class));
             finish();
-        } else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_send) {
+            String[] address = {"Bepim.soporte@gmail.com"};
+            String subject = "Reclamo";
+            composeEmail(address,subject);
             //active = configFragment;
             //configFragment.setArguments(bundle);
             //fm.beginTransaction().replace(R.id.container_ly,configFragment).commit();
@@ -183,6 +193,16 @@ public class DrawerPrincipal extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void composeEmail(String[] addresses, String subject) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     @Override

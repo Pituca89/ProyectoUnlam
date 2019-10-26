@@ -71,7 +71,7 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
         plataforma = (Plataforma) getArguments().getSerializable("plataforma");
         chipid = plataforma.getChipid();
         namePlataforma.setText(plataforma.getNombre());
-        FirebaseMessaging.getInstance().subscribeToTopic(plataforma.getChipid().toString());
+
         json = new JSONObject();
         sectorAdapter = new SectorAdapter(getActivity());
         actualizarSector();
