@@ -25,6 +25,9 @@ char caux;
 int flagBasuraSerial;
 const int PIN_ENVIO_SERIAL = D1;
 
+#define VoltajeBateriaNivelAlto 12.8
+#define VoltajeBateriaNivelBajo 11
+
 //voltimetro
 int lectura;
 float voltaje;
@@ -162,7 +165,8 @@ void loop() {
   
   if (Serial.available()) {
       flagBasuraSerial=0;
-      while (Serial.available() && caux != '1'&& caux != '2'&& caux != '3'&& caux != '4' && caux != '5')   //while (Serial.available() && caux != '#' && flagSerial == 1)
+      //while (Serial.available() && caux != '1'&& caux != '2'&& caux != '3'&& caux != '4' && caux != '5')   //while (Serial.available() && caux != '#' && flagSerial == 1)
+      while (Serial.available())
       {
        if (flagBasuraSerial == 0)
         {
@@ -212,24 +216,24 @@ void loop() {
 	currentMillis = millis();  
 	if (currentMillis - startMillis >= period){
 		lectura=analogRead(A0);
-		voltaje=((lectura/4.092)/10);
-		Serial.println("Voltaje: ");
-		Serial.print(voltaje);
-		Serial.print("V");
-		if(voltaje>13){
+		voltaje=((lectura/6.544)/10);             //si alimentamos el modulo con 5v se divide por 4.092 , si alimentamos con 3,5V es 6.544
+		//Serial.print("Voltaje: ");
+		//Serial.print(voltaje);
+		//Serial.print("V   -");
+		if(voltaje>VoltajeBateriaNivelAlto){
 			porcentaje=100;
 		}
 		else{
-			if(voltaje<11){
+			if(voltaje<VoltajeBateriaNivelBajo){
 				porcentaje=0;
 			}
 			else{
-				porcentaje=(int)(((voltaje-11)*100)/2);			
+				porcentaje=(int)(((voltaje-VoltajeBateriaNivelBajo)*100)/2);			
 			}
 		}
-		Serial.println("Porcentaje de bateria: ");
-		Serial.print(porcentaje);
-		Serial.print("%");
+		//Serial.print("Porcentaje de bateria: ");
+		//Serial.print(porcentaje);
+		//Serial.println("%");
 		startMillis = currentMillis;
 	}
 }
