@@ -49,10 +49,11 @@ int desvio1;        //variables usadas para contar los pasos que se desvia de la
 int desvio2;        //la ruta para esquivar un obstaculo es un cuadrado, hay 3 tramos de desvio a contabilizar
 int desvio3;
 int flagDesvioIzquierda;
+int flagDesvioDerecha;
 
 #define delaiPulsos 2500       // microsegundos entre pulsos, menor numero mayor velocidad de giro 
-#define desvioObstaculo 400    // pasos MAXIMOS de desvio para esquivar un obstaculo
-
+#define desvioObstaculoEjeX 400    // pasos MAXIMOS de desvio para esquivar un obstaculo en el eje X
+#define desvioObstaculoEjeY 800    // pasos MAXIMOS de desvio para esquivar un obstaculo en el eje Y
 
 void setup() {
 pinMode(stepPinIZ,OUTPUT); 
@@ -90,6 +91,7 @@ flagBasuraSerial = 0;
 flagPrimerInstruccionEntrenamiento = 0;
 flagObstaculo=0;
 flagDesvioIzquierda=0;
+flagDesvioDerecha=0;
 contObstaculo=0;
 attachInterrupt(digitalPinToInterrupt(intPinSerial), interrupcionSerial, RISING); //interrupcion del wifi
 macBeaconDestino="";
@@ -229,7 +231,7 @@ if(flagSerial==1)
           ///// INICIO DE ESQUIVAR OBSTACULO /////////
         if(detectarObstaculo())
           {
-          if(desvioObstaculo>(ruta[h].pasos-k))
+          if(desvioObstaculoEjeY>(ruta[h].pasos-k))
           {
           Serial1.write("-5");                 //Definir mensaje al wifi -5 Plataforma detenida por obstaculo sin posibilidad de esquivarlo
           Serial.println("Plataforma DETENIDA los pasos pendientes no permiten maniobrar para esquivarlo");
@@ -243,7 +245,7 @@ if(flagSerial==1)
           GirarIzquierda(209);}else{GirarDerecha(209);}
           flagObstaculo=0;
           desvio1=0;
-          while ((desvio1 <= desvioObstaculo)&&(flagObstaculo==0))
+          while ((desvio1 <= desvioObstaculoEjeX)&&(flagObstaculo==0))
             {
               if (detectarObstaculo()== true)
               {flagObstaculo=1;}
@@ -279,7 +281,7 @@ if(flagSerial==1)
           
           flagObstaculo=0;
           desvio2=0;
-          while ((desvio2 <= desvioObstaculo)&&(flagObstaculo==0))
+          while ((desvio2 <= desvioObstaculoEjeY)&&(flagObstaculo==0))
             {
               if (detectarObstaculo()== true)
               {flagObstaculo=1;}
@@ -326,7 +328,7 @@ if(flagSerial==1)
           GirarDerecha(209);}else{GirarIzquierda(209);}
          flagObstaculo=0;
           desvio3=0;
-          while ((desvio3 <= desvioObstaculo)&&(flagObstaculo==0))
+          while ((desvio3 <= desvioObstaculoEjeX)&&(flagObstaculo==0))
             {
               if (detectarObstaculo()== true)
               {flagObstaculo=1;}
@@ -382,7 +384,7 @@ if(flagSerial==1)
             }else{
             if(flagDesvioIzquierda==0){
             GirarIzquierda(209);}else{GirarDerecha(209);}
-            k=k+desvioObstaculo;
+            k=k+desvioObstaculoEjeY;
             }
             
           }}}}
@@ -414,7 +416,7 @@ if(flagSerial==1)
       }   
     h++;
     
-  
+  delay(1000);
   } h=0;
   // INICIO  Validar potencia y mac de beacon /////////////////////////////////////////////
   if(potenciaBeaconDestino!=0)
