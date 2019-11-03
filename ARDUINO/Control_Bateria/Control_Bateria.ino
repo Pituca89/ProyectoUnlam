@@ -35,16 +35,17 @@ int porcentaje;
 unsigned long startMillis;  //some global variables available anywhere in the program
 unsigned long currentMillis;
 const unsigned long period = 5000;
-
+String url = "http://www.gestiondenegocio.esy.es/";
 String peticionPOSTJSON(String host,String msj){
 
     String payload = "error";
     String postData = "";
+    url.concat(host);
     DeserializationError err;
 
     HTTPClient http;    //Declare object of class HTTPClient
     postData = "ID=" + String(ESP.getChipId()) + "&MSJ=" + msj;
-    http.begin(host);
+    http.begin(url);
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     int httpcode = http.POST(postData);
     if(httpcode > 0){
@@ -65,6 +66,7 @@ String peticionPOSTJSON(String host,String msj){
           server.send(400);
       }
     }
+    url = "http://www.gestiondenegocio.esy.es/";
     return payload;     
 }
 
@@ -107,7 +109,7 @@ void setup() {
 
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-  peticionPOSTJSON("http://www.gestiondenegocio.esy.es/registrar_plataforma",WiFi.localIP().toString().c_str());
+  peticionPOSTJSON("registrar_plataforma",WiFi.localIP().toString().c_str());
   config_rest_server_routing();
   server.begin();                                              //Inicializa el servidor (una vez configuradas las rutas)
   Serial.println("Servidor HTTP inicializado"); 
@@ -122,7 +124,7 @@ void loop() {
        
   }
   if(String(modo) == "MOD_O"){
-    peticionPOSTJSON("http://www.gestiondenegocio.esy.es/obtener_peticion","");
+    peticionPOSTJSON("obtener_peticion","");
     //peticionPOSTJSON("obstaculo","OBSTACULO");
     //peticionPOSTJSON("liberar_plataforma","LLEGADA");
     if(response != ""){  
@@ -180,39 +182,38 @@ void loop() {
         caux = Serial.read();
         if (caux == '1')
           {
-            //Serial.println("se detecto 1 por serial");
-            peticionPOSTJSON("http://www.gestiondenegocio.esy.es/obstaculo","OBSTACULO");
+            peticionPOSTJSON("notificacion","OBSTACULO");
             caux='a';
           }
         if (caux == '2')
         {
-          //Serial.println("se detecto 2 por serial");
-          peticionPOSTJSON("http://www.gestiondenegocio.esy.es/liberar_plataforma","LLEGADA");
+          peticionPOSTJSON("notificacion","LLEGADA");
           caux='a';
         }
         if (caux == '3')
         {
           //Serial.println("se detecto 3 por serial");
-          peticionPOSTJSON("http://www.gestiondenegocio.esy.es/obstaculo","POTENCIA BEACON NO OK");
+          peticionPOSTJSON("notificacion","POTENCIA BEACON NO OK");
           caux='a';
         }       
         if (caux == '4')
         {
           //Serial.println("se detecto 4 por serial");
-          peticionPOSTJSON("http://www.gestiondenegocio.esy.es/obstaculo","PLATAFORMA DETENIDA POR OBSTACULO");
+          peticionPOSTJSON("notificacion","PLATAFORMA DETENIDA POR OBSTACULO");
           caux='a';
         }
         if (caux == '5')
         {
           //Serial.println("se detecto 5 por serial");
-          peticionPOSTJSON("http://www.gestiondenegocio.esy.es/obstaculo","PLATAFORMA DETENIDA SIN POSIBILIDAD DE SORTEAR");
+          peticionPOSTJSON("notificacion","PLATAFORMA DETENIDA SIN POSIBILIDAD DE SORTEAR");
           caux='a';
         }
+        delay(1000);
       }
     }
 	
 	
-//VOLTIMETRO	
+//VOLTIMETRO	z
 	currentMillis = millis();  
 	if (currentMillis - startMillis >= period){
 		lectura=analogRead(A0);
@@ -231,6 +232,7 @@ void loop() {
 				porcentaje=(int)(((voltaje-VoltajeBateriaNivelBajo)*100)/2);			
 			}
 		}
+    peticionPOSTJSON("bateria",String(porcentaje));
 		//Serial.print("Porcentaje de bateria: ");
 		//Serial.print(porcentaje);
 		//Serial.println("%");

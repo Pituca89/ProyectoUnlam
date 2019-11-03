@@ -1,7 +1,0 @@
-#Internal package file, do not edit.
-#Sun Oct 13 21:03:07 GMT-03:00 2019
-0.baseType=DIRECTORY
-0.base=D\:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\16
-0.path=classes.dex
-0.set=DEX
-count=1

@@ -3,6 +3,7 @@ package com.example.adagiom.bepim;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,9 +34,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 
-public class MainFragment extends Fragment implements InterfazAsyntask{
+public class MainFragment extends Fragment implements InterfazAsyntask,InterfazBateria{
 
     private ClienteHTTP_POST threadCliente_Post;
+    private Bateria thread_bateria;
     private String ruta;
     private ListView listSector;
     private static TextView actual;
@@ -48,7 +51,8 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
     private TextView namePlataforma;
     Plataforma plataforma;
     static Sector destino;
-
+    private ImageView imgBateria;
+    private TextView txtBateria;
     public MainFragment() {
         // Required empty public constructor
     }
@@ -66,6 +70,8 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
         actual = (TextView) v.findViewById(R.id.sectoract);
         namePlataforma = (TextView) v.findViewById(R.id.namePlataform);
         listSector = (ListView) v.findViewById(R.id.listSector);
+        imgBateria = (ImageView) v.findViewById(R.id.imgBateria);
+        txtBateria = (TextView) v.findViewById(R.id.textBateria);
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
         plataforma = (Plataforma) getArguments().getSerializable("plataforma");
@@ -75,8 +81,25 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
         json = new JSONObject();
         sectorAdapter = new SectorAdapter(getActivity());
         actualizarSector();
-
+        try {
+            Thread.sleep(200);
+            getNivelBateria();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return v;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(thread_bateria!=null)
+            thread_bateria.cancel(true);
     }
 
     private SectorAdapter.OnEnviarPlataforma onEnviarPlataforma = new SectorAdapter.OnEnviarPlataforma() {
@@ -161,4 +184,30 @@ public class MainFragment extends Fragment implements InterfazAsyntask{
         threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
     }
 
+    public void getNivelBateria(){
+        String uri = Bateria.BATERIA;
+        try {
+            json.put("url",ruta + uri + "/" + chipid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        thread_bateria =  new Bateria(MainFragment.this);
+        thread_bateria.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+    }
+
+    @Override
+    public void actualizarBateria(JSONObject valor) throws JSONException {
+        String nivel = valor.getString("respuesta");
+        txtBateria.setText(nivel + " %");
+        int n = Integer.parseInt(nivel);
+        if(n >= 90){
+            imgBateria.setImageResource(R.drawable.battery_2);
+        }else if(n < 90 && n >= 70){
+            imgBateria.setImageResource(R.drawable.battery_1);
+        }else if(n < 70 && n >= 50){
+            imgBateria.setImageResource(R.drawable.battery_4);
+        }else if(n < 50 ){
+            imgBateria.setImageResource(R.drawable.battery_3);
+        }
+    }
 }
