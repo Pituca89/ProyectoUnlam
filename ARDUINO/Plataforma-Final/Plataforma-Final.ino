@@ -1,7 +1,7 @@
-const int dirPinIZ = 30; 
-const int stepPinIZ = 31 ; 
-const int dirPinDER = 32; 
-const int stepPinDER = 33 ; 
+const int dirPinIZ = 34; 
+const int stepPinIZ = 35 ; 
+const int dirPinDER = 36; 
+const int stepPinDER = 37 ; 
 
 
 const int PinEntrenamiento = 22;
@@ -52,8 +52,10 @@ int flagDesvioIzquierda;
 int flagDesvioDerecha;
 
 #define delaiPulsos 2500       // microsegundos entre pulsos, menor numero mayor velocidad de giro 
+#define delaiPulsosInicio 5000     // microsegundos entre pulsos, menor numero mayor velocidad de giro 
 #define desvioObstaculoEjeX 400    // pasos MAXIMOS de desvio para esquivar un obstaculo en el eje X
 #define desvioObstaculoEjeY 800    // pasos MAXIMOS de desvio para esquivar un obstaculo en el eje Y
+#define CantPasosLento 50     // Cantidad de pasos a realizare al inicio de un avance y giro--> CAMBIOVELOCIDAD
 
 void setup() {
 pinMode(stepPinIZ,OUTPUT); 
@@ -85,7 +87,7 @@ j=0;
 k=0;
 //m=0;
 p=0;
-caux="";
+caux='';
 flagSerial = 0;
 flagBasuraSerial = 0;
 flagPrimerInstruccionEntrenamiento = 0;
@@ -187,7 +189,7 @@ if(flagSerial==1)
       //ruta[h].pasos = intermedio.toInt();
       //intermedio= "";
     flagSerial=0;
-    caux="";
+    caux='';
     flagBasuraSerial = 0;
     h=0;
     }
@@ -242,7 +244,7 @@ if(flagSerial==1)
               }
           }else{
           if(flagDesvioIzquierda==0){
-          GirarIzquierda(209);}else{GirarDerecha(209);}
+          GirarIzquierda(207);}else{GirarDerecha(207);}
           flagObstaculo=0;
           desvio1=0;
           while ((desvio1 <= desvioObstaculoEjeX)&&(flagObstaculo==0))
@@ -250,13 +252,29 @@ if(flagSerial==1)
               if (detectarObstaculo()== true)
               {flagObstaculo=1;}
               else{
+            
+              
+              
+              
+              
+                if (desvio1 > CantPasosLento) // CAMBIOVELOCIDAD
+            {
               Avance();
+            }
+            else
+            {
+              AvanceInicio(); // Avanza 1 paso
+            }
+            
+              
+              
+              
               desvio1++; 
               }
             }
           if(flagObstaculo==1)  //detecto obstaculo en ruta alternativa tengo que volver e intentar otro camino
             {
-            GirarDerecha(418);
+            GirarDerecha(415);
             
             p=0;
               while (p <= desvio1)
@@ -266,18 +284,31 @@ if(flagSerial==1)
                    Serial.println("Plataforma DETENIDA por OBSTACULO");
                   }        
                   else{
-                  Avance();
+                  
+                    
+                   if (p > CantPasosLento) // CAMBIOVELOCIDAD
+                  {
+                    Avance();
+                   }
+                  else
+                  {
+                      AvanceInicio(); // Avanza 1 paso
+                  }
+            
+              
+              
+               
                   p++; 
                   }
                 }
             
             if(flagDesvioIzquierda==0){
-            GirarIzquierda(209);}else{GirarDerecha(209);}
+            GirarIzquierda(207);}else{GirarDerecha(207);}
             flagDesvioIzquierda=1;
             }
           else{
           if(flagDesvioIzquierda==0){
-          GirarDerecha(209);}else{GirarIzquierda(209);}
+          GirarDerecha(207);}else{GirarIzquierda(207);}
           
           flagObstaculo=0;
           desvio2=0;
@@ -286,13 +317,25 @@ if(flagSerial==1)
               if (detectarObstaculo()== true)
               {flagObstaculo=1;}
               else{
+                
+                
+               if (desvio2 > CantPasosLento) // CAMBIOVELOCIDAD
+            {
               Avance();
+            }
+            else
+            {
+              AvanceInicio(); // Avanza 1 paso
+            }
+            
+              
+              
               desvio2++; 
               }
             }
           if(flagObstaculo==1)  //detecto obstaculo en ruta alternativa tengo que volver e intentar otro camino
             {
-            GirarDerecha(418);
+            GirarDerecha(415);
             
             p=0;
               while (p <= desvio2)
@@ -302,12 +345,25 @@ if(flagSerial==1)
                    Serial.println("Plataforma DETENIDA por OBSTACULO");
                   }        
                   else{
-                  Avance();
+                
+                  
+                  
+                  if (p > CantPasosLento) // CAMBIOVELOCIDAD
+                  {
+                    Avance();
+                  }
+                else
+                {
+                    AvanceInicio(); // Avanza 1 paso
+                }
+            
+              
+              
                   p++; 
                   }
                 }
             if(flagDesvioIzquierda==0){
-            GirarIzquierda(209);}else{GirarDerecha(209);}
+            GirarIzquierda(207);}else{GirarDerecha(207);}
             p=0;
               while (p <= desvio1)
                 {
@@ -316,16 +372,28 @@ if(flagSerial==1)
                    Serial.println("Plataforma DETENIDA por OBSTACULO");
                   }        
                   else{
-                  Avance();
+            
+              
+                  if (p > CantPasosLento) // CAMBIOVELOCIDAD
+                  {
+                    Avance();
+                  }
+                  else
+                  {
+                    AvanceInicio(); // Avanza 1 paso
+                  }
+            
+              
+              
                   p++; 
                   }
                 }
             if(flagDesvioIzquierda==0){
-            GirarIzquierda(209);}else{GirarDerecha(209);}
+            GirarIzquierda(207);}else{GirarDerecha(207);}
             flagDesvioIzquierda=1;
             } else {
           if(flagDesvioIzquierda==0){
-          GirarDerecha(209);}else{GirarIzquierda(209);}
+          GirarDerecha(207);}else{GirarIzquierda(207);}
          flagObstaculo=0;
           desvio3=0;
           while ((desvio3 <= desvioObstaculoEjeX)&&(flagObstaculo==0))
@@ -333,13 +401,25 @@ if(flagSerial==1)
               if (detectarObstaculo()== true)
               {flagObstaculo=1;}
               else{
-              Avance();
+              
+                
+                if (desvio3 > CantPasosLento) // CAMBIOVELOCIDAD
+              {
+                Avance();
+              }
+              else
+              {
+                AvanceInicio(); // Avanza 1 paso
+              }
+            
+              
+              
               desvio3++; 
               }
             }
           if(flagObstaculo==1)  //detecto obstaculo en ruta alternativa tengo que volver e intentar otro camino
             { 
-            GirarDerecha(418);
+            GirarDerecha(415);
             p=0;
             while (p <= desvio3)
               {
@@ -348,12 +428,22 @@ if(flagSerial==1)
                    Serial.println("Plataforma DETENIDA por OBSTACULO");
                   }        
                   else{
-                  Avance();
+                  if (p > CantPasosLento) // CAMBIOVELOCIDAD
+                  {
+                    Avance();
+                  }
+                  else
+                  {
+                    AvanceInicio(); // Avanza 1 paso
+                  }
+            
+              
+              
                   p++; 
                   }
               }
             if(flagDesvioIzquierda==0){
-            GirarIzquierda(209);}else{GirarDerecha(209);}
+            GirarIzquierda(207);}else{GirarDerecha(207);}
             p=0;
               while (p <= desvio2)
                 {
@@ -362,12 +452,22 @@ if(flagSerial==1)
                    Serial.println("Plataforma DETENIDA por OBSTACULO");
                   }        
                   else{
-                  Avance();
+                  if (p > CantPasosLento) // CAMBIOVELOCIDAD
+                  {
+                    Avance();
+                  }
+                  else
+                  {
+                    AvanceInicio(); // Avanza 1 paso
+                  }
+            
+              
+              
                   p++; 
                   }
                 }
             if(flagDesvioIzquierda==0){
-            GirarIzquierda(209);}else{GirarDerecha(209);}
+            GirarIzquierda(207);}else{GirarDerecha(207);}
             p=0;
               while (p <= desvio1)
                 {
@@ -376,21 +476,41 @@ if(flagSerial==1)
                    Serial.println("Plataforma DETENIDA por OBSTACULO");
                   }        
                   else{
-                  Avance();
+                  if (p > CantPasosLento) // CAMBIOVELOCIDAD
+                  {
+                    Avance();
+                  }
+                  else
+                  {
+                    AvanceInicio(); // Avanza 1 paso
+                  }
+            
+              
+              
                   p++; 
                   }
                 }
             flagDesvioIzquierda=1;
             }else{
             if(flagDesvioIzquierda==0){
-            GirarIzquierda(209);}else{GirarDerecha(209);}
+            GirarIzquierda(207);}else{GirarDerecha(207);}
             k=k+desvioObstaculoEjeY;
             }
             
           }}}}
           else{
             //// FIN DE ESQUIVAR OBSTACULO /////////*/
-          Avance();
+          if (k > CantPasosLento) // CAMBIOVELOCIDAD
+            {
+              Avance();
+            }
+            else
+            {
+              AvanceInicio(); // Avanza 1 paso
+            }
+            
+              
+              
           k++;
           }
         }
@@ -399,20 +519,22 @@ if(flagSerial==1)
     if (ruta[h].sentido == 'D')
       {
       Serial.println("Ejecuta Giro Derecha: ");Serial.print(ruta[h].pasos);Serial.println(" pasos");
-      while (k <= ruta[h].pasos)
-        {
-        GirarDerecha(1);
-        k++;
-        }
+      //while (k <= ruta[h].pasos)
+      //  {
+      //  GirarDerecha(1);
+      //  k++;
+      //  }
+      GirarDerecha(ruta[h].pasos);
       }
     if (ruta[h].sentido == 'I')
       {
       Serial.print("Ejecuta Giro Izquierda: ");Serial.print(ruta[h].pasos);Serial.println(" pasos");
-      while (k <= ruta[h].pasos)
-        {
-        GirarIzquierda(1);
-        k++;
-        }
+      //while (k <= ruta[h].pasos)
+      //  {
+      //  GirarIzquierda(1);
+      //  k++;
+      //  }
+      GirarIzquierda(ruta[h].pasos);
       }   
     h++;
     
@@ -463,8 +585,16 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
           //while(digitalRead(PinProxiFrontal) == LOW)    
          //   {                              // se queda frenado en un bucle mientras haya un obstaculo adelante  
           //  }
-          Avance();                        // Avanza 1 paso
+          if (ContPasos > CantPasosLento)
+          {
+          Avance();
+          }
+          else
+          {
+            AvanceInicio(); // Avanza 1 paso
+          }
           ContPasos++;
+          
           }
           
         if(flagPrimerInstruccionEntrenamiento == 0)
@@ -566,6 +696,20 @@ delayMicroseconds(delaiPulsos);
 
 }
 
+void AvanceInicio()
+{
+digitalWrite(dirPinIZ,HIGH); 
+digitalWrite(dirPinDER,HIGH); 
+
+digitalWrite(stepPinIZ,HIGH); 
+digitalWrite(stepPinDER,HIGH); 
+delayMicroseconds(delaiPulsosInicio); 
+digitalWrite(stepPinIZ,LOW);
+digitalWrite(stepPinDER,LOW); 
+delayMicroseconds(delaiPulsosInicio); 
+
+}
+
 void MotorAntihorario()
 
 {
@@ -592,10 +736,16 @@ digitalWrite(dirPinDER,LOW);
 do{x++;
   digitalWrite(stepPinIZ,HIGH); 
   digitalWrite(stepPinDER,HIGH); 
-  delayMicroseconds(delaiPulsos); 
+  if (x > CantPasosLento)  
+    delayMicroseconds(delaiPulsos); 
+  else
+    delayMicroseconds(delaiPulsosInicio); 
   digitalWrite(stepPinIZ,LOW);
   digitalWrite(stepPinDER,LOW); 
-  delayMicroseconds(delaiPulsos); 
+  if (x > CantPasosLento)  
+    delayMicroseconds(delaiPulsos); 
+  else
+    delayMicroseconds(delaiPulsosInicio);
   }while(x < giro);
 }
 
@@ -606,11 +756,22 @@ digitalWrite(dirPinIZ,LOW);
 digitalWrite(dirPinDER,HIGH); 
 do{x++;
   digitalWrite(stepPinIZ,HIGH); 
-  digitalWrite(stepPinDER,HIGH); 
-  delayMicroseconds(delaiPulsos); 
+  digitalWrite(stepPinDER,HIGH);
+  
+  if (x > CantPasosLento)  
+    delayMicroseconds(delaiPulsos); 
+  else
+    delayMicroseconds(delaiPulsosInicio);
+  
+  
   digitalWrite(stepPinIZ,LOW);
   digitalWrite(stepPinDER,LOW); 
-  delayMicroseconds(delaiPulsos); 
+  
+  
+  if (x > CantPasosLento)  
+    delayMicroseconds(delaiPulsos); 
+  else
+    delayMicroseconds(delaiPulsosInicio);
   }while(x < giro);
 }
 
