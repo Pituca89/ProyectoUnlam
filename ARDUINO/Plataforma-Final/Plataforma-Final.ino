@@ -34,7 +34,8 @@ String intermedio;
 String macBeaconDestino;
 String macBeaconDestinoMasPotencia;
 int potenciaBeaconDestino;
-  
+int obstaculobandera;
+
 int h;
 int j;
 unsigned int k;
@@ -55,7 +56,7 @@ int flagDesvioDerecha;
 #define delaiPulsosInicio 5000     // microsegundos entre pulsos, menor numero mayor velocidad de giro 
 #define desvioObstaculoEjeX 400    // pasos MAXIMOS de desvio para esquivar un obstaculo en el eje X
 #define desvioObstaculoEjeY 800    // pasos MAXIMOS de desvio para esquivar un obstaculo en el eje Y
-#define CantPasosLento 50     // Cantidad de pasos a realizare al inicio de un avance y giro--> CAMBIOVELOCIDAD
+#define CantPasosLento 100     // Cantidad de pasos a realizare al inicio de un avance y giro--> CAMBIOVELOCIDAD
 
 void setup() {
 pinMode(stepPinIZ,OUTPUT); 
@@ -95,6 +96,7 @@ flagObstaculo=0;
 flagDesvioIzquierda=0;
 flagDesvioDerecha=0;
 contObstaculo=0;
+obstaculobandera=0;
 attachInterrupt(digitalPinToInterrupt(intPinSerial), interrupcionSerial, RISING); //interrupcion del wifi
 macBeaconDestino="";
 macBeaconDestinoMasPotencia="";
@@ -286,13 +288,14 @@ if(flagSerial==1)
                   else{
                   
                     
-                   if (p > CantPasosLento) // CAMBIOVELOCIDAD
+                   if (p > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
                   {
                     Avance();
                    }
                   else
                   {
                       AvanceInicio(); // Avanza 1 paso
+                      obstaculobandera++;
                   }
             
               
@@ -537,6 +540,7 @@ if(flagSerial==1)
       GirarIzquierda(ruta[h].pasos);
       }   
     h++;
+    obstaculobandera=0;
     
   delay(1000);
   } h=0;
@@ -582,9 +586,9 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
         Serial.println("orden de avance ");
         while((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == LOW)&&(digitalRead(Pin0binario) == HIGH))
           {
-          //while(digitalRead(PinProxiFrontal) == LOW)    
-         //   {                              // se queda frenado en un bucle mientras haya un obstaculo adelante  
-          //  }
+          while(digitalRead(PinProxiFrontal) == LOW)    
+            {                              // se queda frenado en un bucle mientras haya un obstaculo adelante  
+            }
           if (ContPasos > CantPasosLento)
           {
           Avance();
@@ -783,6 +787,7 @@ bool detectarObstaculo()
     {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
     delay(1000);
     auxObstaculo++;
+    obstaculobandera=0;
     }
   if(auxObstaculo==5)
     {
