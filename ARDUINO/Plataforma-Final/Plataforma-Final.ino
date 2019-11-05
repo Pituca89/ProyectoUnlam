@@ -259,20 +259,21 @@ if(flagSerial==1)
               
               
               
-                if (desvio1 > CantPasosLento) // CAMBIOVELOCIDAD
-            {
-              Avance();
-            }
-            else
-            {
-              AvanceInicio(); // Avanza 1 paso
-            }
-            
-              
-              
-              
-              desvio1++; 
-              }
+                if (desvio1 > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+				{
+				  Avance();
+				}
+				else
+				{
+				  AvanceInicio(); // Avanza 1 paso
+				  obstaculobandera++;
+				}
+				
+				  
+				  
+				  
+				  desvio1++; 
+				  }
             }
           if(flagObstaculo==1)  //detecto obstaculo en ruta alternativa tengo que volver e intentar otro camino
             {
@@ -322,13 +323,14 @@ if(flagSerial==1)
               else{
                 
                 
-               if (desvio2 > CantPasosLento) // CAMBIOVELOCIDAD
+               if (desvio2 > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
             {
               Avance();
             }
             else
             {
               AvanceInicio(); // Avanza 1 paso
+			  obstaculobandera++;
             }
             
               
@@ -351,13 +353,14 @@ if(flagSerial==1)
                 
                   
                   
-                  if (p > CantPasosLento) // CAMBIOVELOCIDAD
+                  if (p > CantPasosLento  && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
                   {
                     Avance();
                   }
                 else
                 {
                     AvanceInicio(); // Avanza 1 paso
+					obstaculobandera++;
                 }
             
               
@@ -377,13 +380,14 @@ if(flagSerial==1)
                   else{
             
               
-                  if (p > CantPasosLento) // CAMBIOVELOCIDAD
+                  if (p > CantPasosLento  && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
                   {
                     Avance();
                   }
                   else
                   {
                     AvanceInicio(); // Avanza 1 paso
+					obstaculobandera++;
                   }
             
               
@@ -406,13 +410,14 @@ if(flagSerial==1)
               else{
               
                 
-                if (desvio3 > CantPasosLento) // CAMBIOVELOCIDAD
+                if (desvio3 > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
               {
                 Avance();
               }
               else
               {
                 AvanceInicio(); // Avanza 1 paso
+				obstaculobandera++;
               }
             
               
@@ -431,13 +436,14 @@ if(flagSerial==1)
                    Serial.println("Plataforma DETENIDA por OBSTACULO");
                   }        
                   else{
-                  if (p > CantPasosLento) // CAMBIOVELOCIDAD
+                  if (p > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
                   {
                     Avance();
                   }
                   else
                   {
                     AvanceInicio(); // Avanza 1 paso
+					obstaculobandera++;
                   }
             
               
@@ -455,13 +461,14 @@ if(flagSerial==1)
                    Serial.println("Plataforma DETENIDA por OBSTACULO");
                   }        
                   else{
-                  if (p > CantPasosLento) // CAMBIOVELOCIDAD
+                  if (p > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
                   {
                     Avance();
                   }
                   else
                   {
                     AvanceInicio(); // Avanza 1 paso
+					obstaculobandera++;
                   }
             
               
@@ -472,20 +479,21 @@ if(flagSerial==1)
             if(flagDesvioIzquierda==0){
             GirarIzquierda(207);}else{GirarDerecha(207);}
             p=0;
-              while (p <= desvio1)
+              while (p <= desvio1 )
                 {
                  if (detectarObstaculo()== true)
                   {Serial1.write("-4");                 //Definir mensaje al wifi -4 Plataforma detenida por obstaculo
                    Serial.println("Plataforma DETENIDA por OBSTACULO");
                   }        
                   else{
-                  if (p > CantPasosLento) // CAMBIOVELOCIDAD
+                  if (p > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
                   {
                     Avance();
                   }
                   else
                   {
                     AvanceInicio(); // Avanza 1 paso
+					obstaculobandera++;
                   }
             
               
@@ -540,7 +548,7 @@ if(flagSerial==1)
       GirarIzquierda(ruta[h].pasos);
       }   
     h++;
-    obstaculobandera=0;
+    
     
   delay(1000);
   } h=0;
@@ -781,18 +789,25 @@ do{x++;
 
 bool detectarObstaculo()
  {
-  int auxObstaculo=0;
-  if (digitalRead(PinProxiFrontal) == LOW){Serial1.write("-1");Serial.println("OBSTACULO");}    //alerta de obstaculo
-  while((digitalRead(PinProxiFrontal) == LOW)&&(auxObstaculo<5))    
+	int auxObstaculo=0;
+	if (digitalRead(PinProxiFrontal) == LOW)
+	{
+	  Serial1.write("-1");
+	  Serial.println("OBSTACULO");
+	}    //alerta de obstaculo
+	while((digitalRead(PinProxiFrontal) == LOW)&&(auxObstaculo<5))    
     {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
-    delay(1000);
-    auxObstaculo++;
-    obstaculobandera=0;
+		delay(1000);
+		auxObstaculo++;
+		obstaculobandera=0;
     }
-  if(auxObstaculo==5)
+	if(auxObstaculo==5)
     {
-    return true;
-    }else{
-    return false;
+		return true;
+    }
+	else
+	{
+		return false;
     }//detectarObstaculo();
+	
  }
