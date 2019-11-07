@@ -2,7 +2,7 @@ const int dirPinIZ = 34;
 const int stepPinIZ = 35 ; 
 const int dirPinDER = 36; 
 const int stepPinDER = 37 ; 
-const int pinRele = 46 ;
+const int pinRele = 46 ;    //PIN PARA MANEJAR EL RELE QUE CONTROLA LOS LED
 
 
 const int PinEntrenamiento = 22;
@@ -60,7 +60,7 @@ int flagDesvioDerecha;
 #define CantPasosLento 100     // Cantidad de pasos a realizare al inicio de un avance y giro--> CAMBIOVELOCIDAD
 #define delayEntreInstrucciones 500 //milisegundos entre cada instruccion cuando se esquiva el obstaculo
 #define noventagrados 207
-#define cientoochentagrados 414
+#define cientoochentagrados 415
 
 void setup() {
 pinMode(stepPinIZ,OUTPUT); 
@@ -257,8 +257,9 @@ if(flagSerial==1)
               }
           }else{
           if(flagDesvioIzquierda==0){
+			  delay(delayEntreInstrucciones);
           GirarIzquierda(noventagrados);
-          delay(delayEntreInstrucciones);}else{GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}
+          delay(delayEntreInstrucciones);}else{delay(delayEntreInstrucciones);GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}
           flagObstaculo=0;
           desvio1=0;
           while ((desvio1 <= desvioObstaculoEjeX)&&(flagObstaculo==0))
@@ -288,8 +289,8 @@ if(flagSerial==1)
 				  }
             }
           if(flagObstaculo==1)  //detecto obstaculo en ruta alternativa tengo que volver e intentar otro camino
-            {
-            GirarDerecha(415);
+            {delay(delayEntreInstrucciones);
+            GirarDerecha(cientoochentagrados);
             delay(delayEntreInstrucciones);
             p=0;
               while (p <= desvio1)
@@ -319,13 +320,14 @@ if(flagSerial==1)
                 }
             
             if(flagDesvioIzquierda==0){
-            GirarIzquierda(noventagrados);
-            delay(delayEntreInstrucciones);}else{GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}
+            delay(delayEntreInstrucciones);
+			GirarIzquierda(noventagrados);
+            delay(delayEntreInstrucciones);}else{delay(delayEntreInstrucciones);GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}
             flagDesvioIzquierda=1;
             }
           else{
           if(flagDesvioIzquierda==0){
-          GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}else{GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);}
+          delay(delayEntreInstrucciones);GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}else{delay(delayEntreInstrucciones);GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);}
           
           flagObstaculo=0;
           desvio2=0;
@@ -353,7 +355,8 @@ if(flagSerial==1)
             }
           if(flagObstaculo==1)  //detecto obstaculo en ruta alternativa tengo que volver e intentar otro camino
             {
-            GirarDerecha(415);
+				delay(delayEntreInstrucciones);
+            GirarDerecha(cientoochentagrados);
             delay(delayEntreInstrucciones);
             
             p=0;
@@ -383,7 +386,7 @@ if(flagSerial==1)
                   }
                 }
             if(flagDesvioIzquierda==0){
-            GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);}else{GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}
+            delay(delayEntreInstrucciones);GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);}else{delay(delayEntreInstrucciones);GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}
             p=0;
               while (p <= desvio1)
                 {
@@ -410,11 +413,11 @@ if(flagSerial==1)
                   }
                 }
             if(flagDesvioIzquierda==0){
-            GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);}else{GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}
+            delay(delayEntreInstrucciones);GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);}else{delay(delayEntreInstrucciones);GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}
             flagDesvioIzquierda=1;
             } else {
           if(flagDesvioIzquierda==0){
-          GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}else{GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);}
+          delay(delayEntreInstrucciones);GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}else{delay(delayEntreInstrucciones);GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);}
          flagObstaculo=0;
           desvio3=0;
           while ((desvio3 <= desvioObstaculoEjeX)&&(flagObstaculo==0))
@@ -441,7 +444,8 @@ if(flagSerial==1)
             }
           if(flagObstaculo==1)  //detecto obstaculo en ruta alternativa tengo que volver e intentar otro camino
             { 
-            GirarDerecha(415);
+            delay(delayEntreInstrucciones);
+			GirarDerecha(cientoochentagrados);
             delay(delayEntreInstrucciones);
             p=0;
             while (p <= desvio3)
@@ -467,7 +471,8 @@ if(flagSerial==1)
                   }
               }
             if(flagDesvioIzquierda==0){
-            GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);}else{GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}
+            delay(delayEntreInstrucciones);GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);}
+			else{delay(delayEntreInstrucciones);GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}
             p=0;
               while (p <= desvio2)
                 {
@@ -492,7 +497,8 @@ if(flagSerial==1)
                   }
                 }
             if(flagDesvioIzquierda==0){
-            GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);}else{GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}
+            delay(delayEntreInstrucciones);GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);}
+			else{delay(delayEntreInstrucciones);GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}
             p=0;
               while (p <= desvio1 )
                 {
@@ -519,7 +525,8 @@ if(flagSerial==1)
             flagDesvioIzquierda=1;
             }else{
             if(flagDesvioIzquierda==0){
-            GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);}else{GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}
+            delay(delayEntreInstrucciones);GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);}
+			else{delay(delayEntreInstrucciones);GirarDerecha(noventagrados);delay(delayEntreInstrucciones);}
             k=k+desvioObstaculoEjeY;
             }
             
