@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-118:12
-INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-118:12
-INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-118:12
-INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-118:12
+ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-106:12
+INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-106:12
+INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-106:12
+INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-106:12
 MERGED from [com.google.firebase:firebase-core:16.0.1] C:\Users\adagiom\.gradle\caches\transforms-1\files-1.1\firebase-core-16.0.1.aar\1956a5c3c75ce8d3d22cf3807fe33252\AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.firebase:firebase-messaging:17.1.0] C:\Users\adagiom\.gradle\caches\transforms-1\files-1.1\firebase-messaging-17.1.0.aar\072e5ecb9b5e8c9ec833b189ba345d38\AndroidManifest.xml:17:1-37:12
 MERGED from [com.google.android.gms:play-services-vision:9.6.1] C:\Users\adagiom\.gradle\caches\transforms-1\files-1.1\play-services-vision-9.6.1.aar\62684edeeea2a61134a740d2e79ff7ab\AndroidManifest.xml:2:1-5:12
@@ -43,22 +43,22 @@ MERGED from [com.android.support:support-core-utils:26.1.0] C:\Users\adagiom\.gr
 MERGED from [com.android.support:support-core-ui:26.1.0] C:\Users\adagiom\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.1.0.aar\4bb203ce330aa3175e4cfe7a4bba45ab\AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support:support-compat:26.1.0] C:\Users\adagiom\.gradle\caches\transforms-1\files-1.1\support-compat-26.1.0.aar\0949fb04818de59b8e03d532bdf0ccaa\AndroidManifest.xml:17:1-31:12
 MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\adagiom\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\9c77a00f4fc2724e218bcc8ae889eff4\AndroidManifest.xml:17:1-30:12
-INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-118:12
-INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-118:12
-INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-118:12
+INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-106:12
+INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-106:12
+INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-106:12
 	package
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:4:5-40
 		INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml
 		INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-118:12
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-106:12
 		INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml
 	xmlns:tools
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:3:5-51
 	android:versionCode
 		INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-118:12
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:1-106:12
 		INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:2:11-69
@@ -165,7 +165,7 @@ ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidM
 	android:name
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:25:22-77
 application
-ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:27:5-116:19
+ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:27:5-104:19
 MERGED from [com.google.firebase:firebase-core:16.0.1] C:\Users\adagiom\.gradle\caches\transforms-1\files-1.1\firebase-core-16.0.1.aar\1956a5c3c75ce8d3d22cf3807fe33252\AndroidManifest.xml:7:5-20
 MERGED from [com.google.firebase:firebase-core:16.0.1] C:\Users\adagiom\.gradle\caches\transforms-1\files-1.1\firebase-core-16.0.1.aar\1956a5c3c75ce8d3d22cf3807fe33252\AndroidManifest.xml:7:5-20
 MERGED from [com.google.firebase:firebase-messaging:17.1.0] C:\Users\adagiom\.gradle\caches\transforms-1\files-1.1\firebase-messaging-17.1.0.aar\072e5ecb9b5e8c9ec833b189ba345d38\AndroidManifest.xml:22:5-35:19
@@ -248,12 +248,12 @@ MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\adagiom\.gradle\cach
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:28:9-35
 	android:theme
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:33:9-40
-activity#com.example.adagiom.bepim.MainActivity
+activity#com.example.adagiom.bepim.activity.MainActivity
 ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:34:9-45:20
 	android:screenOrientation
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:36:13-49
 	android:name
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:35:13-41
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:35:13-50
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
 ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:37:13-41:29
 action#android.intent.action.MAIN
@@ -270,34 +270,34 @@ category#android.intent.category.DEFAULT
 ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:43:17-76
 	android:name
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:43:27-73
-activity#com.example.adagiom.bepim.ListPlataforma
+activity#com.example.adagiom.bepim.activity.ListPlataforma
 ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:46:9-54:20
 	android:screenOrientation
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:48:13-49
 	android:name
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:47:13-43
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:47:13-52
 intent-filter#action:name:PLATAFORMA+category:name:android.intent.category.DEFAULT
 ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:49:13-53:29
 action#PLATAFORMA
 ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:50:17-53
 	android:name
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:50:25-50
-activity#com.example.adagiom.bepim.LoginActivity
+activity#com.example.adagiom.bepim.activity.LoginActivity
 ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:55:9-60:20
 	android:screenOrientation
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:57:13-49
 	android:launchMode
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:58:13-44
 	android:name
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:56:13-42
-activity#com.example.adagiom.bepim.RegistroActivity
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:56:13-51
+activity#com.example.adagiom.bepim.activity.RegistroActivity
 ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:61:9-74:20
 	android:screenOrientation
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:63:13-49
 	android:launchMode
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:64:13-44
 	android:name
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:62:13-45
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:62:13-54
 intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:bepim.page.link/registro+data:host:bepim.page.link/registro+data:scheme:http+data:scheme:https
 ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:65:13-73:29
 	android:autoVerify
@@ -316,72 +316,52 @@ ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidM
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:70:23-62
 	android:scheme
 		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:70:63-84
-activity#com.example.adagiom.bepim.ActivityDriver
-ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:75:9-77:52
-	android:screenOrientation
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:77:13-49
-	android:name
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:76:13-43
-service#com.example.adagiom.bepim.ServiceNotification
-ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:79:9-82:39
+service#com.example.adagiom.bepim.services.FirebaseNotification
+ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:76:9-83:19
 	android:enabled
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:81:13-35
-	android:exported
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:82:13-36
-	android:name
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:80:13-48
-activity#com.example.adagiom.bepim.LecturaQR
-ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:84:9-86:61
-	android:screenOrientation
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:86:13-49
-	android:name
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:85:13-38
-service#com.example.adagiom.bepim.FirebaseNotification
-ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:88:9-95:19
-	android:enabled
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:90:13-35
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:78:13-35
 	android:stopWithTask
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:91:13-41
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:79:13-41
 	android:name
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:89:13-49
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:77:13-58
 intent-filter#action:name:com.google.firebase.MESSAGING_EVENT
-ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:92:13-94:29
+ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:80:13-82:29
 action#com.google.firebase.MESSAGING_EVENT
-ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:93:17-78
+ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:81:17-78
 	android:name
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:93:25-75
-service#com.example.adagiom.bepim.Firebase_ID_Service
-ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:96:9-103:19
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:81:25-75
+service#com.example.adagiom.bepim.services.Firebase_ID_Service
+ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:84:9-91:19
 	android:enabled
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:98:13-35
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:86:13-35
 	android:stopWithTask
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:99:13-41
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:87:13-41
 	android:name
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:97:13-48
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:85:13-57
 intent-filter#action:name:com.google.firebase.INSTANCE_ID_EVENT
-ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:100:13-102:29
+ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:88:13-90:29
 action#com.google.firebase.INSTANCE_ID_EVENT
-ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:101:17-80
+ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:89:17-80
 	android:name
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:101:25-77
-activity#com.example.adagiom.bepim.DrawerPrincipal
-ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:105:9-115:20
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:89:25-77
+activity#com.example.adagiom.bepim.activity.DrawerPrincipal
+ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:93:9-103:20
 	android:screenOrientation
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:109:13-49
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:97:13-49
 	android:label
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:107:13-68
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:95:13-68
 	android:launchMode
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:110:13-44
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:98:13-44
 	android:theme
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:108:13-44
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:96:13-44
 	android:name
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:106:13-44
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:94:13-53
 intent-filter#action:name:TABS+category:name:android.intent.category.DEFAULT
-ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:111:13-114:29
+ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:99:13-102:29
 action#TABS
-ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:112:17-47
+ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:100:17-47
 	android:name
-		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:112:25-44
+		ADDED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml:100:25-44
 uses-sdk
 INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\adagiom\Documents\Proyecto\ProyectoUnlam\APK\app\src\main\AndroidManifest.xml

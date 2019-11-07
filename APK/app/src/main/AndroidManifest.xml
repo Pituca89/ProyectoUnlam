@@ -32,7 +32,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,7 +44,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ListPlataforma"
+            android:name=".activity.ListPlataforma"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="PLATAFORMA" />
@@ -53,13 +53,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask">
 
         </activity>
         <activity
-            android:name=".RegistroActivity"
+            android:name=".activity.RegistroActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask">
             <intent-filter android:autoVerify="true">
@@ -72,21 +72,9 @@
 
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ActivityDriver"
-            android:screenOrientation="portrait" />
 
         <service
-            android:name=".ServiceNotification"
-            android:enabled="true"
-            android:exported="true" />
-
-        <activity
-            android:name=".LecturaQR"
-            android:screenOrientation="portrait"></activity>
-
-        <service
-            android:name=".FirebaseNotification"
+            android:name=".services.FirebaseNotification"
             android:enabled="true"
             android:stopWithTask="false">
             <intent-filter>
@@ -94,7 +82,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".Firebase_ID_Service"
+            android:name=".services.Firebase_ID_Service"
             android:enabled="true"
             android:stopWithTask="false">
             <intent-filter>
@@ -103,7 +91,7 @@
         </service>
 
         <activity
-            android:name=".DrawerPrincipal"
+            android:name=".activity.DrawerPrincipal"
             android:label="@string/title_activity_drawer_principal"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"

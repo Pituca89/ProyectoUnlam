@@ -65,10 +65,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_bepim"
         android:supportsRtl="true"
-        android:testOnly="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.adagiom.bepim.MainActivity"
+            android:name="com.example.adagiom.bepim.activity.MainActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -80,7 +79,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.adagiom.bepim.ListPlataforma"
+            android:name="com.example.adagiom.bepim.activity.ListPlataforma"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="PLATAFORMA" />
@@ -89,12 +88,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.adagiom.bepim.LoginActivity"
+            android:name="com.example.adagiom.bepim.activity.LoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.example.adagiom.bepim.RegistroActivity"
+            android:name="com.example.adagiom.bepim.activity.RegistroActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >
             <intent-filter android:autoVerify="true" >
@@ -111,21 +110,9 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.example.adagiom.bepim.ActivityDriver"
-            android:screenOrientation="portrait" />
 
         <service
-            android:name="com.example.adagiom.bepim.ServiceNotification"
-            android:enabled="true"
-            android:exported="true" />
-
-        <activity
-            android:name="com.example.adagiom.bepim.LecturaQR"
-            android:screenOrientation="portrait" />
-
-        <service
-            android:name="com.example.adagiom.bepim.FirebaseNotification"
+            android:name="com.example.adagiom.bepim.services.FirebaseNotification"
             android:enabled="true"
             android:stopWithTask="false" >
             <intent-filter>
@@ -133,7 +120,7 @@
             </intent-filter>
         </service>
         <service
-            android:name="com.example.adagiom.bepim.Firebase_ID_Service"
+            android:name="com.example.adagiom.bepim.services.Firebase_ID_Service"
             android:enabled="true"
             android:stopWithTask="false" >
             <intent-filter>
@@ -142,7 +129,7 @@
         </service>
 
         <activity
-            android:name="com.example.adagiom.bepim.DrawerPrincipal"
+            android:name="com.example.adagiom.bepim.activity.DrawerPrincipal"
             android:label="@string/title_activity_drawer_principal"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
