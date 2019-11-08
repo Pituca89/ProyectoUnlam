@@ -16,171 +16,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a66aff1-d7a2-46a1-ab9b-4e51f6908ee4" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/classAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/classAnalysis.bin" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/javaCompile.lock" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/javaCompile.lock" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/taskHistory.bin" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.lock" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/blame/res/debug/multi-v2/debug.json" afterPath="$PROJECT_DIR$/app/build/intermediates/blame/res/debug/multi-v2/debug.json" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/blame/res/debug/multi-v2/values.json" afterPath="$PROJECT_DIR$/app/build/intermediates/blame/res/debug/multi-v2/values.json" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/blame/res/debug/single/debug.json" afterPath="$PROJECT_DIR$/app/build/intermediates/blame/res/debug/single/debug.json" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/ActivityDriver$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/ActivityDriver.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/ClienteHTTP_GET.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/ClienteHTTP_POST.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/ConfigFragment.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/DeviceListAdapter$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/DeviceListAdapter$2.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/DeviceListAdapter$OnPairButtonClickListener.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/DeviceListAdapter$OnPlayButtonClickListener.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/DeviceListAdapter$ViewHolder.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/DeviceListAdapter.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/FirebaseNotification.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/Firebase_ID_Service.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/Firebase_Login.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/InterfazAsyntask.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/InterfazTraining.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/LecturaQR$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/LecturaQR$2.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/LecturaQR.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/ListPlataforma$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/ListPlataforma$2.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/ListPlataforma$3.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/ListPlataforma$4.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/ListPlataforma$5.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/ListPlataforma$ListenerThread.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/ListPlataforma.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/LoginActivity$1$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/LoginActivity$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/LoginActivity$2.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/LoginActivity$3.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/LoginActivity$4.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/LoginActivity.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/MainActivity$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/MainActivity.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/MainFragment$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/MainFragment.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/NotificationSingleton.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/Plataforma.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/PlataformaAdapter$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/PlataformaAdapter$OnSelectPlataforma.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/PlataformaAdapter$ViewPlataforma.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/PlataformaAdapter.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/RegistroActivity$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/RegistroActivity$2.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/RegistroActivity$3.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/RegistroActivity.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/Response_Conexion.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/Response_Plataforma.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/Response_Sectores.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/Sector.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorAdapter$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorAdapter$OnEnviarPlataforma.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorAdapter$ViewSector.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorAdapter.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorFragment$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorFragment$2.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorFragment$3.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorFragment$4$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorFragment$4$2.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorFragment$4.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorFragment.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorListAdapter$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorListAdapter$2.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorListAdapter$3.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorListAdapter$OnActionSector.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorListAdapter$ViewSector.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorListAdapter.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorTrainingAdapter$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorTrainingAdapter$OnSelectFinDestino.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorTrainingAdapter$ViewSector.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/SectorTrainingAdapter.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/ServiceNotification.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TabsActivity$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TabsActivity$2.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TabsActivity$3.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TabsActivity.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$10.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$11.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$12.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$13.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$14.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$15.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$16.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$17.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$2.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$3.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$4.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$5.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$6.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$7.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$8$1.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$8$2.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$8.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$9.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment$ConnectedThread.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/classes/debug/com/example/adagiom/bepim/TrainingFragment.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/debug-mergeJavaRes/merge-state" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/debug-mergeJavaRes/merge-state" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugResources/compile-file-map.properties" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugResources/compile-file-map.properties" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/manifests/full/debug/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/manifests/full/debug/AndroidManifest.xml" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/resources-debug.ap_" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/resources-debug.ap_" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/values_values.arsc.flat" afterPath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/values_values.arsc.flat" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dexMerger/debug/__content__.json" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dexMerger/debug/__content__.json" />
-      <change beforePath="$PROJECT_DIR$/app/build/outputs/logs/manifest-merger-debug-report.txt" afterPath="$PROJECT_DIR$/app/build/outputs/logs/manifest-merger-debug-report.txt" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/ActivityDriver.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/Bateria.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/REST/ClienteHTTP_BATERIA.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/ClienteHTTP_DELETE.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/REST/ClienteHTTP_DELETE.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/ClienteHTTP_GET.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/REST/ClienteHTTP_GET.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/ClienteHTTP_POST.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/REST/ClienteHTTP_POST.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/ConfigFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/fragment/ConfigFragment.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/DeviceListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/adapter/DeviceListAdapter.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/DrawerPrincipal.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/activity/DrawerPrincipal.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/FirebaseNotification.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/services/FirebaseNotification.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/Firebase_ID_Service.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/services/Firebase_ID_Service.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/Firebase_Login.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/services/Firebase_Login.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/InterfazAsyntask.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/interfaz/InterfazAsyntask.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/InterfazBateria.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/interfaz/InterfazBateria.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/InterfazRefresh.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/interfaz/InterfazRefresh.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/InterfazTraining.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/interfaz/InterfazTraining.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/LecturaQR.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/ListPlataforma.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/activity/ListPlataforma.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/activity/LoginActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/activity/MainActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/MainFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/fragment/MainFragment.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/NotificationSingleton.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/services/NotificationSingleton.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/Plataforma.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/model/Plataforma.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/PlataformaAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/adapter/PlataformaAdapter.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/PlataformaFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/fragment/PlataformaFragment.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/RegistroActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/activity/RegistroActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/Response_Conexion.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/response/Response_Conexion.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/Response_Plataforma.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/response/Response_Plataforma.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/Response_Sectores.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/response/Response_Sectores.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/Sector.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/model/Sector.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/SectorAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/adapter/SectorAdapter.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/SectorFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/fragment/SectorFragment.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/SectorListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/adapter/SectorListAdapter.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/SectorTrainingAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/adapter/SectorTrainingAdapter.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/ServiceNotification.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/TabsActivity.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/TrainingFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/fragment/TrainingFragment.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_registro.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_registro.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/app_bar_drawer_principal.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/app_bar_drawer_principal.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/content_drawer_principal.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/content_drawer_principal.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_config.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_config.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_main.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_plataforma.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_plataforma.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_sector.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_sector.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_training.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_training.xml" />
       <change beforePath="$PROJECT_DIR$/../ARDUINO/Plataforma-Final/Plataforma-Final.ino" afterPath="$PROJECT_DIR$/../ARDUINO/Plataforma-Final/Plataforma-Final.ino" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -241,12 +77,37 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TrainingFragment.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TrainingFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/fragment/TrainingFragment.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="297">
               <caret line="172" column="56" lean-forward="false" selection-start-line="172" selection-start-column="56" selection-end-line="172" selection-end-column="56" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/activity/LoginActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-136">
+              <caret line="56" column="43" lean-forward="false" selection-start-line="56" selection-start-column="43" selection-end-line="56" selection-end-column="43" />
+              <folding>
+                <element signature="e#2161#2196#0" expanded="true" />
+                <marker date="1572816049113" expanded="true" signature="4704:4867" ph="//..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RegistroActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/activity/RegistroActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="295">
+              <caret line="152" column="25" lean-forward="false" selection-start-line="152" selection-start-column="25" selection-end-line="152" selection-end-column="25" />
+              <folding>
+                <element signature="e#2478#2513#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -2382,7 +2243,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="width" value="1370" />
     <option name="height" value="744" />
@@ -2698,8 +2559,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843137" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843137" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -3079,27 +2939,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/activity/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="56" column="43" lean-forward="true" selection-start-line="56" selection-start-column="43" selection-end-line="56" selection-end-column="43" />
-          <folding>
-            <element signature="e#2161#2196#0" expanded="false" />
-            <marker date="1572816049113" expanded="true" signature="4704:4867" ph="//..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/activity/RegistroActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="62" column="83" lean-forward="true" selection-start-line="62" selection-start-column="83" selection-end-line="62" selection-end-column="83" />
-          <folding>
-            <element signature="e#2478#2513#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/activity/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -3195,6 +3034,27 @@
         <state relative-caret-position="297">
           <caret line="172" column="56" lean-forward="false" selection-start-line="172" selection-start-column="56" selection-end-line="172" selection-end-column="56" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/activity/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-136">
+          <caret line="56" column="43" lean-forward="false" selection-start-line="56" selection-start-column="43" selection-end-line="56" selection-end-column="43" />
+          <folding>
+            <element signature="e#2161#2196#0" expanded="true" />
+            <marker date="1572816049113" expanded="true" signature="4704:4867" ph="//..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/adagiom/bepim/activity/RegistroActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="152" column="25" lean-forward="false" selection-start-line="152" selection-start-column="25" selection-end-line="152" selection-end-column="25" />
+          <folding>
+            <element signature="e#2478#2513#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

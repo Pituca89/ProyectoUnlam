@@ -59,8 +59,8 @@ int flagDesvioDerecha;
 #define desvioObstaculoEjeY 480    // pasos MAXIMOS de desvio para esquivar un obstaculo en el eje Y
 #define CantPasosLento 100     // Cantidad de pasos a realizare al inicio de un avance y giro--> CAMBIOVELOCIDAD
 #define delayEntreInstrucciones 500 //milisegundos entre cada instruccion cuando se esquiva el obstaculo
-#define noventagrados 207
-#define cientoochentagrados 415
+#define noventagrados 209  // PARA RUEDAS NEGRAS CON 2 VUELTAS DE CINTA
+#define cientoochentagrados 418  // PARA RUEDAS NEGRAS CON 2 VUELTAS DE CINTA
 
 void setup() {
 pinMode(stepPinIZ,OUTPUT); 
@@ -272,7 +272,9 @@ if(flagSerial==1)
               
               
               
-                if (desvio1 > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+               // if (desvio1 > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+                 if (desvio1 > CantPasosLento && obstaculobandera > CantPasosLento && (desvioObstaculoEjeX-desvio1) > CantPasosLento)       //Inicio y fin lento
+                
 				{
 				  Avance();
 				}
@@ -302,7 +304,8 @@ if(flagSerial==1)
                   else{
                   
                     
-                   if (p > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+                  // if (p > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+                   if (p > CantPasosLento && obstaculobandera > CantPasosLento && (desvio1-p) > CantPasosLento)       //Inicio y fin lento
                   {
                     Avance();
                    }
@@ -338,7 +341,8 @@ if(flagSerial==1)
               else{
                 
                 
-               if (desvio2 > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+               //if (desvio2 > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+               if (desvio2 > CantPasosLento && obstaculobandera > CantPasosLento && (desvioObstaculoEjeY-desvio2) > CantPasosLento)       //Inicio y fin lento
             {
               Avance();
             }
@@ -370,7 +374,8 @@ if(flagSerial==1)
                 
                   
                   
-                  if (p > CantPasosLento  && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+                  //if (p > CantPasosLento  && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+                  if (p > CantPasosLento && obstaculobandera > CantPasosLento && (desvio2-p) > CantPasosLento)       //Inicio y fin lento
                   {
                     Avance();
                   }
@@ -397,7 +402,9 @@ if(flagSerial==1)
                   else{
             
               
-                  if (p > CantPasosLento  && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+                //  if (p > CantPasosLento  && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+                  if (p > CantPasosLento && obstaculobandera > CantPasosLento && (desvio1-p) > CantPasosLento)       //Inicio y fin lento
+                  
                   {
                     Avance();
                   }
@@ -427,7 +434,8 @@ if(flagSerial==1)
               else{
               
                 
-                if (desvio3 > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+               // if (desvio3 > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+                if (desvio3 > CantPasosLento && obstaculobandera > CantPasosLento && (desvioObstaculoEjeX-desvio3) > CantPasosLento)       //Inicio y fin lento
               {
                 Avance();
               }
@@ -455,7 +463,8 @@ if(flagSerial==1)
                    Serial.println("Plataforma DETENIDA por OBSTACULO");
                   }        
                   else{
-                  if (p > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+                  //if (p > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+                  if (p > CantPasosLento && obstaculobandera > CantPasosLento && (desvio3-p) > CantPasosLento)       //Inicio y fin lento
                   {
                     Avance();
                   }
@@ -481,7 +490,8 @@ if(flagSerial==1)
                    Serial.println("Plataforma DETENIDA por OBSTACULO");
                   }        
                   else{
-                  if (p > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+                  //if (p > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+                  if (p > CantPasosLento && obstaculobandera > CantPasosLento && (desvio2-p) > CantPasosLento)       //Inicio y fin lento
                   {
                     Avance();
                   }
@@ -507,7 +517,8 @@ if(flagSerial==1)
                    Serial.println("Plataforma DETENIDA por OBSTACULO");
                   }        
                   else{
-                  if (p > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+                 // if (p > CantPasosLento && obstaculobandera > CantPasosLento) // CAMBIOVELOCIDAD
+                  if (p > CantPasosLento && obstaculobandera > CantPasosLento && (desvio1-p) > CantPasosLento)       //Inicio y fin lento
                   {
                     Avance();
                   }
@@ -532,8 +543,9 @@ if(flagSerial==1)
             
           }}}}
           else{
-            //// FIN DE ESQUIVAR OBSTACULO /////////*/
-          if (k > CantPasosLento) // CAMBIOVELOCIDAD
+            //// FIN DE ESQUIVAR OBSTACULO /////////*/                Cambio, inicio y final lento en cada avance
+          if ((k > CantPasosLento)&&((ruta[h].pasos-k) >  CantPasosLento) )// CAMBIOVELOCIDAD
+         // if (k > CantPasosLento)// CAMBIOVELOCIDAD
             {
               Avance();
             }
@@ -770,15 +782,15 @@ digitalWrite(dirPinDER,LOW);
 do{x++;
   digitalWrite(stepPinIZ,HIGH); 
   digitalWrite(stepPinDER,HIGH); 
-  if (x > CantPasosLento)  
-    delayMicroseconds(delaiPulsos); 
-  else
+  //if (x > CantPasosLento)   
+  //  delayMicroseconds(delaiPulsos); 
+  //else
     delayMicroseconds(delaiPulsosInicio); 
   digitalWrite(stepPinIZ,LOW);
   digitalWrite(stepPinDER,LOW); 
-  if (x > CantPasosLento)  
-    delayMicroseconds(delaiPulsos); 
-  else
+  //if (x > CantPasosLento)  
+  //  delayMicroseconds(delaiPulsos); 
+  //else
     delayMicroseconds(delaiPulsosInicio);
   }while(x < giro);
 }
@@ -792,9 +804,9 @@ do{x++;
   digitalWrite(stepPinIZ,HIGH); 
   digitalWrite(stepPinDER,HIGH);
   
-  if (x > CantPasosLento)  
-    delayMicroseconds(delaiPulsos); 
-  else
+  //if (x > CantPasosLento)  
+  //  delayMicroseconds(delaiPulsos); 
+  //else
     delayMicroseconds(delaiPulsosInicio);
   
   
@@ -802,9 +814,9 @@ do{x++;
   digitalWrite(stepPinDER,LOW); 
   
   
-  if (x > CantPasosLento)  
-    delayMicroseconds(delaiPulsos); 
-  else
+  //if (x > CantPasosLento)  
+  //  delayMicroseconds(delaiPulsos); 
+  //else
     delayMicroseconds(delaiPulsosInicio);
   }while(x < giro);
 }
