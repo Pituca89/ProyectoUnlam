@@ -40,6 +40,7 @@ int obstaculobandera;
 
 int h;
 int he;   //contador para el entrenamiento
+int heAux;  //contador para el entrenamiento
 int j;
 unsigned int k;
 int m;
@@ -65,6 +66,8 @@ int flagDesvioDerecha;
 #define cientoochentagrados 418  // PARA RUEDAS NEGRAS CON 2 VUELTAS DE CINTA
 
 void setup() {
+	
+delay(10000);                //delay de 10 segundos 
 pinMode(stepPinIZ,OUTPUT); 
 pinMode(dirPinIZ,OUTPUT);
 pinMode(stepPinDER,OUTPUT); 
@@ -642,14 +645,15 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
           while(digitalRead(PinProxiFrontal) == LOW)    
             {                              // se queda frenado en un bucle mientras haya un obstaculo adelante  
             }
-          if (ContPasos > CantPasosLento)
+          /*if (ContPasos > CantPasosLento)
           {
           Avance();
           }
           else
           {
             AvanceInicio(); // Avanza 1 paso
-          }
+          }*/
+		  AvanceInicio();
           ContPasos++;
           }
           
