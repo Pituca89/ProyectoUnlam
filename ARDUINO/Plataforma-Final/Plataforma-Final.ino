@@ -2,7 +2,7 @@ const int dirPinIZ = 34;
 const int stepPinIZ = 35 ; 
 const int dirPinDER = 36; 
 const int stepPinDER = 37 ; 
-const int pinRele = 46 ;    //PIN PARA MANEJAR EL RELE QUE CONTROLA LOS LED
+const int pinRele = 46 ;    //PIN PARA MANEJAR EL RELAY QUE CONTROLA LOS LED
 
 
 const int PinEntrenamiento = 22;
@@ -30,7 +30,8 @@ struct rutas
       int grados ;       // Numero de pines analogicos
   } ;
 char caux;
-rutas ruta[50]; 
+rutas ruta[50];                         // almacena la ruta recibida desde el wifi para su ejecucion
+rutas rutaDeshacerEntrenamiento[50];
 String intermedio;
 String macBeaconDestino;
 String macBeaconDestinoMasPotencia;
@@ -38,6 +39,7 @@ int potenciaBeaconDestino;
 int obstaculobandera;
 
 int h;
+int he;   //contador para el entrenamiento
 int j;
 unsigned int k;
 int m;
@@ -94,6 +96,7 @@ j=0;
 k=0;
 //m=0;
 p=0;
+he=0;
 caux="";
 flagSerial = 0;
 flagBasuraSerial = 0;
@@ -617,7 +620,15 @@ digitalWrite(pinRele, LOW);
 
 if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
   {
+  /*  codigo binario de entrenamiento Pin2binario Pin1binario Pin0binario
+             *  0 0 0 : plataforma detenida (S)
+             *  0 0 1 : avanzar (F)
+             *  0 1 0 : girar derecha (D)
+             *  1 0 0 : girar izquierda (I)
+             *  0 1 1 : deshacer ultimo movimiento
+             */
   rutaEntrenamiento="";
+  he=0;
   Serial.print("comienzo de entrenamiento: ");
   Serial.println(rutaEntrenamiento);
   while (digitalRead(PinEntrenamiento) == HIGH)
@@ -640,10 +651,9 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
             AvanceInicio(); // Avanza 1 paso
           }
           ContPasos++;
-          
           }
           
-        if(flagPrimerInstruccionEntrenamiento == 0)
+        /*if(flagPrimerInstruccionEntrenamiento == 0)
           {
           rutaEntrenamiento.concat("F");
           flagPrimerInstruccionEntrenamiento=1;
@@ -652,12 +662,15 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
           rutaEntrenamiento.concat("|");
           rutaEntrenamiento.concat("F");
           }
-        rutaEntrenamiento.concat(String(ContPasos));
+        rutaEntrenamiento.concat(String(ContPasos));*/
           
         Serial.print("Avance pasos;");
-        Serial.print(ContPasos);
-        Serial.print("   Ruta parcial: ");
-        Serial.println(rutaEntrenamiento);
+        Serial.println(ContPasos);
+        //Serial.print("   Ruta parcial: ");
+        //Serial.println(rutaEntrenamiento);
+        rutaDeshacerEntrenamiento[he].sentido='F';
+        rutaDeshacerEntrenamiento[he].pasos=ContPasos;
+        he++;
         }
         
       if ((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == LOW)) //Girar DERECHA
@@ -669,7 +682,7 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
           GirarDerecha(1);                        // Gira derecha 1 paso
           ContPasos++;
           }
-        if(flagPrimerInstruccionEntrenamiento == 0)
+        /*if(flagPrimerInstruccionEntrenamiento == 0)
           {
           rutaEntrenamiento.concat("D");
           flagPrimerInstruccionEntrenamiento=1;
@@ -678,11 +691,14 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
           rutaEntrenamiento.concat("|");
           rutaEntrenamiento.concat("D");
           }
-        rutaEntrenamiento.concat(String(ContPasos));
+        rutaEntrenamiento.concat(String(ContPasos));*/
         Serial.print("derecha pasos;");
-        Serial.print(ContPasos);
-        Serial.print("   Ruta parcial: ");
-        Serial.println(rutaEntrenamiento);
+        Serial.println(ContPasos);
+       // Serial.print("   Ruta parcial: ");
+       // Serial.println(rutaEntrenamiento);
+        rutaDeshacerEntrenamiento[he].sentido='D';
+        rutaDeshacerEntrenamiento[he].pasos=ContPasos;
+        he++;
         }
         
       if ((digitalRead(Pin2binario) == HIGH)&&(digitalRead(Pin1binario) == LOW)&&(digitalRead(Pin0binario) == LOW)) //Girar IZQUIERDA
@@ -694,7 +710,7 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
           GirarIzquierda(1);                        // Gira derecha 1 paso
           ContPasos++;
           }
-        if(flagPrimerInstruccionEntrenamiento == 0)
+        /*if(flagPrimerInstruccionEntrenamiento == 0)
           {
           rutaEntrenamiento.concat("I");
           flagPrimerInstruccionEntrenamiento=1;
@@ -703,14 +719,70 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
           rutaEntrenamiento.concat("|");
           rutaEntrenamiento.concat("I");
           }
-        rutaEntrenamiento.concat(String(ContPasos));
+        rutaEntrenamiento.concat(String(ContPasos));*/
         Serial.print("Izquierda pasos;");
-        Serial.print(ContPasos);
-        Serial.print("   Ruta parcial: ");
-        Serial.println(rutaEntrenamiento);
+        Serial.println(ContPasos);
+        //Serial.print("   Ruta parcial: ");
+       // Serial.println(rutaEntrenamiento);
+        rutaDeshacerEntrenamiento[he].sentido='I';
+        rutaDeshacerEntrenamiento[he].pasos=ContPasos;
+        he++;
         }
- 
+    if ((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == HIGH)&&(he>0)) //Deshacer
+        {
+        he--;
+        while((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == HIGH))
+          {
+           if(he>=0)
+            {
+            if(rutaDeshacerEntrenamiento[he].sentido=='F')
+              {
+              Retroceso(rutaDeshacerEntrenamiento[he].pasos);
+              }
+            if(rutaDeshacerEntrenamiento[he].sentido=='D')
+              {
+              GirarIzquierda(rutaDeshacerEntrenamiento[he].pasos);
+              }
+            if(rutaDeshacerEntrenamiento[he].sentido=='I')
+              {
+              GirarDerecha(rutaDeshacerEntrenamiento[he].pasos);
+              }
+            }
+           
+          }
+        }
+    if ((digitalRead(Pin2binario) == HIGH)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == HIGH)&&(he>0)) //Deshacer TODO
+        {
+        he--;
+        while(he>=0)
+          {
+            if(rutaDeshacerEntrenamiento[he].sentido=='F')
+              {
+              Retroceso(rutaDeshacerEntrenamiento[he].pasos);
+              }
+            if(rutaDeshacerEntrenamiento[he].sentido=='D')
+              {
+              GirarIzquierda(rutaDeshacerEntrenamiento[he].pasos);
+              }
+            if(rutaDeshacerEntrenamiento[he].sentido=='I')
+              {
+              GirarDerecha(rutaDeshacerEntrenamiento[he].pasos);
+              }
+             he--;
+          }
+        }
     }
+  heAux=0;
+  while(heAux<he)
+    {
+     if(heAux != 0) //Primer concatenacion de la ruta no lleva PIPE |
+          {
+          rutaEntrenamiento.concat("|");
+          }//else{}
+     rutaEntrenamiento.concat(rutaDeshacerEntrenamiento[heAux].sentido);
+     rutaEntrenamiento.concat(String(rutaDeshacerEntrenamiento[heAux].pasos));
+     heAux++;
+     }
   rutaEntrenamiento.concat("$");
   //ENVIAR rutaEntrenamiento POR SERIAL 2 al Bluethoot
   Serial.print("Ruta de Entrenamiento enviada al Bluethoot: ");
@@ -756,11 +828,20 @@ delayMicroseconds(delaiPulsosInicio);
 
 }
 
-void MotorAntihorario()
+void Retroceso(int retroceso)
 
 {
-
-
+int PasosRetroceso=0;
+digitalWrite(dirPinIZ,LOW); 
+digitalWrite(dirPinDER,LOW); 
+do{
+  digitalWrite(stepPinIZ,HIGH); 
+  digitalWrite(stepPinDER,HIGH); 
+  delayMicroseconds(delaiPulsosInicio); 
+  digitalWrite(stepPinIZ,LOW);
+  digitalWrite(stepPinDER,LOW); 
+  delayMicroseconds(delaiPulsosInicio); 
+  }while(PasosRetroceso<retroceso)
 }
 
 
