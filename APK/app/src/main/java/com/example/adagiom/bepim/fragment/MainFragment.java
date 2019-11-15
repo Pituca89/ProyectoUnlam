@@ -50,7 +50,8 @@ public class MainFragment extends Fragment implements InterfazAsyntask,InterfazB
     ArrayList<Sector> sectors;
     private TextView namePlataforma;
     Plataforma plataforma;
-    static Sector destino;
+    private Sector destino;
+    private Sector origen;
     private ImageView imgBateria;
     private TextView txtBateria;
     public MainFragment() {
@@ -112,7 +113,7 @@ public class MainFragment extends Fragment implements InterfazAsyntask,InterfazB
                 json.put("url",ruta + uri);
                 json.put("USER",1);
                 json.put("ID", chipid);
-                json.put("DESDE",plataforma.getIdsector());
+                json.put("DESDE",origen.getId());
                 json.put("HASTA",destino.getId());
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -142,7 +143,8 @@ public class MainFragment extends Fragment implements InterfazAsyntask,InterfazB
                     while (sectorIterator.hasNext()) {
                         Sector sector = sectorIterator.next();
                         if (sector.getActual() == 1) {
-                            actual.setText(sector.getNombre());
+                            origen = sector;
+                            actual.setText(origen.getNombre());
                             sectorIterator.remove();
                         }
                     }

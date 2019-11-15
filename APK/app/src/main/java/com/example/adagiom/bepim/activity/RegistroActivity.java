@@ -118,7 +118,7 @@ public class RegistroActivity extends AppCompatActivity  implements InterfazAsyn
             switch (v.getId()){
                 case R.id.btn_registrar:
                     if(!user.getText().toString().isEmpty() && !pass.getText().toString().isEmpty()) {
-                        if(pass.getText().equals(confpass.getText())) {
+                        if(pass.getText().toString().equals(confpass.getText().toString())) {
                             mAuth.createUserWithEmailAndPassword(user.getText().toString(), pass.getText().toString())
                                     .addOnCompleteListener(RegistroActivity.this, new OnCompleteListener<AuthResult>() {
                                         @Override

@@ -29,6 +29,7 @@ import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,12 +51,15 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.zip.Inflater;
 
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
@@ -63,6 +67,7 @@ import io.github.controlwear.virtual.joystick.android.JoystickView;
 
 public class TrainingFragment extends Fragment implements InterfazAsyntask {
 
+    private static String TAG = TrainingFragment.class.getSimpleName();
     private String ruta;
     private String ruta_esp;
     private String chipid;
@@ -75,6 +80,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
     Button left;
     Button right;
     JSONObject json;
+    private boolean inversa = false;
     public static int FRENTE = 0;
     public static int STOP = 1;
     public static int DERECHA = 2;
@@ -84,8 +90,10 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
     String ipPlataforma;
     AlertDialog.Builder builder;
     AlertDialog.Builder builderDevice;
+    AlertDialog.Builder builderDeshacer;
     AlertDialog alertDialog;
     AlertDialog alertDialogDevice;
+    AlertDialog alertDialogDeshacer;
     ListView listSector;
     FloatingActionButton addSector;
     private SectorTrainingAdapter sectorAdapter;
@@ -96,6 +104,8 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
     static String actual;
     Sector destino;
     Sector origen;
+    String optimo;
+    private int costo;
     private ProgressDialog mProgressDlg;
     private ProgressDialog mProgressDlg1;
     private ArrayList<BluetoothDevice> mDeviceList = new ArrayList<BluetoothDevice>();
@@ -110,6 +120,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
     Handler bluetoothIn;
     final int handlerState = 0; //used to identify handler message
     private ListView mListView;
+    private Switch aSwitch;
     // SPP UUID service  - Funciona en la mayoria de los dispositivos
     private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
@@ -169,7 +180,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
         //right.setOnClickListener(onActionButton);
         View viewSector = inflater.inflate(R.layout.fragment_sector,null);
         View viewDevice = inflater.inflate(R.layout.activity_paired_devices,null);
-
+        aSwitch = (Switch) viewSector.findViewById(R.id.inversa);
         builder = new AlertDialog.Builder(getContext());
         builderDevice = new AlertDialog.Builder(getContext());
 
@@ -182,6 +193,11 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
         lblsectortitle.setText("Destinos disponibles");
         lblsector.setText("Registrar destino");
 
+        String rutaprueba = "F200|F300|D30|D30|I600|D30|F300|I40|D80|I20|F300|D20|I20";
+        String optimoprueba = optimizarRuta(rutaprueba);
+        Log.i(TAG,"RUTA ORIGINAL: " + rutaprueba);
+        Log.i(TAG,"RUTA OPTIMA: " + optimoprueba);
+        Log.i(TAG,"RUTA OPTIMA INVERSA: " + obtenerInversa(optimoprueba));
         sectorAdapter = new SectorTrainingAdapter(getActivity());
         addSector.setOnClickListener(agregarSector);
 
@@ -336,7 +352,14 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
                 mostrarToastMake("Plataforma duplicada");
             }else if(mensaje.getOpcion().contains("ACTUAL")){
                 refreshSector();
-                mProgressDlg1.dismiss();
+                if(aSwitch.isChecked()){
+                    mProgressDlg1.setMessage("Almacenando camino inverso");
+                    registrarRuta(obtenerInversa(optimo),destino.getId(),origen.getId(),origen.getPotencia(),costo);
+                    aSwitch.setChecked(false);
+                }else{
+                    mProgressDlg1.dismiss();
+                }
+                mProgressDlg1.setMessage("Escaneando Beacon...");
             }else if(mensaje.getOpcion().contains("RUTA")){
                 //refreshSector();
                 actualizarSectorActual();
@@ -363,7 +386,16 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
                             mostrarToastMake("Debe activiar el Bluetooth para poder utilizar el modo entrenamiento");
                         break;
                     case R.id.btn_deshacer:
-
+                            builderDeshacer = new AlertDialog.Builder(getActivity());
+                            LayoutInflater inflaterDeshacer = LayoutInflater.from(getActivity());
+                            View viewDeshacer = inflaterDeshacer.inflate(R.layout.alert_confirm,null);
+                            Button btn_deshacer_total = (Button) viewDeshacer.findViewById(R.id.btn_deshacer_total);
+                            Button btn_deshacer_parcial = (Button) viewDeshacer.findViewById(R.id.btn_deshacer_parcial);
+                            builderDeshacer.setView(viewDeshacer);
+                            btn_deshacer_parcial.setOnClickListener(actionDeshacer);
+                            btn_deshacer_total.setOnClickListener(actionDeshacer);
+                            alertDialogDeshacer = builderDeshacer.create();
+                            alertDialogDeshacer.show();
                         break;
                     case R.id.btn_confirmar:
                         if(BluetoothAdapter.getDefaultAdapter().isEnabled())
@@ -376,6 +408,26 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
         };
     }
 
+    View.OnClickListener actionDeshacer = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            try {
+                switch (view.getId()){
+                    case R.id.btn_deshacer_total:
+                        mConnectedThread.write("W");
+                        mostrarToastMake("Volviendo al punto de partida");
+                        break;
+                    case R.id.btn_deshacer_parcial:
+                        mConnectedThread.write("U");
+                        mostrarToastMake("Deshaciendo última instrucción");
+                        break;
+                }
+            }catch (Exception e){
+                mostrarToastMake("Plataforma desconectada");
+            }
+
+        }
+    };
     public void refreshSector(){
         json = new JSONObject();
         String uri = ClienteHTTP_POST.SECTORES;
@@ -598,10 +650,16 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
             //si se encontro un dispositivo bluethoot
             else if (BluetoothDevice.ACTION_FOUND.equals(action))
             {
-                //Se lo agregan sus datos a una lista de dispositivos encontrados
-                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                mDeviceList.add(device);
-                mostrarToastMake("Dispositivo Encontrado:" + device.getName());
+                //Se lo agregan sus datos a una lista de dispositivos encontrado
+                try {
+                    BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    if (device.getName().contains("BePIM")) {
+                        mDeviceList.add(device);
+                        mostrarToastMake("Dispositivo Encontrado:" + device.getName());
+                    }
+                }catch (Exception e){
+
+                }
             }
         }
     };
@@ -886,19 +944,18 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
                             //progressBar.setVisibility(View.INVISIBLE);
 
                             datos = dataInPrint.split("P\\|");
-                            int costo = obtenerCosto(datos[0]);
-                            //String rutaInv = "F500|I30|D40|F300|D40";
-
+                            costo = obtenerCosto(datos[0]);
+                            optimo = optimizarRuta(datos[0]);
                             Log.i("Costo",Integer.toString(costo));
                             try{
-                                registrarRuta(datos[0].toString(),origen.getId(),destino.getId(),Integer.parseInt(datos[1].toString()),costo);
+                                registrarRuta(optimo,origen.getId(),destino.getId(),Integer.parseInt(datos[1].toString()),costo);
                             }catch (Exception e){
                                 mostrarToastMake("ERROR DE PROCESAMIENTO");
                             }
 
                         }
                         if(dataInPrint.contains("ERROR")) {
-                            mProgressDlg1.dismiss();
+                            //mProgressDlg1.dismiss();
                         }
                         recDataString.delete(0, recDataString.length());
                     }
@@ -922,6 +979,79 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
             mostrarToastMake("ERROR AL OBTENER EL COSTO DE LA RUTA");
         }
         return costoTotal;
+    }
+    public String optimizarRuta(String ruta){
+        String rutaOpt = "";
+        String rutaOptFin = "";
+        String instActual;
+        int pasos = 0;
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        int w = 0;
+        try{
+            String[] instrucciones = ruta.split("\\|");
+            int cantidad = instrucciones.length;
+            for(i = 0 ; i < cantidad; i++){
+                instActual = instrucciones[i].substring(0,1);
+                rutaOpt += "|" + instActual;
+                pasos += Integer.parseInt(instrucciones[i].substring(1,instrucciones[i].length()));
+                for(j = i + 1 ; j < cantidad ; j++){
+                    if(instrucciones[j].toString().contains(instActual)){
+                        pasos += Integer.parseInt(instrucciones[j].substring(1,instrucciones[j].length()));
+                    }else{
+                        break;
+                    }
+                }
+                rutaOpt += Integer.toString(pasos);
+                pasos = 0;
+                i = j - 1;
+            }
+            String[] instOpt = rutaOpt.substring(1,rutaOpt.length()).split("\\|");
+            List<String> list = new ArrayList<String>(Arrays.asList(instOpt));
+            for(k = 1 ; k  < list.size() ; k++){
+                String act = list.get(k).substring(0,1);
+                String sig = list.get(k - 1).substring(0,1);
+
+                if((act.equals("D") && sig.equals("I"))||(act.equals("I") && sig.equals("D"))){
+                    int valoract = Integer.parseInt(list.get(k).substring(1,list.get(k).length()));
+                    int valorsig = Integer.parseInt(list.get(k - 1).substring(1,list.get(k - 1).length()));
+                    String inst = "";
+                    if( valoract > valorsig){
+                        inst += act + (valoract - valorsig);
+                    }else{
+                        inst += sig + (valorsig - valoract);
+                    }
+                    list.set(k - 1,inst);
+                    list.remove(k);
+                }
+                rutaOptFin += list.get(k - 1) + "|";
+            }
+            rutaOptFin += list.get(k - 1);
+        }catch (Exception e){}
+        return rutaOptFin;
+    }
+    public String obtenerInversa(String ruta){
+        String rutainv = "Z420";
+
+        try {
+            String[] instrucciones = ruta.split("\\|");
+
+            int cantins = instrucciones.length;
+            Log.i("CANTIDAD",Integer.toString(cantins).toString());
+            for(int i = cantins - 1; i >= 0; i--){
+                rutainv += "|" + instrucciones[i];
+            }
+            rutainv = rutainv.replace("D","X");
+            rutainv = rutainv.replace("I","Y");
+            rutainv = rutainv.replace("X","I");
+            rutainv = rutainv.replace("Y","D");
+            rutainv = rutainv.replace("Z","D");
+            rutainv += "|D420";
+        }catch (Exception e){
+            mostrarToastMake("ERROR AL OBTENER LA INVERSA DE LA RUTA");
+        }
+        return rutainv;
     }
     public void iniciarComunicacion() {
 

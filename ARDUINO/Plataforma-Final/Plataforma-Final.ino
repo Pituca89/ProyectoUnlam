@@ -1,3 +1,8 @@
+//MAGNETOMETRO
+#include <Wire.h>
+#include <QMC5883L.h>
+
+
 const int dirPinIZ = 34; 
 const int stepPinIZ = 35 ; 
 const int dirPinDER = 36; 
@@ -53,6 +58,10 @@ int desvio3;
 int flagDesvioIzquierda;
 int flagDesvioDerecha;
 
+QMC5883L compass;     //MAGNETOMETRO
+int heading;
+int gradosHaciaNorte;
+
 #define delaiPulsos 2500       // microsegundos entre pulsos, menor numero mayor velocidad de giro 
 #define delaiPulsosInicio 5000     // microsegundos entre pulsos, menor numero mayor velocidad de giro 
 #define desvioObstaculoEjeX 300    // pasos MAXIMOS de desvio para esquivar un obstaculo en el eje X
@@ -60,7 +69,7 @@ int flagDesvioDerecha;
 #define CantPasosLento 100     // Cantidad de pasos a realizare al inicio de un avance y giro--> CAMBIOVELOCIDAD
 #define delayEntreInstrucciones 500 //milisegundos entre cada instruccion cuando se esquiva el obstaculo
 #define noventagrados 209  // PARA RUEDAS NEGRAS CON 2 VUELTAS DE CINTA
-#define cientoochentagrados 418  // PARA RUEDAS NEGRAS CON 2 VUELTAS DE CINTA
+#define cientoochentagrados 420  // PARA RUEDAS NEGRAS CON 2 VUELTAS DE CINTA
 
 void setup() {
 pinMode(stepPinIZ,OUTPUT); 
@@ -82,6 +91,10 @@ pinMode(Pin0binario,INPUT);
 pinMode(validacionBeaconDestino,INPUT);
 pinMode(ResultadoBeaconDestino,INPUT);
 
+//MAGNETOMETRO
+Wire.begin();
+compass.init();
+compass.setSamplingRate(50);
 
 rutaEntrenamiento="";
 
@@ -118,6 +131,11 @@ void loop() {
   digitalWrite(pinRele,LOW);
 unsigned int ContPasos = 0;
 MotorStop();
+
+hacerDosGiros();     //MAGNETOMETRO
+delay(2000);
+orientarNorte();  
+
 
 if(flagSerial==1)
   {
@@ -589,10 +607,11 @@ if(flagSerial==1)
   // INICIO  Validar potencia y mac de beacon /////////////////////////////////////////////
   if(potenciaBeaconDestino!=0)
   {
+  
   Serial2.print("M");
   Serial2.print(macBeaconDestino);
   Serial2.print("P");
-  Serial2.print(potenciaBeaconDestino);
+  Serial2.print(potenciaBeaconDestino);  
   Serial2.print("$");
   int contDelayValidarBeacon=0;
   while((digitalRead(validacionBeaconDestino) == LOW)&&(contDelayValidarBeacon<=60))
@@ -603,10 +622,13 @@ if(flagSerial==1)
     {
     Serial1.print("-2");      // mensaje -2 a la placa wifi "llego ok"
     Serial.println("potencia del Beacon destino CORRECTA");
+    
     }else{
     Serial1.print("-3");    // mensaje -3 no llego "no llego"
     Serial.println("potencia del Beacon destino FUERA DE RANGO");  
+    
     }
+    
   }
   // FIN  Validar potencia y mac de beacon   //////////////////////////////////////////////  */
 
@@ -711,12 +733,18 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
         }
  
     }
+    orientarNorte();                  //MAGNETOMETRO
+    rutaEntrenamiento.concat("N");             
+    rutaEntrenamiento.concat(gradosHaciaNorte);
+  
+  
   rutaEntrenamiento.concat("$");
   //ENVIAR rutaEntrenamiento POR SERIAL 2 al Bluethoot
   Serial.print("Ruta de Entrenamiento enviada al Bluethoot: ");
   Serial.println(rutaEntrenamiento);
   Serial2.print(rutaEntrenamiento); 
   flagPrimerInstruccionEntrenamiento=0; 
+  
   }
 
 }
@@ -845,3 +873,22 @@ bool detectarObstaculo()
     }//detectarObstaculo();
 	
  }
+
+
+void orientarNorte(){
+    gradosHaciaNorte=0;
+    heading = compass.readHeading();
+    gradosHaciaNorte=360-heading;
+    while(heading!=0){
+      if(heading>180){
+        GirarDerecha(((360-heading)*cientoochentagrados)/180);
+      }else{
+        GirarIzquierda(((180-heading)*cientoochentagrados)/180);
+      }
+      heading = compass.readHeading();
+    }
+       
+ }
+void hacerDosGiros(){
+  GirarDerecha(cientoochentagrados*4);
+}

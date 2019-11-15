@@ -11,15 +11,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ListView
             android:id="@+id/listAddSector"
             android:layout_width="match_parent"
-            android:layout_height="381dp"
+            android:layout_height="300dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="64dp">
+            android:layout_marginTop="54dp">
 
         </ListView>
+
         <TextView
             android:id="@+id/lblsectortitle"
             android:layout_width="match_parent"
@@ -37,11 +39,34 @@
             android:layout_height="37dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="23dp"
             android:text="Asociar nuevo destino"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="202dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:orientation="vertical">
+
+            <Switch
+                android:id="@+id/inversa"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:backgroundTint="@color/colorPrimary"
+                android:button="@drawable/boton_switch"
+                android:buttonTint="@color/colorPrimary"
+                android:switchPadding="@dimen/cardview_default_elevation"
+                android:text="Almacenar camino inverso"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+        </LinearLayout>
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton

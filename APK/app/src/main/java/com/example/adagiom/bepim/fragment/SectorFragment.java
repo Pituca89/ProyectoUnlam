@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.adagiom.bepim.REST.ClienteHTTP_DELETE;
@@ -91,6 +92,7 @@ public class SectorFragment extends Fragment implements InterfazAsyntask {
     final int handlerState = 0; //used to identify handler message
     private ListView mListView;
     boolean vacio = true;
+    private Switch aSwitch;
     // SPP UUID service  - Funciona en la mayoria de los dispositivos
     private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     public SectorFragment() {
@@ -136,6 +138,7 @@ public class SectorFragment extends Fragment implements InterfazAsyntask {
         addSector = (FloatingActionButton) v.findViewById(R.id.addSector);
         edit = (ImageView) v.findViewById(R.id.edit);
         delete = (ImageView) v.findViewById(R.id.delete);
+        aSwitch = (Switch) v.findViewById(R.id.inversa);
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
         Plataforma plataforma = (Plataforma) getArguments().getSerializable("plataforma");
@@ -167,6 +170,7 @@ public class SectorFragment extends Fragment implements InterfazAsyntask {
         mProgressDlg.setCancelable(false);
         mProgressDlg1.setMessage("Escaneando Beacon...");
         mProgressDlg1.setCancelable(false);
+        aSwitch.setVisibility(View.INVISIBLE);
         bluetoothIn = Handler_Msg_Hilo_Principal();
         //se asocia un listener al boton cancelar para la ventana de dialogo ue busca los dispositivos bluethoot
         mProgressDlg.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancelar", btnCancelarDialogListener);

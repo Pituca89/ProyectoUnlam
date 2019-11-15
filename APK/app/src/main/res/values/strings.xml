@@ -29,7 +29,8 @@
     <string name="nombre_plataforma">nombre_plataforma</string>
 
     <string name="path_plataforma">ruta</string>
-    <string name="url">http://gestiondenegocio.esy.es</string>
+    <string name="url">http://192.168.0.210:8000</string>
+    <string name="url1">http://gestiondenegocio.esy.es</string>
     <string name="token">token</string>
     <string name="token_user">token_user</string>
     <string name="token_pass">token_pass</string>

@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.adagiom.bepim.REST.ClienteHTTP_POST;
+import com.example.adagiom.bepim.fragment.TrainingFragment;
 import com.example.adagiom.bepim.interfaz.InterfazAsyntask;
 import com.example.adagiom.bepim.services.NotificationSingleton;
 import com.example.adagiom.bepim.model.Plataforma;
@@ -50,7 +51,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
     Handler handler;
     private static int HANDLER_MESSAGE_ON = 1;
     private static int HANDLER_MESSAGE_OFF = 0;
-
+    private static String TAG = ListPlataforma.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,6 +142,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
                                 e.printStackTrace();
                             }
                             FirebaseMessaging.getInstance().subscribeToTopic(intentResult.getContents().toString());
+                            Log.i(TAG,json.toString());
                             threadCliente_Post =  new ClienteHTTP_POST(ListPlataforma.this);
                             threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
                         }
@@ -207,8 +209,10 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
                     mostrarToastMake("Su plataforma llegó a destino");
                     Log.i("Notificacion","Recibi mensaje");
                     try {
-                        Thread.sleep(1000);
-                        refreshPlataforma();
+                        Thread.sleep(100);
+                        finish();
+                        startActivity(getIntent().setFlags(
+                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -235,5 +239,33 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
             handler.obtainMessage(HANDLER_MESSAGE_ON).sendToTarget();
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setMessage("Desea salir de la aplicacion?");
+        builder.setCancelable(true);
+
+        builder.setPositiveButton(
+                "Si",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        finish();
+                    }
+                });
+
+        builder.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        android.app.AlertDialog alert1 = builder.create();
+        alert1.show();
     }
 }
