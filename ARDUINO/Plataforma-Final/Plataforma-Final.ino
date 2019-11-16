@@ -161,6 +161,8 @@ if(flagSerial==1)
         Serial.println("en busca del -");
         do{
           caux = Serial1.read();
+		  Serial.println("");
+		  Serial.println("LEYENDO BASURA BUSCANDO EL GUION");
           Serial.println(caux);
           }while (caux != '-');
         flagBasuraSerial=1;
@@ -190,18 +192,21 @@ if(flagSerial==1)
       //intermedio= "";
       h++;
       }
-    Serial.println("SALIO DEL  WHILE");
+    Serial.println("SALIO DEL WHILE QUE LEE SOLO LA RUTA SIN MAC Y POTENCIA");
     ruta[h].sentido='$';
     
    ///////////Inicio Guardar la MAC y la potencia del beacon recibida por wifi /////////
     j=0;  
       do{
-        caux = Serial1.read();
-        if (caux != 'P')
-          {
-          macBeaconDestino.concat(caux);// += caux;
-          }
-        j++;
+			if(Serial1.available())
+			{
+			  	caux = Serial1.read();
+				if (caux != 'P')
+					{
+					macBeaconDestino.concat(caux);// += caux;
+					}
+				j++;
+			}
         }while (caux != 'P' && j<50);
         Serial.print("MAC RECIBIDA : ");
         Serial.println(macBeaconDestino);
@@ -209,12 +214,15 @@ if(flagSerial==1)
       j=0;
       intermedio="";
       do{
-        caux = Serial1.read();
-        if (caux != '#')
-          {
-          intermedio += caux;
-          }
-        j++;
+			if(Serial1.available())
+			{
+				caux = Serial1.read();
+				if (caux != '#')
+				  {
+				  intermedio.concat(caux);
+				  }
+				j++;
+			}
         }while (caux != '#' && j<50);
       potenciaBeaconDestino = intermedio.toInt();
       Serial.print("POTENCIA RECIBIDA : ");
@@ -757,8 +765,8 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
     if ((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == HIGH)&&(he>0)) //Deshacer
         {
         he--;
-        while((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == HIGH))
-          {
+        //while((digitalRead(Pin2binario) == LOW)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == HIGH))
+        //  {
            if(he>=0)
             {
             if(rutaDeshacerEntrenamiento[he].sentido=='F')
@@ -775,7 +783,7 @@ if (digitalRead(PinEntrenamiento) == HIGH)      //Modo entrenamiento
               }
             }
            
-          }
+         // }
         }
     if ((digitalRead(Pin2binario) == HIGH)&&(digitalRead(Pin1binario) == HIGH)&&(digitalRead(Pin0binario) == HIGH)&&(he>0)) //Deshacer TODO
         {
