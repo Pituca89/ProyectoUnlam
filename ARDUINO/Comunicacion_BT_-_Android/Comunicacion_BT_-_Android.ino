@@ -179,6 +179,7 @@ void loop() {
     if (dato == 'S')
         {        
         //ESP_BT.println("OK");
+        //Serial.println("S");
         digitalWrite(Pin2binario,LOW);
         digitalWrite(Pin1binario,LOW);
         digitalWrite(Pin0binario,LOW);
@@ -186,6 +187,7 @@ void loop() {
     if (dato == 'F')
         {        
         //ESP_BT.println("Avanzando...");
+        //Serial.println("F");
         digitalWrite(Pin2binario,LOW);
         digitalWrite(Pin1binario,LOW);
         digitalWrite(Pin0binario,HIGH); 
@@ -193,6 +195,7 @@ void loop() {
     if (dato == 'D')
         {
         //ESP_BT.println("Girando a la derecha...");
+        //Serial.println("D");
         digitalWrite(Pin2binario,LOW);
         digitalWrite(Pin1binario,HIGH);
         digitalWrite(Pin0binario,LOW);
@@ -200,20 +203,27 @@ void loop() {
     if (dato == 'I')
         {
         //ESP_BT.println("Girando a la izquierda...");
+        //Serial.println("I");
         digitalWrite(Pin2binario,HIGH);
         digitalWrite(Pin1binario,LOW);
         digitalWrite(Pin0binario,LOW);
         }  
     if (dato == 'U')
         {
-        //ESP_BT.println("Girando a la izquierda...");
+        //ESP_BT.println("Deshacer ultima orden");
+        //Serial.println("U");
         digitalWrite(Pin2binario,LOW);
         digitalWrite(Pin1binario,HIGH);
         digitalWrite(Pin0binario,HIGH);
+        delay(100);
+        digitalWrite(Pin2binario,LOW);
+        digitalWrite(Pin1binario,LOW);
+        digitalWrite(Pin0binario,LOW);
         }  
     if (dato == 'W')
         {
-        //ESP_BT.println("Girando a la izquierda...");
+        //ESP_BT.println("Deshacer toda la ruta");
+        //Serial.println("W");
         digitalWrite(Pin2binario,HIGH);
         digitalWrite(Pin1binario,HIGH);
         digitalWrite(Pin0binario,HIGH);

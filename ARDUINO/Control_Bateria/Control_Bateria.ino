@@ -153,7 +153,7 @@ void loop() {
           Serial.flush();
           index += MAX_BUFFER;
           cantEnviosAux++;
-          //delay(1000);
+          delay(1000);
         }
         String substr = instruccion.substring(index,instruccion.length());
         //substr.toCharArray(aux,MAX_BUFFER);
