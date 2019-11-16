@@ -6,7 +6,7 @@
 #include <WiFiClient.h> 
 //-------------------VARIABLES GLOBALES--------------------------
 
-const char *ssid = "Pablo";//"Fibertel WiFi159 2.4GHz";//"Javo wifi";//"Fibertel WiFi159 2.4GHz";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
+const char *ssid = "Bepim";//"Fibertel WiFi159 2.4GHz";//"Javo wifi";//"Fibertel WiFi159 2.4GHz";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
 const char *password = "12345678";//"0043442422";//"44540006";//"0043442422";//"6761727565";//"SOA.2019";
 ESP8266WebServer server(80);   
 int flag = 0;
@@ -138,7 +138,7 @@ void loop() {
           Serial.flush();
           index += MAX_BUFFER;
           cantEnviosAux++;
-          delay(1000);
+          //delay(1000);
         }
         String substr = instruccion.substring(index,instruccion.length());
         //substr.toCharArray(aux,MAX_BUFFER);

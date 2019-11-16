@@ -167,6 +167,8 @@ void loop() {
              *  0 0 1 : avanzar (F)
              *  0 1 0 : girar derecha (D)
              *  1 0 0 : girar izquierda (I)
+             *  0 1 1 : deshacer ultimo movimiento (U)   ANDO segun German
+             *  1 1 1 : deshacer TODO (W)   OL ANDO segun German
              */
     dato = ESP_BT.read();
 
@@ -202,7 +204,20 @@ void loop() {
         digitalWrite(Pin1binario,LOW);
         digitalWrite(Pin0binario,LOW);
         }  
-
+    if (dato == 'U')
+        {
+        //ESP_BT.println("Girando a la izquierda...");
+        digitalWrite(Pin2binario,LOW);
+        digitalWrite(Pin1binario,HIGH);
+        digitalWrite(Pin0binario,HIGH);
+        }  
+    if (dato == 'W')
+        {
+        //ESP_BT.println("Girando a la izquierda...");
+        digitalWrite(Pin2binario,HIGH);
+        digitalWrite(Pin1binario,HIGH);
+        digitalWrite(Pin0binario,HIGH);
+        } 
 
     if (dato == 'P')
         {
