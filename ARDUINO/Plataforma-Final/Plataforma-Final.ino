@@ -69,6 +69,7 @@ int gradosHaciaNorte;
 
 #define delaiPulsos 3500       // microsegundos entre pulsos, menor numero mayor velocidad de giro 
 #define delaiPulsosInicio 6000     // microsegundos entre pulsos, menor numero mayor velocidad de giro 
+#define delaiPulsosMagne  15000
 #define desvioObstaculoEjeX 300    // pasos MAXIMOS de desvio para esquivar un obstaculo en el eje X
 #define desvioObstaculoEjeY 480    // pasos MAXIMOS de desvio para esquivar un obstaculo en el eje Y
 #define CantPasosLento 100     // Cantidad de pasos a realizare al inicio de un avance y giro--> CAMBIOVELOCIDAD
@@ -1037,6 +1038,54 @@ do{x++;
   }while(x < giro);
 }
 
+void GirarDerechaMagne(int giro)
+{
+int x = 0;
+digitalWrite(dirPinIZ,HIGH); 
+digitalWrite(dirPinDER,LOW); 
+do{x++;
+  digitalWrite(stepPinIZ,HIGH); 
+  digitalWrite(stepPinDER,HIGH); 
+  //if (x > CantPasosLento)   
+  //  delayMicroseconds(delaiPulsos); 
+  //else
+    delayMicroseconds(delaiPulsosMagne); 
+  digitalWrite(stepPinIZ,LOW);
+  digitalWrite(stepPinDER,LOW); 
+  //if (x > CantPasosLento)  
+  //  delayMicroseconds(delaiPulsos); 
+  //else
+    delayMicroseconds(delaiPulsosMagne);
+  }while(x < giro);
+}
+
+void GirarIzquierdaMagne(int giro)
+{
+int x = 0;
+digitalWrite(dirPinIZ,LOW); 
+digitalWrite(dirPinDER,HIGH); 
+do{x++;
+  digitalWrite(stepPinIZ,HIGH); 
+  digitalWrite(stepPinDER,HIGH);
+  
+  //if (x > CantPasosLento)  
+  //  delayMicroseconds(delaiPulsos); 
+  //else
+    delayMicroseconds(delaiPulsosMagne);
+  
+  
+  digitalWrite(stepPinIZ,LOW);
+  digitalWrite(stepPinDER,LOW); 
+  
+  
+  //if (x > CantPasosLento)  
+  //  delayMicroseconds(delaiPulsos); 
+  //else
+    delayMicroseconds(delaiPulsosMagne);
+  }while(x < giro);
+}
+
+
 bool detectarObstaculo()
  {
 	int auxObstaculo=0;
@@ -1069,9 +1118,9 @@ void orientarNorte(){
     gradosHaciaNorte=360-heading;
     while(heading!=0){
       if(heading>180){
-        GirarDerecha(((360-heading)*cientoochentagrados)/180);
+        GirarDerechaMagne(((360-heading)*cientoochentagrados)/180);
       }else{
-        GirarIzquierda(((180-heading)*cientoochentagrados)/180);
+        GirarIzquierdaMagne(((180-heading)*cientoochentagrados)/180);
       }
       heading = compass.readHeading();
     }
