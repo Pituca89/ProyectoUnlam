@@ -1,6 +1,8 @@
 /*Program to control LED (ON/OFF) from ESP32 using Serial Bluetooth
  * Thanks to Neil Kolbans for his efoorts in adding the support to Arduino IDE
  * Turotial on: www.circuitdigest.com 
+ *
+ *  Usar PLaca: WEMOS LOLIN32
  */
 #include <BLEDevice.h>
 #include <BLEUtils.h>
@@ -227,6 +229,8 @@ void loop() {
         digitalWrite(Pin2binario,HIGH);
         digitalWrite(Pin1binario,HIGH);
         digitalWrite(Pin0binario,HIGH);
+        delay(500);
+        digitalWrite(PinEntrenamiento,LOW);  
         } 
 
     if (dato == 'P')
