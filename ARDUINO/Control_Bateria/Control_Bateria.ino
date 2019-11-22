@@ -1,3 +1,6 @@
+// Placa NodeMCU 0.9
+
+
 #include <ArduinoJson.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
@@ -5,6 +8,7 @@
 #include <ESP8266WebServer.h>  
 #include <WiFiClient.h> 
 #include <Wire.h>  //para voltimetro
+#include <WiFiManager.h>
 //-------------------VARIABLES GLOBALES--------------------------
 
 const char *ssid = "Bepim";//"Fibertel WiFi159 2.4GHz";//"Javo wifi";//"Fibertel WiFi159 2.4GHz";//"AndroidAP";//"Speedy-0F574D";//"SO Avanzados";
@@ -25,9 +29,10 @@ char caux;
 int flagBasuraSerial;
 const int PIN_ENVIO_SERIAL = D1;
 
-#define VoltajeBateriaNivelAlto 12.8
-#define VoltajeBateriaNivelBajo 11
+#define VoltajeBateriaNivelAlto 12.6
+#define VoltajeBateriaNivelBajo 10
 
+WiFiManager wifimanager;
 //voltimetro
 int lectura;
 float voltaje;
@@ -102,6 +107,8 @@ void setup() {
   
   WiFi.begin (ssid, password);
   
+  wifimanager.autoConnect("BePIM");
+  
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.println("Conectando...");
@@ -114,6 +121,8 @@ void setup() {
   server.begin();                                              //Inicializa el servidor (una vez configuradas las rutas)
   Serial.println("Servidor HTTP inicializado"); 
   modo = "MOD_O";
+
+  
 }
 
 void loop() {
