@@ -105,7 +105,7 @@ void setup() {
   
   Serial.begin(115200);
   
-  WiFi.begin (ssid, password);
+  //WiFi.begin (ssid, password);
   
   wifimanager.autoConnect("BePIM");
   
