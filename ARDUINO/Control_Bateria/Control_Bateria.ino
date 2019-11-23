@@ -29,7 +29,7 @@ char caux;
 int flagBasuraSerial;
 const int PIN_ENVIO_SERIAL = D1;
 
-#define VoltajeBateriaNivelAlto 12.6
+#define VoltajeBateriaNivelAlto 12.8
 #define VoltajeBateriaNivelBajo 10
 
 WiFiManager wifimanager;
@@ -196,13 +196,13 @@ void loop() {
           }
         if (caux == '2')
         {
-          peticionPOSTJSON("notificacion","LLEGADA");
+          peticionPOSTJSON("notificacion","LLEGO A DESTINO");
           caux='a';
         }
         if (caux == '3')
         {
           //Serial.println("se detecto 3 por serial");
-          peticionPOSTJSON("notificacion","POTENCIA BEACON NO OK");
+          peticionPOSTJSON("notificacion","VERIFICAR UBICACION PLATAFORMA");
           caux='a';
         }       
         if (caux == '4')
@@ -214,7 +214,7 @@ void loop() {
         if (caux == '5')
         {
           //Serial.println("se detecto 5 por serial");
-          peticionPOSTJSON("notificacion","PLATAFORMA DETENIDA SIN POSIBILIDAD DE SORTEAR");
+          peticionPOSTJSON("notificacion","PLATAFORMA DETENIDA POR OBSTACULO");
           caux='a';
         }
         delay(1000);
