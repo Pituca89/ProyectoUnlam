@@ -74,12 +74,13 @@ int gradosHaciaNorte; */
 #define delaiPulsos 3500       // microsegundos entre pulsos, menor numero mayor velocidad de giro 
 #define delaiPulsosInicio 5000     // microsegundos entre pulsos, menor numero mayor velocidad de giro 
 #define delaiPulsosMagne  15000
-#define desvioObstaculoEjeX 300    // pasos MAXIMOS de desvio para esquivar un obstaculo en el eje X
-#define desvioObstaculoEjeY 480    // pasos MAXIMOS de desvio para esquivar un obstaculo en el eje Y
+#define desvioObstaculoEjeX 350    // pasos MAXIMOS de desvio para esquivar un obstaculo en el eje X
+#define desvioObstaculoEjeY 700    // pasos MAXIMOS de desvio para esquivar un obstaculo en el eje Y
 #define CantPasosLento 100     // Cantidad de pasos a realizare al inicio de un avance y giro--> CAMBIOVELOCIDAD
 #define delayEntreInstrucciones 500 //milisegundos entre cada instruccion cuando se esquiva el obstaculo
 #define noventagrados 214  // PARA RUEDAS NEGRAS CON 2 VUELTAS DE CINTA
-#define cientoochentagrados 425  // PARA RUEDAS NEGRAS CON 2 VUELTAS DE CINTA
+#define cientoochentagrados 428  // PARA RUEDAS NEGRAS CON 2 VUELTAS DE CINTA
+#define CantDeSegundosDeEsperaAnteUnObstaculo 3
 
 void setup() {
 	
@@ -612,8 +613,19 @@ if(flagSerial==1)
 			          delay(delayEntreInstrucciones);GirarDerecha(noventagrados);delay(delayEntreInstrucciones);
                 flagDesvioDerecha=1;
 			          }
+           // k=k+desvioObstaculoEjeY;
+            }else{
+              if(flagDesvioIzquierda==0)
+              {
+              delay(delayEntreInstrucciones);GirarIzquierda(noventagrados);delay(delayEntreInstrucciones);
+              flagDesvioIzquierda=1;
+              }
+            else{
+                delay(delayEntreInstrucciones);GirarDerecha(noventagrados);delay(delayEntreInstrucciones);
+                flagDesvioDerecha=1;
+                }
             k=k+desvioObstaculoEjeY;
-            }
+              }
             
           }}}}
           else{
@@ -1109,13 +1121,13 @@ bool detectarObstaculo()
 	  Serial1.write("-1");
 	  Serial.println("OBSTACULO");
 	}    //alerta de obstaculo
-	while((digitalRead(PinProxiFrontal) == LOW)&&(auxObstaculo<5))    
-    {                              // se queda frenado en un bucle hasta 5 segundos mientras haya un obstaculo adelante  
+	while((digitalRead(PinProxiFrontal) == LOW)&&(auxObstaculo<CantDeSegundosDeEsperaAnteUnObstaculo))    
+    {                              // se queda frenado en unos segundos mientras haya un obstaculo adelante  
 		delay(1000);
 		auxObstaculo++;
 		obstaculobandera=0;
     }
-	if(auxObstaculo==5)
+	if(auxObstaculo==CantDeSegundosDeEsperaAnteUnObstaculo)
     {
 		return true;
     }
