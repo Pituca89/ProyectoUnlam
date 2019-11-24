@@ -6,10 +6,19 @@ public class Sector {
     String idPlataforma;
     String mac;
     int actual;
+    int carga;
     int potencia;
     public Sector(String name,int id){
         this.nombre = name;
         this.id =  id;
+    }
+
+    public int getCarga() {
+        return carga;
+    }
+
+    public void setCarga(int carga) {
+        this.carga = carga;
     }
 
     public int getPotencia() {

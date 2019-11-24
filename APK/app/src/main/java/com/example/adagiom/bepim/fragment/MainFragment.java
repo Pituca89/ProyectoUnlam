@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.adagiom.bepim.REST.ClienteHTTP_BATERIA;
 import com.example.adagiom.bepim.REST.ClienteHTTP_POST;
+import com.example.adagiom.bepim.activity.DrawerPrincipal;
 import com.example.adagiom.bepim.interfaz.InterfazAsyntask;
 import com.example.adagiom.bepim.interfaz.InterfazBateria;
 import com.example.adagiom.bepim.model.Plataforma;
@@ -52,8 +55,11 @@ public class MainFragment extends Fragment implements InterfazAsyntask,InterfazB
     Plataforma plataforma;
     private Sector destino;
     private Sector origen;
+    private Sector carga;
+    private Button bateria;
     private ImageView imgBateria;
     private TextView txtBateria;
+    private static String TAG = MainFragment.class.getSimpleName();
     public MainFragment() {
         // Required empty public constructor
     }
@@ -71,14 +77,16 @@ public class MainFragment extends Fragment implements InterfazAsyntask,InterfazB
         actual = (TextView) v.findViewById(R.id.sectoract);
         namePlataforma = (TextView) v.findViewById(R.id.namePlataform);
         listSector = (ListView) v.findViewById(R.id.listSector);
-        imgBateria = (ImageView) v.findViewById(R.id.imgBateria);
+        imgBateria = (ImageView) v.findViewById(R.id.imgBate);
+        bateria = (Button) v.findViewById(R.id.imgBateria);
         txtBateria = (TextView) v.findViewById(R.id.textBateria);
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.key_preference),Context.MODE_PRIVATE);
         ruta = sharedPreferences.getString(getString(R.string.path_plataforma),"");
         plataforma = (Plataforma) getArguments().getSerializable("plataforma");
         chipid = plataforma.getChipid();
         namePlataforma.setText(plataforma.getNombre());
-
+        actual.setOnClickListener(onMoveOnSector);
+        bateria.setOnClickListener(enviarZonaCarga);
         json = new JSONObject();
         sectorAdapter = new SectorAdapter(getActivity());
         actualizarSector();
@@ -103,6 +111,30 @@ public class MainFragment extends Fragment implements InterfazAsyntask,InterfazB
             thread_bateria.cancel(true);
     }
 
+    View.OnClickListener enviarZonaCarga = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(origen.getId() != carga.getId()) {
+                json = new JSONObject();
+                String uri = ClienteHTTP_POST.ENVIAR_RUTA;
+                try {
+                    json.put("url", ruta + uri);
+                    json.put("USER", 1);
+                    json.put("ID", chipid);
+                    json.put("DESDE", origen.getId());
+                    json.put("HASTA", carga.getId());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                threadCliente_Post = new ClienteHTTP_POST(MainFragment.this);
+                threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, json);
+
+                Log.i("HTTPRequest", json.toString());
+            }else{
+                mostrarToastMake("La plataforma se encuentra en la zona de carga");
+            }
+        }
+    };
     private SectorAdapter.OnEnviarPlataforma onEnviarPlataforma = new SectorAdapter.OnEnviarPlataforma() {
         @Override
         public void enviarPlataformaClick(int position) {
@@ -146,6 +178,10 @@ public class MainFragment extends Fragment implements InterfazAsyntask,InterfazB
                             origen = sector;
                             actual.setText(origen.getNombre());
                             sectorIterator.remove();
+                        }
+                        if (sector.getCarga() == 2) {
+                            carga = sector;
+                            Log.i(TAG,sector.getNombre());
                         }
                     }
                     sectorAdapter.setData(sectorArrayList);
@@ -210,4 +246,11 @@ public class MainFragment extends Fragment implements InterfazAsyntask,InterfazB
             imgBateria.setImageResource(R.drawable.battery_3);
         }
     }
+
+    View.OnClickListener onMoveOnSector = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            DrawerPrincipal.moveOnSector();
+        }
+    };
 }

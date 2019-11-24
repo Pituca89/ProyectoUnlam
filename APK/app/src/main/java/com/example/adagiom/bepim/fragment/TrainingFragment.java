@@ -354,15 +354,20 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
                 refreshSector();
                 if(aSwitch.isChecked()){
                     mProgressDlg1.setMessage("Almacenando camino inverso");
-                    registrarRuta(obtenerInversa(optimo),destino.getId(),origen.getId(),origen.getPotencia(),costo);
+                    String rutaInversa = obtenerInversa(datos[0]);
+                    String optimoInversa = optimizarRuta(rutaInversa);
+                    registrarRuta(optimoInversa,destino.getId(),origen.getId(),origen.getPotencia(),costo);
                     aSwitch.setChecked(false);
                 }else{
                     mProgressDlg1.dismiss();
                 }
-                mProgressDlg1.setMessage("Escaneando Beacon...");
+
             }else if(mensaje.getOpcion().contains("RUTA")){
                 //refreshSector();
                 actualizarSectorActual();
+            }else if(mensaje.getOpcion().contains("OK")){
+                refreshSector();
+                mostrarToastMake("Beacon registrado correctamente");
             }else{
                 //mostrarToastMake("ERROR DE CONEXIÓN");
             }
@@ -416,10 +421,12 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
                     case R.id.btn_deshacer_total:
                         mConnectedThread.write("W");
                         mostrarToastMake("Volviendo al punto de partida");
+                        alertDialogDeshacer.dismiss();
                         break;
                     case R.id.btn_deshacer_parcial:
                         mConnectedThread.write("U");
                         mostrarToastMake("Deshaciendo última instrucción");
+                        alertDialogDeshacer.dismiss();
                         break;
                 }
             }catch (Exception e){
@@ -475,6 +482,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
                                 json.put("ID",chipid);
                                 json.put("MAC",intentResult.getContents());
                                 json.put("POTENCIA",0);
+                                json.put("CARGA",0);
                                 if(nombreSector.getText().toString() != ""){
                                     json.put("NOMBRE",nombreSector.getText().toString());
                                 }else{
@@ -516,6 +524,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
                             try {
                                 mConnectedThread.write("P"+destino.getMac()+"#");
                                 actual = sectorArrayList.get(position).getNombre();
+                                mProgressDlg1.setMessage("Escaneando Beacon...");
                                 mProgressDlg1.show();
                             }catch (Exception e){
                                 mostrarToastMake("Plataforma desconectada");
@@ -971,9 +980,9 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
         try {
             String[] costos = ruta.split("\\|");
             for (String costo : costos) {
-                if (costo.contains("F")) {
+                //if (costo.contains("F")) {
                     costoTotal += Integer.parseInt(costo.substring(1, costo.length()));
-                }
+                //}
             }
         }catch (Exception e){
             mostrarToastMake("ERROR AL OBTENER EL COSTO DE LA RUTA");
@@ -982,13 +991,10 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
     }
     public String optimizarRuta(String ruta){
         String rutaOpt = "";
-        String rutaOptFin = "";
         String instActual;
         int pasos = 0;
         int i = 0;
         int j = 0;
-        int k = 0;
-        int w = 0;
         try{
             String[] instrucciones = ruta.split("\\|");
             int cantidad = instrucciones.length;
@@ -1007,6 +1013,7 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
                 pasos = 0;
                 i = j - 1;
             }
+            /*
             String[] instOpt = rutaOpt.substring(1,rutaOpt.length()).split("\\|");
             List<String> list = new ArrayList<String>(Arrays.asList(instOpt));
             for(k = 1 ; k  < list.size() ; k++){
@@ -1028,11 +1035,12 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
                 rutaOptFin += list.get(k - 1) + "|";
             }
             rutaOptFin += list.get(k - 1);
+            */
         }catch (Exception e){}
-        return rutaOptFin;
+        return rutaOpt.substring(1,rutaOpt.length());
     }
     public String obtenerInversa(String ruta){
-        String rutainv = "Z420";
+        String rutainv = "Z428";
 
         try {
             String[] instrucciones = ruta.split("\\|");
@@ -1046,8 +1054,8 @@ public class TrainingFragment extends Fragment implements InterfazAsyntask {
             rutainv = rutainv.replace("I","Y");
             rutainv = rutainv.replace("X","I");
             rutainv = rutainv.replace("Y","D");
-            rutainv = rutainv.replace("Z","D");
-            rutainv += "|D420";
+            rutainv = rutainv.replace("Z","I");
+            rutainv += "|D428";
         }catch (Exception e){
             mostrarToastMake("ERROR AL OBTENER LA INVERSA DE LA RUTA");
         }

@@ -22,6 +22,7 @@ import android.view.MenuItem;
 
 import com.example.adagiom.bepim.REST.ClienteHTTP_POST;
 import com.example.adagiom.bepim.fragment.ConfigFragment;
+import com.example.adagiom.bepim.fragment.DriveFragment;
 import com.example.adagiom.bepim.interfaz.InterfazAsyntask;
 import com.example.adagiom.bepim.fragment.MainFragment;
 import com.example.adagiom.bepim.model.Plataforma;
@@ -34,19 +35,20 @@ import org.json.JSONObject;
 
 public class DrawerPrincipal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, InterfazAsyntask {
-    FragmentManager fm;
-    Fragment active;
+    static FragmentManager fm;
+    static Fragment active;
     final private TrainingFragment trainingFragment = new TrainingFragment();
     final private MainFragment mainFragment =  new MainFragment();
-    final private SectorFragment sectorFragment = new SectorFragment();
-    final private ConfigFragment configFragment = new ConfigFragment();
+    static final private SectorFragment sectorFragment = new SectorFragment();
+    final private DriveFragment driveFragment = new DriveFragment();
     String ruta;
-    Bundle bundle;
+    static Bundle bundle;
     NavigationView navigationView;
     private ClienteHTTP_POST threadCliente_Post;
     JSONObject json;
     Plataforma plataforma;
     SharedPreferences sharedPreferences;
+    private static String TAG = DrawerPrincipal.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,28 @@ public class DrawerPrincipal extends AppCompatActivity
             fm.beginTransaction().add(R.id.container_ly, mainFragment).commit();
             active = mainFragment;
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        String uri = ClienteHTTP_POST.LIBERAR;
+        try {
+            json.put("url",ruta + uri);
+            json.put("ID",plataforma.getChipid());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        threadCliente_Post =  new ClienteHTTP_POST(DrawerPrincipal.this);
+        threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,json);
+        Log.i(TAG,json.toString());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 
     @Override
@@ -146,6 +170,14 @@ public class DrawerPrincipal extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public static void moveOnSector(){
+        if(active != sectorFragment) {
+            active = sectorFragment;
+            sectorFragment.setArguments(bundle);
+            fm.beginTransaction().replace(R.id.container_ly, sectorFragment).commit();
+        }
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -192,6 +224,12 @@ public class DrawerPrincipal extends AppCompatActivity
             //active = configFragment;
             //configFragment.setArguments(bundle);
             //fm.beginTransaction().replace(R.id.container_ly,configFragment).commit();
+        }else if(id == R.id.nav_drive){
+            if(active != driveFragment) {
+                active = driveFragment;
+                driveFragment.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.container_ly, driveFragment).commit();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

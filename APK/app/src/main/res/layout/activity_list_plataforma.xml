@@ -8,26 +8,45 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sombra_title"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="311dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:text="Plataformas disponibles"
+                android:textAlignment="center"
+                android:textColor="@color/zxing_status_text"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="1"
+                android:padding="5dp"
+                app:srcCompat="@drawable/refresh" />
+        </LinearLayout>
+
         <ListView
             android:id="@+id/listPlataforma"
             android:layout_width="match_parent"
-            android:layout_height="381dp"
+            android:layout_height="371dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="64dp">
+            android:layout_marginTop="74dp">
 
         </ListView>
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="Plataformas disponibles"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/textView4"
@@ -40,6 +59,7 @@
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp" />
+
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton

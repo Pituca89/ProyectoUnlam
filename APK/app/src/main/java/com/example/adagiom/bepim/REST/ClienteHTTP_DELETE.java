@@ -40,9 +40,7 @@ public class ClienteHTTP_DELETE extends AsyncTask<JSONObject , JSONObject ,JSONO
             urlConnection.setDoInput(true);
             urlConnection.setRequestMethod("DELETE");
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream ());
-
             wr.writeBytes(jsonData.toString());
             Log.i("JSON Input", jsonData.toString());
 

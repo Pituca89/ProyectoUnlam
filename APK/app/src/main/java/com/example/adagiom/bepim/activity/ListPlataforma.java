@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
     Handler handler;
     private static int HANDLER_MESSAGE_ON = 1;
     private static int HANDLER_MESSAGE_OFF = 0;
+    private ImageView refresh;
     private static String TAG = ListPlataforma.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +64,14 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
         refreshPlataforma();
         listPlataforma = (ListView) findViewById(R.id.listPlataforma);
         addPlataforma = (FloatingActionButton) findViewById(R.id.addPlataforma);
-
+        refresh = (ImageView) findViewById(R.id.refresh);
         handler = handler_espera_notificacion();
         listenerThread = new ListenerThread();
         listenerThread.start();
 
         addPlataforma.setOnClickListener(agregarPlataforma);
         plataformaAdapter = new PlataformaAdapter(this);
-
+        refresh.setOnClickListener(refreshActivity);
     }
 
     @Override
@@ -206,7 +208,7 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 if(msg.what == HANDLER_MESSAGE_ON){
-                    mostrarToastMake("Su plataforma llegó a destino");
+                    //mostrarToastMake("Su plataforma llegó a destino");
                     Log.i("Notificacion","Recibi mensaje");
                     try {
                         Thread.sleep(100);
@@ -221,6 +223,14 @@ public class ListPlataforma extends AppCompatActivity implements InterfazAsyntas
         };
     }
 
+    View.OnClickListener refreshActivity = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            finish();
+            startActivity(getIntent().setFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+        }
+    };
     private class ListenerThread extends Thread{
         NotificationSingleton singleton = new NotificationSingleton().getInstance();
 

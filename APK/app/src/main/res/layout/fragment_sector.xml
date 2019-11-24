@@ -12,26 +12,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/sombra_title">
+
+            <TextView
+                android:id="@+id/lblsectortitle"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="1"
+                android:text="Destinos disponibles"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
         <ListView
             android:id="@+id/listAddSector"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="278dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="54dp">
+            android:layout_marginTop="76dp">
 
         </ListView>
-
-        <TextView
-            android:id="@+id/lblsectortitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="Destinos disponibles"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/lblsector"
@@ -61,11 +70,13 @@
                 android:backgroundTint="@color/colorPrimary"
                 android:button="@drawable/boton_switch"
                 android:buttonTint="@color/colorPrimary"
+                android:checked="true"
                 android:switchPadding="@dimen/cardview_default_elevation"
-                android:text="Almacenar camino inverso"
+                android:text="Camino inverso"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:textSize="22sp"
+                tools:checked="true" />
         </LinearLayout>
     </RelativeLayout>
 

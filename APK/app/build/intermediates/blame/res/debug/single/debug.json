@@ -728,6 +728,10 @@
         "source": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\src\\main\\res\\drawable-xxhdpi\\bepimicon.jpeg"
     },
     {
+        "merged": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\build\\intermediates\\res\\merged\\debug\\drawable_sombra_title.xml.flat",
+        "source": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\src\\main\\res\\drawable\\sombra_title.xml"
+    },
+    {
         "merged": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21_notification_action_tombstone.xml.flat",
         "source": "C:\\Users\\adagiom\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.3.1.aar\\b5f0902888cf1ef8afac39a712138fa0\\res\\layout-v21\\notification_action_tombstone.xml"
     },
@@ -992,6 +996,10 @@
         "source": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\src\\main\\res\\drawable\\sombra.xml"
     },
     {
+        "merged": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_drive.png.flat",
+        "source": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\src\\main\\res\\drawable-xxhdpi\\drive.png"
+    },
+    {
         "merged": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_scrubber_control_off_mtrl_alpha.png.flat",
         "source": "C:\\Users\\adagiom\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.3.1.aar\\b5f0902888cf1ef8afac39a712138fa0\\res\\drawable-xxhdpi-v4\\abc_scrubber_control_off_mtrl_alpha.png"
     },
@@ -1010,6 +1018,10 @@
     {
         "merged": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_common_google_signin_btn_text_light_normal_background.9.png.flat",
         "source": "C:\\Users\\adagiom\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-15.0.1.aar\\22bf65a93d07e878f30de630f9967c59\\res\\drawable-xhdpi-v4\\common_google_signin_btn_text_light_normal_background.9.png"
+    },
+    {
+        "merged": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_drive.xml.flat",
+        "source": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\src\\main\\res\\layout\\fragment_drive.xml"
     },
     {
         "merged": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_list_focused_holo.9.png.flat",
@@ -1346,6 +1358,10 @@
     {
         "merged": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_common_google_signin_btn_text_light_normal_background.9.png.flat",
         "source": "C:\\Users\\adagiom\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-15.0.1.aar\\22bf65a93d07e878f30de630f9967c59\\res\\drawable-mdpi-v4\\common_google_signin_btn_text_light_normal_background.9.png"
+    },
+    {
+        "merged": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialog_sector.xml.flat",
+        "source": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\src\\main\\res\\layout\\dialog_sector.xml"
     },
     {
         "merged": "D:\\adagiom\\Documents\\Proyecto\\ProyectoUnlam\\APK\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_list_pressed_holo_dark.9.png.flat",

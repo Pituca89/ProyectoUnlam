@@ -228,13 +228,15 @@ public class SectorFragment extends Fragment implements InterfazAsyntask {
                     listSector.setAdapter(sectorAdapter);
                 }else{
                     vacio = true;
-                    mostrarToastMake("Debe registrar al menos un Beacon");
+                    mostrarToastMake("El primer beacon registrado debe estar asociado a la zona de carga");
                 }
             }else if(mensaje.getOpcion().contains("DUPLICADO")){
                 mostrarToastMake("El codigo del beacon ingresado ya se encuentra registrado");
             }else if(mensaje.getOpcion().contains("ACTUAL")){
                 refreshSector();
             }else if(mensaje.getOpcion().contains("BORRADO")){
+                refreshSector();
+            }else if(mensaje.getOpcion().contains("MODOK")){
                 refreshSector();
             }else if(mensaje.getOpcion().contains("OK")){
                 refreshSector();
@@ -304,6 +306,7 @@ public class SectorFragment extends Fragment implements InterfazAsyntask {
                                     json.put("ID", chipid);
                                     json.put("MAC", intentResult.getContents());
                                     json.put("POTENCIA", 0);
+                                    json.put("CARGA",0);
                                     if (nombreSector.getText().toString() != "") {
                                         json.put("NOMBRE", nombreSector.getText().toString());
                                     } else {
@@ -334,7 +337,39 @@ public class SectorFragment extends Fragment implements InterfazAsyntask {
     SectorListAdapter.OnActionSector onActionSector = new SectorListAdapter.OnActionSector() {
         @Override
         public void onActionEdit(int position) {
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
+            View view = inflater.inflate(R.layout.dialog_sector,null);
+            final EditText nombreSector = (EditText) view.findViewById(R.id.namesector);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            final Sector sector = (Sector) sectorAdapter.getItem(position);
+            builder.setView(view)
+                    // Add action buttons
+                    .setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                                json = new JSONObject();
+                                String uri = ClienteHTTP_POST.MOD_SECTOR;
 
+                                try {
+                                    json.put("url", ruta + uri);
+                                    json.put("ID", sector.getId());
+                                    json.put("NOMBRE",nombreSector.getText().toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                threadCliente_Post = new ClienteHTTP_POST(SectorFragment.this);
+                                threadCliente_Post.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, json);
+                            }
+
+                    })
+                    .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+            AlertDialog alertDialog = builder.create();
+
+            alertDialog.show();
         }
 
         @Override
@@ -380,7 +415,7 @@ public class SectorFragment extends Fragment implements InterfazAsyntask {
             sector = sectorArrayList.get(position);
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                     .setTitle("Alerta!")
-                    .setMessage("Desea cambiar la zona de carga?")
+                    .setMessage("Desea cambiar la ubicación actual de la plataforma?")
                     .setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -793,6 +828,7 @@ public class SectorFragment extends Fragment implements InterfazAsyntask {
                                     json.put("MAC", macaux);
                                     json.put("NOMBRE",nombreaux);
                                     json.put("POTENCIA",datos[1]);
+                                    json.put("CARGA",1);
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();

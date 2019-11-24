@@ -9,5 +9,6 @@
     <color name="ColorRed">#e11411</color>
     <color name="ColorRedFin">#ff001d</color>231f20
     <color name="ColorOcupado">#dae1e4</color>
+    <color name="ColorTitulo">#c9c9c9</color>
 
 </resources>

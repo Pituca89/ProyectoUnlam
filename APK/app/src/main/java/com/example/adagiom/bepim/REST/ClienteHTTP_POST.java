@@ -29,6 +29,7 @@ public class ClienteHTTP_POST extends AsyncTask<JSONObject , JSONObject ,JSONObj
     public static String ACTUALIZAR_SECTOR_ACTUAL = "/actual";
     public static String LIBERAR = "/cancelar";
     public static String REG_USER_APP = "/register_user_app";
+    public static String MOD_SECTOR = "/sectores_mod";
     private InterfazAsyntask caller;
     private Exception mException=null;
     private JSONObject resp;
@@ -119,8 +120,8 @@ public class ClienteHTTP_POST extends AsyncTask<JSONObject , JSONObject ,JSONObj
 
         super.onPostExecute(result);
         if (mException != null) {
-            caller.mostrarToastMake("Error en POST:\n" + mException.toString());
-            //caller.mostrarToastMake("En estos momentos no es posible procesar la solicitud, por favor espero unos minutos e intente nuevamente");
+            //caller.mostrarToastMake("Error en POST:\n" + mException.toString());
+            caller.mostrarToastMake("En estos momentos no es posible procesar la solicitud, por favor espero unos minutos e intente nuevamente");
             return;
         }
         try {

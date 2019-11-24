@@ -53,7 +53,7 @@
                         android:textSize="24sp" />
 
                     <ImageView
-                        android:id="@+id/imgBateria"
+                        android:id="@+id/imgBate"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -112,5 +112,14 @@
     <ListView
         android:id="@+id/listSector"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="259dp" />
+
+    <Button
+        android:id="@+id/imgBateria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sombra1"
+        android:text="ENVIAR A ZONA DE CARGA"
+        android:textColor="#FFF"
+        android:textSize="18sp" />
 </LinearLayout>
